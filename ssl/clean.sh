@@ -1,3 +1,3 @@
 #!/bin/sh
 
-rm -rf *.pem ca 04ca ??-*.cnf
+rm -rf *.pem ca 04ca ??-*.cnf *.srl *.der
