@@ -1,0 +1,29 @@
+
+
+00-basename
+-----------
+Baseline server cert with CA
+
+01-cname-mismatch
+-----------------
+CNAME that should not match the requested hostname
+
+02-notwebserver
+---------------
+Cert is not marked for use as a Server
+
+03-selfsigned
+-------------
+Cert signed by itself, not the CA
+
+04-unknownca
+------------
+Need to generate an unknown CA that is not deployed.
+
+05-badintermediate
+------------------
+Need the CA to sign a website cert that then signs the actual cert.
+
+06-invaliddate
+--------------
+Need to make validity expire in the past.
