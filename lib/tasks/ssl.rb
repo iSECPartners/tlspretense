@@ -48,7 +48,7 @@ namespace :ssl do
     cakey = ca+"key-nopass.pem"
     puts "Now the intermediate will sign it:"
     puts "=================================="
-    run "openssl x509 -req -days 365 -extfile #{conf} -extensions v3_req -extensions usr_cert -in #{req} -CA #{cacert} -CAkey #{cakey} -out #{cert} -set_serial 01 2>&1"
+    run "openssl x509 -req -days 365 -extfile #{conf} -extensions v3_req -extensions usr_cert -in #{req} -CA #{cacert} -CAkey #{cakey} -CAcreateserial -out #{cert}  2>&1"
   end
 
   def self_sign(name)
