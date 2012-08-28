@@ -1,6 +1,12 @@
 
 $: << "lib"
 
+desc "Generate a suite of test certificates"
+task :ssl do
+  sh "bin/generate_test_certs.rb"
+end
 
-
-task :clean => "ssl:clean"
+desc "Clean up by deleting the 'certs' directory."
+task :clean do
+  rmdir_r "certs"
+end
