@@ -111,6 +111,9 @@ module CertMaker
 
 #    create_cert("09-md2", :signing_alg => OpenSSL::Digest::MD2) # OpenSSL needs to have md2 enabled to use
 
+    cert, key = create_cert("10-nullbyte", :subject => "C=US, CN=#{CONFIG['commonname']}\0.isecpartners.com")
+    puts cert.to_text
+
     cd "..", :verbose => true
   end
 end
