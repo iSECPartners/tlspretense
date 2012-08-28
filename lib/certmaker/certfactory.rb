@@ -39,7 +39,7 @@ module CertMaker
 
     # Returns a certificate and a key with the configured attributes, plus with the
     # overridden attrs.
-    def create
+    def create(args={})
 
       # Make a key
       nk = self.key_type.new self.key_size
@@ -48,15 +48,16 @@ module CertMaker
       nc = OpenSSL::X509::Certificate.new
       nc.version = 2
       nc.serial = 1
-      nc.subject = OpenSSL::X509::Name.parse self.subject
+      nc.subject = OpenSSL::X509::Name.parse(args.fetch(:subject, self.subject))
       nc.public_key = nk.public_key
-      nc.not_before = self.not_before
-      nc.not_after = self.not_after
+      nc.not_before = args.fetch(:not_before,self.not_before)
+      nc.not_after = args.fetch(:not_after,self.not_after)
 
       # Prep for extensions
       ef = OpenSSL::X509::ExtensionFactory.new
       ef.subject_certificate = nc
 
+      self.ca = args.fetch(:ca,self.ca)
       # Issuer handling
       if self.ca == :self
         nc.issuer = nc.subject
@@ -68,12 +69,22 @@ module CertMaker
         signing_key = self.ca_key
       end
 
+      # filter out blocked extension patterns
+      exts = self.extensions
+      if args.fetch(:blockextension,false)
+        args[:blockextension].each do |badext|
+          exts = exts.select { |ext| ext.scan(badext).empty? }
+        end
+      end
+      # add any additional extensions
+      exts.concat args.fetch(:extensions,[])
+
       # Add the extensions
-      self.extensions.each do |ext|
+      exts.each do |ext|
         nc.add_extension(ef.create_ext_from_string(ext))
       end
 
-      nc.sign(signing_key, self.signing_alg.new)
+      nc.sign(signing_key, args.fetch(:signing_alg,self.signing_alg).new)
 
       return [nc, nk]
     end

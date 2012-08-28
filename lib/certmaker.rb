@@ -106,21 +106,55 @@ module CertMaker
     @cf
   end
 
+  # Create a CA.
+  # The CA is stored in files: #{handle}cert.pem and #{handle}key.pem, and both
+  # the certificate object and key are returned.
+  def create_ca(handle, args={})
+    cert, key = ca_factory.create(args)
+    File.open("#{handle}cert.pem","wb") { |f| f.print cert.to_pem }
+    File.open("#{handle}key.pem","wb") { |f| f.print key.to_pem }
+    return cert, key
+  end
+
+
+  # Create a certificate.
+
+  def create_cert(handle, args={})
+    cert, key = cert_factory.create(args)
+    File.open("#{handle}cert.pem","wb") { |f| f.print cert.to_pem }
+    File.open("#{handle}key.pem","wb") { |f| f.print key.to_pem }
+    return cert, key
+
+  end
+
   def run2
+    include FileUtils
+    cd "ssl"
 
-    goodca, goodca_key = ca_factory.create
+    goodca, goodca_key = create_ca "ca"
     default_ca(goodca, goodca_key)
-    puts goodca.to_text
+#    puts goodca.to_text
 
-    baseline, baseline_key = cert_factory.create
-    puts baseline.to_text
+    create_cert("00-baseline")
 
-#    cnamemismatch, cnamemismatch_key = cf.create(:subject => "C=US, CN=www.foo.com")
-#    puts cnamemismatch.to_text
+    create_cert("01-cnamemismatch", :subject => "C=US, CN=www.foo.com")
 
-#    notwebserver, notwebserver_key = cf.create(:extension)
-#    selfsigned, selfsigned_key = cf.create(:ca => :self)
-#    unknownca, unknownca_key = cf.create(:ca => 
+    create_cert("02-notwebserver", :blockextension => ["extendedKeyUsage"])
+
+    # The authorityKeyIdentifier does not exist before self-signing a cert.
+    create_cert("03-selfsigned", :ca => :self, :blockextension => ["authorityKeyIdentifier"])
+
+    badca, badca_key = create_ca("04ca", :subject => "C=US, CN=Evil CA")
+    create_cert("04-unknownca", :ca => badca, :ca_key => badca_key)
+
+    badinterm, badinterm_key = create_cert("05intermediate", :subject => "C=US, CN=www.bar.com")
+    create_cert("05-signedbyintermediate", :ca => badinterm, :ca_key => badinterm_key)
+
+    cert, key = create_cert("06-expired", :not_before => Time.now - 60*60*24, :not_after => Time.now - 60*60)
+
+    create_cert("07-md4", :signing_alg => OpenSSL::Digest::MD4)
+
+    create_cert("08-md5", :signing_alg => OpenSSL::Digest::MD5)
 
   end
 end
