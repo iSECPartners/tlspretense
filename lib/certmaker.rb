@@ -1,9 +1,11 @@
 
 require 'fileutils'
 require 'yaml'
+require 'openssl'
 
 require 'certmaker/run'
 require 'certmaker/certificate'
+require 'certmaker/certfactory'
 
 module CertMaker
 
@@ -60,5 +62,65 @@ module CertMaker
     c08 = Certificate.new '08-md5', :signwith => "md5"
     c08.ca = ca
     c08.cert
+  end
+
+  def ca_factory
+    return @caf if @caf
+    @caf = CertificateFactory.new
+    @caf.ca = :self
+    @caf.subject = "C=US, O=GoatCo, CN=Trusted CA"
+    @caf.not_before = Time.now
+    @caf.not_after = @caf.not_before + 365*24*60*60
+    @caf.extensions << "keyUsage = critical, keyCertSign"
+    @caf.extensions << "basicConstraints = critical,CA:true"
+    @caf.extensions << "subjectKeyIdentifier=hash"
+    @caf.extensions << "authorityKeyIdentifier=keyid:always"
+    @caf.key_type = OpenSSL::PKey::RSA
+    @caf.key_size = 1024
+    @caf.signing_alg = OpenSSL::Digest::SHA1
+    @caf
+  end
+
+  def default_ca(goodca, goodca_key)
+    @defaultca = goodca
+    @defaultca_key = goodca_key
+  end
+
+
+  def cert_factory
+    return @cf if @cf
+    @cf = CertificateFactory.new
+    @cf.ca = @defaultca ? @defaultca : :self
+    @cf.ca_key = @defaultca_key ? @defaultca_key : nil
+    @cf.subject = "C=US, CN=#{CertMaker::CONFIG["commonname"]}"
+    @cf.not_before = Time.now
+    @cf.not_after = @cf.not_before + 365*24*60*60
+    @cf.extensions << "keyUsage=digitalSignature, keyEncipherment"
+    @cf.extensions << "extendedKeyUsage=serverAuth, clientAuth"
+    @cf.extensions << "authorityKeyIdentifier=keyid:always"
+    @cf.extensions << "subjectKeyIdentifier=hash"
+    @cf.extensions << "basicConstraints = critical,CA:FALSE"
+    @cf.key_type = OpenSSL::PKey::RSA
+    @cf.key_size = 1024
+    @cf.signing_alg = OpenSSL::Digest::SHA1
+    @cf
+  end
+
+  def run2
+
+    goodca, goodca_key = ca_factory.create
+    default_ca(goodca, goodca_key)
+    puts goodca.to_text
+
+    baseline, baseline_key = cert_factory.create
+    puts baseline.to_text
+
+#    cnamemismatch, cnamemismatch_key = cf.create(:subject => "C=US, CN=www.foo.com")
+#    puts cnamemismatch.to_text
+
+#    notwebserver, notwebserver_key = cf.create(:extension)
+#    selfsigned, selfsigned_key = cf.create(:ca => :self)
+#    unknownca, unknownca_key = cf.create(:ca => 
+
   end
 end
