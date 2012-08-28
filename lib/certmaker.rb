@@ -59,6 +59,7 @@ module CertMaker
   # The CA is stored in files: #{handle}cert.pem and #{handle}key.pem, and both
   # the certificate object and key are returned.
   def create_ca(handle, args={})
+    puts "Creating #{handle}"
     cert, key = ca_factory.create(args)
     File.open("#{handle}cert.pem","wb") { |f| f.print cert.to_pem }
     File.open("#{handle}key.pem","wb") { |f| f.print key.to_pem }
@@ -69,6 +70,7 @@ module CertMaker
   # Create a certificate.
 
   def create_cert(handle, args={})
+    puts "Creating #{handle}"
     cert, key = cert_factory.create(args)
     File.open("#{handle}cert.pem","wb") { |f| f.print cert.to_pem }
     File.open("#{handle}key.pem","wb") { |f| f.print key.to_pem }
@@ -76,9 +78,11 @@ module CertMaker
 
   end
 
+  # Generate a suite of test certificates.
   def run
     include FileUtils
-    cd "ssl"
+    mkdir_p "certs", :verbose => true
+    cd "certs", :verbose => true
 
     goodca, goodca_key = create_ca "ca"
     default_ca(goodca, goodca_key)
@@ -105,5 +109,6 @@ module CertMaker
 
     create_cert("08-md5", :signing_alg => OpenSSL::Digest::MD5)
 
+    cd "..", :verbose => true
   end
 end

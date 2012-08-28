@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-$: << 'lib'
+$: << File.join(File.dirname(__FILE__),'..','lib')
 
 require 'certmaker'
 include CertMaker
