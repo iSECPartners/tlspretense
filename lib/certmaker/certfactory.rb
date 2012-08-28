@@ -34,10 +34,10 @@ module CertMaker
       self.extensions = []
       self.key_type = OpenSSL::PKey::RSA
       self.key_size = 2048
-      self.signing_alg = OpenSSL::Digest::SHA1
+      self.signing_alg = :SHA1
     end
 
-    # Returns a certificate and a key with the configured attributes, plus with the
+    # Returns an array containing the certificate and associated key with the configured attributes, plus with the
     # overridden attrs.
     def create(args={})
 
@@ -84,7 +84,16 @@ module CertMaker
         nc.add_extension(ef.create_ext_from_string(ext))
       end
 
-      nc.sign(signing_key, args.fetch(:signing_alg, self.signing_alg).new)
+      # Look up the signing algorithm. If it is set to a symbol or string,
+      # we'll be able to look up a class. Otherwise we assume that the current
+      # signing_alg is a class symbol.
+      sa = args.fetch(:signing_alg, self.signing_alg)
+      begin
+        sa = OpenSSL::Digest.const_get(sa)
+      rescue TypeError
+      end
+
+      nc.sign(signing_key, sa.new)
 
       return [nc, nk]
     end

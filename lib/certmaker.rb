@@ -26,7 +26,7 @@ module CertMaker
     @caf.extensions << "authorityKeyIdentifier=keyid:always"
     @caf.key_type = OpenSSL::PKey::RSA
     @caf.key_size = 1024
-    @caf.signing_alg = OpenSSL::Digest::SHA1
+    @caf.signing_alg = :SHA1
     @caf
   end
 
@@ -51,7 +51,7 @@ module CertMaker
     @cf.extensions << "basicConstraints = critical,CA:FALSE"
     @cf.key_type = OpenSSL::PKey::RSA
     @cf.key_size = 1024
-    @cf.signing_alg = OpenSSL::Digest::SHA1
+    @cf.signing_alg = :SHA1
     @cf
   end
 
@@ -105,9 +105,11 @@ module CertMaker
 
     cert, key = create_cert("06-expired", :not_before => Time.now - 60*60*24, :not_after => Time.now - 60*60)
 
-    create_cert("07-md4", :signing_alg => OpenSSL::Digest::MD4)
+    create_cert("07-md4", :signing_alg => :MD4)
 
-    create_cert("08-md5", :signing_alg => OpenSSL::Digest::MD5)
+    create_cert("08-md5", :signing_alg => :MD5)
+
+#    create_cert("09-md2", :signing_alg => OpenSSL::Digest::MD2) # OpenSSL needs to have md2 enabled to use
 
     cd "..", :verbose => true
   end
