@@ -84,7 +84,7 @@ module CertMaker
         nc.add_extension(ef.create_ext_from_string(ext))
       end
 
-      nc.sign(signing_key, args.fetch(:signing_alg,self.signing_alg).new)
+      nc.sign(signing_key, args.fetch(:signing_alg, self.signing_alg).new)
 
       return [nc, nk]
     end

@@ -27,3 +27,11 @@ Need the CA to sign a website cert that then signs the actual cert.
 06-invaliddate
 --------------
 Need to make validity expire in the past.
+
+07-md4
+------
+CA uses MD4 to sign the cert
+
+08-md5
+------
+CA uses MD5 to sign the cert
