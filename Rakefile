@@ -3,7 +3,11 @@ $: << "lib"
 
 desc "Generate a suite of test certificates"
 task :ssl do
-  sh "bin/generate_test_certs.rb"
+  require 'certmaker'
+  require 'yaml'
+
+  y = YAML.load_file('config.yml')
+  CertMaker.make_certs y
 end
 
 desc "Clean up by deleting the 'certs' directory."
