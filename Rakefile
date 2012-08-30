@@ -8,5 +8,5 @@ end
 
 desc "Clean up by deleting the 'certs' directory."
 task :clean do
-  rmdir_r "certs"
+  rm_r "certs"
 end
