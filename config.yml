@@ -1,2 +1,252 @@
 ---
-commonname: my.hostname.com
+defaultsubject: &defaultsubject "C=US, CN=my.hostname.com"
+defaultsubjectwithnull: &defaultsubjectwithnull "C=US, CN=my.hostname.com\0.foo.com"
+outdir: certs
+
+certtemplates:
+certs:
+  goodca: &goodca
+    subject: "C=US, CN=Trusted CA"
+    issuer: self
+    not_before: now
+    not_after: +365
+    extensions:
+    - "keyUsage = critical, keyCertSign"  # can sign certificates
+    - "basicConstraints = critical,CA:true"
+    - "subjectKeyIdentifier=hash"
+    - "authorityKeyIdentifier=keyid:always"
+    key_type: RSA
+    key_size: 1024
+    signing_alg: SHA1
+
+  unknownca: &unknownca
+    <<: *goodca
+    subject: "C=US, CN=Unknown CA"
+
+  goodintermediate: &goodintermediate
+    <<: *goodca
+    subject: "C=US, CN=Intermediate Cert"
+    issuer: goodca
+
+  baseline: &baseline
+    subject: *defaultsubject
+    issuer: goodca
+    not_before: now
+    not_after: +365
+    extensions:
+    - "keyUsage=digitalSignature, keyEncipherment" # can sign data and can encrypt symmetric keys
+    - "extendedKeyUsage=serverAuth, clientAuth" # can be used as both a www server cert and www client cert
+    - "authorityKeyIdentifier=keyid:always"
+    - "subjectKeyIdentifier=hash"
+    - "basicConstraints = critical,CA:FALSE"
+    key_type: RSA
+    key_size: 1024
+    signing_alg: SHA1
+
+  wrongcname: &wrongcname
+    <<: *baseline
+    subject: "C=US, CN=www.foo.com"
+
+  nullincname: &nullincname
+    <<: *baseline
+    subject: *defaultsubjectwithnull
+
+
+  notwebserver: &notwebserver
+    <<: *baseline
+    blockextensions:
+    - extendedKeyUsage
+
+
+  selfsigned: &selfsigned
+    <<: *baseline
+    issuer: self
+    blockextensions:
+    - authorityKeyIdentifier
+
+  unknowncacert: &unknowncacert
+    <<: *baseline
+    issuer: unknownca
+
+  badsignature: &badsignature
+    <<: *baseline
+    signing_key: unknownca # signing_key defaults to the issuer unless added.
+
+  # we should probably also check for bad keyUsage, since keyUsage=keyCertSign also grants CA abilities
+  cafalseintermediate: &cafalseintermediate
+    <<: *baseline
+    subject: "C=US, CN=Intermediate with BasicConstraints CA:FALSE"
+
+  signedbycafalseint: &signedbycafalseint
+    <<: *baseline
+    issuer: cafalseintermediate
+
+  # we should probably also check for bad keyUsage, since keyUsage=keyCertSign also grants CA abilities
+  nobcintermediate: &nobcintermediate
+    <<: *baseline
+    subject: "C=US, CN=Intermediate with no basicConstraints"
+    blockextensions:
+    - basicconstraints
+
+  signedbynobcint:
+    <<: *baseline
+    issuer: nobcintermediate
+
+  badsigintermediate:
+    <<: *goodintermediate
+    subject: "C=US, CN=Intermediate with bad signature"
+    signing_key: unknownca # signing_key defaults to the issuer unless added
+
+  signedbybadsigintermediate:
+    <<: *baseline
+    issuer: badsigintermediate
+
+  # identical to goodca, but with its own key
+  cawithdifferentkey:
+    <<: *goodca
+
+  signedbydifferentkey:
+    <<: *baseline
+    issuer: cawithdifferentkey
+
+  expiredcert:
+    <<: *baseline
+    not_before: -365
+    not_after: -30
+
+  notyetvalidcert:
+    <<: *baseline
+    not_before: 365
+    not_after: 730
+
+  expiredintermediate:
+    <<: *goodintermediate
+    subject: "C=US, CN=Expired Intermediate"
+    not_before: -365
+    not_after: -30
+
+  signedbyexpiredint:
+    <<: *baseline
+    issuer: expiredintermediate
+
+tests:
+# baseline
+- alias: baseline
+  name: Baseline Happy Test
+  certchain:
+  - baseline
+  - goodca
+  expected_result: connect
+
+# cname tests
+- alias: wrongcname
+  name: Wrong CNAME
+  certchain:
+  - wrongcname
+  - goodca
+  expected_result: reject
+
+- alias: nullincname
+  name: Null character in CNAME
+  certchain:
+  - nullincname
+  - goodca
+
+# key usage
+- alias: notwebserver
+  name: Lacking extendedKeyUsage
+  certchain:
+  - notwebserver
+  - goodca
+  expected_result: reject
+
+# cert chain issues
+- alias: selfsigned
+  name: Selfsigned certificate
+  certchain:
+  - selfsigned
+
+- alias: unknownca
+  name: Signed by an untrusted CA
+  certchain:
+  - unknowncacert
+  - unknownca
+
+- alias: differentkeyca
+  name: Signed by an untrusted CA (provided in the chain) with the same name but a different key
+  certchain:
+  - signedbydifferentkey
+  - cawithdifferentkey
+
+- alias: badsignature
+  name: Bad signature
+  certchain:
+  - badsignature
+  - goodca
+
+- alias: cafalseintermediate
+  name: "Intermediate certificate where BasicConstraints sets CA:FALSE"
+  certchain:
+  - signedbycafalseint
+  - cafalseintermediate
+  - goodca
+
+- alias: nobcintermediate
+  name: Intermediate certificate lacks BasicConstraints
+  certchain:
+  - signedbynobcint
+  - nobcintermeidate
+  - goodca
+
+- alias: badsigonintermediate
+  name: Intermediate certificate has bad signature from CA
+  certchain:
+  - signedbybadsigintermediate
+  - badsigintermediate
+  - goodca
+
+
+- alias: signedwithmd5
+  name: Certificate signed with MD5
+  certchain:
+  - signedwithmd5
+  - goodca
+
+- alias: signedwithmd4
+  name: Certificate signed with MD4
+  certchain:
+  - signedwithmd4
+  - goodca
+
+## Need OpenSSL built with MD2 support
+#- alias: signedwithmd2
+#  name: Certificate signed with MD2
+#  certchain:
+#  - signedwithmd2
+#  - goodca
+
+- alias: expiredcert
+  name: Certificate that has expired
+  certchain:
+  - expiredcert
+  - goodca
+
+- alias: notyetvalidcert
+  name: Certificate that is valid in the future
+  certchain:
+  - notyetvalidcert
+  - goodca
+
+- alias: expiredintermediate
+  name: Certificate signed by an intermediate that has expired
+  certchain:
+  - signedbyexpiredint
+  - expiredintermediate
+  - goodca
+
+#- alias: expiredca
+#  name: "Certificate signed by a trusted, but expired CA"
+#  certchain:
+#  - signedbyexpiredca
+#  - expiredca
+
