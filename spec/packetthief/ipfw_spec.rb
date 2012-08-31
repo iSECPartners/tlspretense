@@ -13,6 +13,20 @@ module PacketThief
         end
       end
     end
+
+    describe ".revert" do
+      context "when a rule has been previously added" do
+        before(:each) do
+          Ipfw.stub(:system).and_return(:true)
+          Ipfw.redirect(:to_ports => 3234).where(:protocol => :tcp, :dest_port => 80).run
+        end
+        it "removes the rule" do
+          Ipfw.should_receive(:system).with(*%W{/sbin/ipfw del fwd 127.0.0.1,3234 tcp from any to any 80}).and_return true
+
+          Ipfw.revert
+        end
+      end
+    end
   end
 end
 
