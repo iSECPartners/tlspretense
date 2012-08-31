@@ -17,7 +17,7 @@ module PacketThief
       def run(rule)
         @active_rules ||= []
 
-        args = ['/sbin/ipfw', 'add'] # TODO: make the rule number customizable
+        args = ['/sbin/ipfw', 'add', 'set', '30'] # TODO: make the rule number customizable
 
         args.concat rule.to_ipfw_command
 
@@ -33,13 +33,13 @@ module PacketThief
       def revert
         return if @active_rules == nil or @active_rules.empty?
 
-        @active_rules.each do |rule|
-          args = ['/sbin/ipfw', 'del',]
-          args.concat rule.to_ipfw_command
+#        @active_rules.each do |rule|
+          args = ['/sbin/ipfw', 'del', 'set', '30']
+#          args.concat rule.to_ipfw_command
           unless system(*args)
             raise "Command #{args.inspect} exited with error code #{$?.inspect}"
           end
-        end
+#        end
 
         @active_rules = []
       end
@@ -76,7 +76,7 @@ module PacketThief
 
           args << 'to'
           args << self.rulespec.fetch(:dest_address, 'any').to_s
-          args << self.rulespec[:dest_port].to_s if self.rulespec.has_key? :dest_port
+          args << 'dst-port' << self.rulespec[:dest_port].to_s if self.rulespec.has_key? :dest_port
         end
       end
     end
