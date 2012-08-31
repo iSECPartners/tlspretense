@@ -13,21 +13,15 @@ module PacketThief
     # Manages IPTablesRules. It actually runs the rule, and it tracks the rule
     # so it can be deleted later.
     module IPTablesRuleHandler
+      attr_accessor :active_rules
+
       # Executes a rule and holds onto it for later removal.
       def run(rule)
         @active_rules ||= []
 
         args = ['/sbin/iptables', '-t', rule.table, '-A', rule.chain]
 
-        if rule.rulespec
-          args << '-p' << rule.rulespec[:protocol].to_s if rule.rulespec.has_key? :protocol
-          args << '--destination-port' << rule.rulespec[:dest_port].to_s if rule.rulespec.has_key? :dest_port
-        end
-
-        if rule.redirectspec
-          args << '-j' << 'REDIRECT'
-          args << '--to-ports' << rule.redirectspec[:to_ports].to_s if rule.redirectspec.has_key? :to_ports
-        end
+        args.concat rule.to_netfilter_command
 
         unless system(*args)
           raise "Command #{args.inspect} exited with error code #{$?.inspect}"
@@ -41,8 +35,15 @@ module PacketThief
         return if @active_rules == nil or @active_rules.empty?
 
         @active_rules.each do |rule|
+          args = ['/sbin/iptables', '-t', rule.table, '-D', rule.chain]
+          args.concat rule.to_netfilter_command
 
+          unless system(*args)
+            raise "Command #{args.inspect} exited with error code #{$?.inspect}"
+          end
         end
+
+        @active_rules = []
       end
     end
     extend IPTablesRuleHandler
@@ -58,6 +59,23 @@ module PacketThief
         @table = table
         @chain = chain
       end
+
+      def to_netfilter_command
+        args = []
+
+        if self.rulespec
+          args << '-p' << self.rulespec[:protocol].to_s if self.rulespec.has_key? :protocol
+          args << '--destination-port' << self.rulespec[:dest_port].to_s if self.rulespec.has_key? :dest_port
+        end
+
+        if self.redirectspec
+          args << '-j' << 'REDIRECT'
+          args << '--to-ports' << self.redirectspec[:to_ports].to_s if self.redirectspec.has_key? :to_ports
+        end
+
+        args
+      end
+
     end
 
     def self.redirect(args={})

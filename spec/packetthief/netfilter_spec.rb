@@ -14,18 +14,18 @@ module PacketThief
         end
       end
     end
-  end
 
-  class Netfilter
-    describe IPTablesRule do
-      describe "#run" do
-        it "calls its handler's run" do
-          @handler = double('handler')
-          @rule = IPTablesRule.new(@handler, 'nat', 'PREROUTING')
 
-          @handler.should_receive(:run).with(@rule)
+    describe ".revert" do
+      context "when a rule has been previously added" do
+        before(:each) do
+          Netfilter.stub(:system).and_return(:true)
+          Netfilter.redirect(:to_ports => 3234).where(:protocol => :tcp, :dest_port => 80).run
+        end
+        it "removes the rule" do
+          Netfilter.should_receive(:system).with(*%W{/sbin/iptables -t nat -D PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-ports 3234}).and_return true
 
-          @rule.run
+          Netfilter.revert
         end
       end
     end
