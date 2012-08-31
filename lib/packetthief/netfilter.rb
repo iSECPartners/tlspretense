@@ -21,7 +21,7 @@ module PacketThief
 
         if rule.rulespec
           args << '-p' << rule.rulespec[:protocol].to_s if rule.rulespec.has_key? :protocol
-          args << '--destination-port' << rule.rulespec[:destination_port].to_s if rule.rulespec.has_key? :destination_port
+          args << '--destination-port' << rule.rulespec[:dest_port].to_s if rule.rulespec.has_key? :dest_port
         end
 
         if rule.redirectspec
@@ -47,41 +47,22 @@ module PacketThief
     end
     extend IPTablesRuleHandler
 
+    # Adds IPTables specific details to a Redirectrule.
+    class IPTablesRule < RedirectRule
 
-    class IPTablesRule
-      attr_accessor :handler
       attr_accessor :table
       attr_accessor :chain
-      attr_accessor :rulespec
-      attr_accessor :redirectspec
 
-      def initialize(handler, table, chain, args={})
-        @handler = handler
+      def initialize(handler, table, chain)
+        super(handler)
         @table = table
         @chain = chain
       end
-
-      # specify an original destination
-      def where(args)
-        rule = clone
-        rule.rulespec = args
-        rule
-      end
-
-      def redirect(args)
-        rule = clone
-        rule.redirectspec = args
-        rule
-      end
-
-      def run
-        @handler.run(self)
-      end
     end
 
-
-    def self.divert(args={})
-      IPTablesRule.new(self,'nat','PREROUTING', args)
+    def self.redirect(args={})
+      rule = IPTablesRule.new(self,'nat','PREROUTING')
+      rule.redirect(args)
     end
 
   end
