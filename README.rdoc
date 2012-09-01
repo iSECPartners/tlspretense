@@ -1,8 +1,26 @@
-= packetthief
+= PacketThief
 
-Description goes here.
+Framework for intercepting packets and redirecting them to a specific port.
 
-== Contributing to packetthief
+Basic use:
+
+    require 'packetthief'
+    # redirect tcp traffic destined for port 443 to localhost port 65432:
+    PacketThief.redirect(:to_ports => 65432).where(:protocol => :tcp, :dest_port => 443).run
+
+This will set up Firewall/routing rules to redirect the .where clause to the
+port specified by the redirect() clause. Currently, PacketThief supports basic
+redirection like the above line on Ipfw (Mac OS X, BSD) and Netfilter (Linux).
+
+== Mac OS X Setup example
+
+* Share your wifi over your ethernet. Mac OS X will run natd with your wifi as the lan.
+* Connect a mobile or wifi device to this wifi.
+* Run your PacketThief code. The specified :to_ports port should start receiving incoming TCP connections.
+
+Note that connections initiated both on the Mac and on any device from the network will hit your socket. In the future, you will be able to narrow down what traffic is caught.
+
+== Contributing to PacketThief
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
@@ -14,6 +32,5 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2012 William (B.J.) Snow Orvis. See LICENSE.txt for
-further details.
+See LICENSE.txt for further details.
 
