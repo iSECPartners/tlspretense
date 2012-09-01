@@ -10,6 +10,19 @@ require 'packetthief' # needs root
 # Note that this does not forward the encrypted traffic at all, so it isn't a
 # full proxy. It just demonstrates that we can terminate the SSL connection
 # that we have redirected.
+#
+# Also, you will need to supply your own certificate chain and private key file.
+#
+# A single connection:
+#     Connected
+#     starting TLS
+#     Connection closed
+#
+# A second connection, where the client accepts the certificate:
+#     Connected
+#     starting TLS
+#     SSL handshake completed
+#     Received data
 module SSLTester
   def initialize(chainfile, keyfile)
     puts "Connected"
@@ -28,6 +41,10 @@ module SSLTester
 
   def receive_data(data)
     puts "Received data"
+  end
+
+  def unbind
+    puts "Connection closed"
   end
 end
 
