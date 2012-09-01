@@ -4,7 +4,7 @@ module PacketThief
   # Use Ipfw to redirect traffic.
   #
   # Needed in at least Mac OS X 10.6 and later[1]?:
-  #     sysctl -w net.inet.ip.scopedroute 0
+  #     sysctl -w net.inet.ip.scopedroute=0
   #
   # [1]: https://trac.macports.org/wiki/howto/SetupInterceptionSquid
   #
@@ -20,6 +20,12 @@ module PacketThief
         args = ['/sbin/ipfw', 'add', 'set', '30'] # TODO: make the rule number customizable
 
         args.concat rule.to_ipfw_command
+
+        if /darwin/ === RUBY_PLATFORM
+          unless system(*%W{/usr/sbin/sysctl -w net.inet.ip.scopedroute=0})
+            raise "Command #{args.inspect} exited with error code #{$?.inspect}"
+          end
+        end
 
         # run the command
         unless system(*args)
