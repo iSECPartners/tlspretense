@@ -8,10 +8,9 @@ module PacketThief
 
     describe ".redirect" do
       context "when it is told to redirect TCP port 443 traffic to localhost port 654321" do
-        it "calls iptables with a rule that performs the diversion" do
+        it "calls ipfw with a rule that performs the diversion" do
 
           Ipfw.should_receive(:system).with(*%W{/sbin/ipfw add set 30 fwd 127.0.0.1,65432 tcp from any to any dst-port 443}).and_return true
-
 
           Ipfw.redirect(:to_ports => 65432).where(:protocol => :tcp, :dest_port => 443).run
         end
@@ -28,6 +27,16 @@ module PacketThief
           end
         end
       end
+
+      context "when it is told to watch a particular interface" do
+        it "calls ipfw with a rule that performs the diversion" do
+        #in-interface
+          Ipfw.should_receive(:system).with(*%W{/sbin/ipfw add set 30 fwd 127.0.0.1,65432 tcp from any to any dst-port 443 recv eth1}).and_return true
+
+          Ipfw.redirect(:to_ports => 65432).where(:protocol => :tcp, :dest_port => 443, :in_interface => 'eth1').run
+        end
+      end
+
     end
 
 

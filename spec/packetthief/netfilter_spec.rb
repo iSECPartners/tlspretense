@@ -13,6 +13,15 @@ module PacketThief
           Netfilter.redirect(:to_ports => 65432).where(:protocol => :tcp, :dest_port => 443).run
         end
       end
+
+      context "when it is told to watch a particular interface" do
+        it "calls iptables with a rule that performs the diversion" do
+          Netfilter.should_receive(:system).with(*%W{/sbin/iptables -t nat -A PREROUTING -p tcp --destination-port 443 --in-interface eth1 -j REDIRECT --to-ports 65432}).and_return true
+
+          Netfilter.redirect(:to_ports => 65432).where(:protocol => :tcp, :dest_port => 443, :in_interface => 'eth1').run
+        end
+      end
+
     end
 
 

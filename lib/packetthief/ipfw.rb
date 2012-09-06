@@ -83,7 +83,11 @@ module PacketThief
           args << 'to'
           args << self.rulespec.fetch(:dest_address, 'any').to_s
           args << 'dst-port' << self.rulespec[:dest_port].to_s if self.rulespec.has_key? :dest_port
+
+          args << 'recv' << self.rulespec[:in_interface].to_s if self.rulespec.has_key? :in_interface
         end
+
+        args
       end
     end
 

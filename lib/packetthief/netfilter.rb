@@ -66,6 +66,7 @@ module PacketThief
         if self.rulespec
           args << '-p' << self.rulespec[:protocol].to_s if self.rulespec.has_key? :protocol
           args << '--destination-port' << self.rulespec[:dest_port].to_s if self.rulespec.has_key? :dest_port
+          args << '--in-interface' << self.rulespec[:in_interface].to_s if self.rulespec.has_key? :in_interface
         end
 
         if self.redirectspec
