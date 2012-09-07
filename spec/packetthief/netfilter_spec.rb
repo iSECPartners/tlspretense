@@ -39,6 +39,28 @@ module PacketThief
       end
     end
 
+    describe ".original_dest" do
+      context "when passed an object that implements Socket's #getsockopt" do
+        it "returns the destination socket's details" do
+          @socket = double("socket")
+          @socket.should_receive(:getsockopt).with(Socket::IPPROTO_IP, Netfilter::SO_ORIGINAL_DST).and_return("\020\002?2\ne`a\000\000\000\000\000\000\000\000")
+
+          Netfilter.original_dest(@socket).should == [16178, "10.101.96.97"]
+        end
+      end
+
+      context "when passed an object that implements EM::Connection's #get_sock_opt" do
+        it "returns the destination connection's details" do
+          @socket = double("EM::Connection")
+          @socket.should_receive(:get_sock_opt).with(Socket::IPPROTO_IP, Netfilter::SO_ORIGINAL_DST).and_return("\020\002?2\ne`a\000\000\000\000\000\000\000\000")
+
+          Netfilter.original_dest(@socket).should == [16178, "10.101.96.97"]
+        end
+      end
+
+    end
+
   end
 end
+
 

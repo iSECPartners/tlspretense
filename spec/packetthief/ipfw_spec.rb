@@ -30,7 +30,6 @@ module PacketThief
 
       context "when it is told to watch a particular interface" do
         it "calls ipfw with a rule that performs the diversion" do
-        #in-interface
           Ipfw.should_receive(:system).with(*%W{/sbin/ipfw add set 30 fwd 127.0.0.1,65432 tcp from any to any dst-port 443 recv eth1}).and_return true
 
           Ipfw.redirect(:to_ports => 65432).where(:protocol => :tcp, :dest_port => 443, :in_interface => 'eth1').run
@@ -51,6 +50,27 @@ module PacketThief
           Ipfw.revert
         end
       end
+    end
+
+    describe ".original_dest" do
+      context "when passed an object that implements Socket's #getsockname" do
+        it "returns the destination socket's details" do
+          @socket = double("socket")
+          @socket.stub(:getsockname).and_return("\020\002?2\ne`a\000\000\000\000\000\000\000\000")
+
+          Ipfw.original_dest(@socket).should == [16178, "10.101.96.97"]
+        end
+      end
+
+      context "when passed an object that implements EM::Connection's #getsockname" do
+        it "returns the destination connection's details" do
+          @socket = double("EM::Connection")
+          @socket.stub(:get_sockname).and_return("\020\002?2\ne`a\000\000\000\000\000\000\000\000")
+
+          Ipfw.original_dest(@socket).should == [16178, "10.101.96.97"]
+        end
+      end
+
     end
   end
 end

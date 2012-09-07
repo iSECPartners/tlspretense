@@ -84,5 +84,20 @@ module PacketThief
       rule.redirect(args)
     end
 
+    #/usr/include/linux/netfilter_ipv4.h:#define SO_ORIGINAL_DST 80
+    SO_ORIGINAL_DST = 80
+
+    # Returns the [port, host] for a socket or EM::Connection that whose
+    # connection was redirected by netfilter
+    def self.original_dest(socket)
+      if socket.respond_to? :getsockopt
+        sockname = socket.getsockopt(Socket::IPPROTO_IP, SO_ORIGINAL_DST)
+      elsif socket.respond_to? :get_sock_opt
+        sockname = socket.get_sock_opt(Socket::IPPROTO_IP, SO_ORIGINAL_DST)
+      end
+        Socket::unpack_sockaddr_in(sockname)
+    end
+
   end
+
 end

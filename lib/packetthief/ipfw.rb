@@ -96,5 +96,31 @@ module PacketThief
       rule.redirect(args)
     end
 
+    # Returns the [port, host] for the original destination of +sock+.
+    #
+    # +Sock+ can be a Ruby socket or an EventMachine::Connection (including
+    # handler modules, which are mixed in to an anonymous descendent of
+    # EM::Connection).
+    #
+    # When Ipfw uses a fwd/forward rule to redirect a connection to a local
+    # socket, the destination address remains unchanged, meaning that C's
+    # getsockname() will return the original destination.
+    def self.original_dest(sock)
+      if sock.respond_to? :getsockname
+        sockname = sock.getsockname
+      elsif sock.respond_to? :get_sockname
+        sockname = sock.get_sockname
+      else
+        raise ArgumentError, "#{sock.inspect} supports neither :getsockname nor :get_sockname!"
+      end
+      Socket::unpack_sockaddr_in(sockname)
+    end
+
+    # Returns the [port, host] for an EM:Connection that was redirected by
+    # ipfw.
+    def self.conn_original_dest(connection)
+      Socket::unpack_sockaddr_in(connection.getsockname)
+    end
+
   end
 end
