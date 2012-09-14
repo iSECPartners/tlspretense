@@ -1,10 +1,13 @@
-
 require 'socket'
+require 'eventmachine'
 
 module PacketThief
   autoload :RedirectRule, 'packetthief/redirect_rule'
   autoload :Netfilter, 'packetthief/netfilter'
   autoload :Ipfw, 'packetthief/ipfw'
+
+  autoload :EMHandlers, 'packetthief/emhandlers'
+  autoload :EM,         'packetthief/emhandlers'
 
   def self.method_missing(m, *args, &block)
     case RUBY_PLATFORM
@@ -16,7 +19,5 @@ module PacketThief
       raise "Platform #{RUBY_PLATFORM} not yet supported! If you know your network implementation, call it directly."
     end
   end
-
-
 
 end

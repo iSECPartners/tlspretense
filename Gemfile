@@ -3,6 +3,9 @@ source "http://rubygems.org"
 # Example:
 #   gem "activesupport", ">= 2.3.5"
 
+# Probably works fine on 0.12.* and earlier, but this is what was current.
+gem "eventmachine", ">= 1.0.0.rc.4"
+
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
 group :development do
