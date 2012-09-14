@@ -24,7 +24,6 @@ module PacketThief
         end
 
         def post_init
-          @client.dest = self
           @client._send_buffer
         end
 
@@ -68,18 +67,24 @@ module PacketThief
       # When the proxy should connect to a destination.
       attr_accessor :when_to_connect_to_dest
 
-      def initialize()
+      def post_init
         @closing = false
 
         @client = self
         @dest = nil
 
         @buffer = []
-      end
+        @@activeconns ||= {}
 
-      def post_init
         @client_port, @client_host = Socket.unpack_sockaddr_in(get_peername)
         @dest_port, @dest_host = PacketThief.original_dest(self)
+
+        if @@activeconns.has_key? "#{client_host}:#{client_port}"
+          puts "Warning: loop detected! Stopping the loop."
+          close_connection
+          return
+        end
+
         client_connected
       end
 
@@ -91,6 +96,7 @@ module PacketThief
       # already closing.
       def unbind
         client_closed
+        @@activeconns.delete "#{client_host}:#{client_port}"
         self.closing = true
         @dest.close_connection_after_writing if @dest and not @dest.closing
       end
@@ -99,6 +105,9 @@ module PacketThief
       # Initiate the connection to @dest_host:@dest_port.
       def connect_to_dest
         @dest = ::EM.connect(@dest_host, @dest_port, ProxyConnection, self)
+        newport, newhost = Socket::unpack_sockaddr_in(@dest.get_sockname)
+        # Add the new connection to the list to prevent loops.
+        @@activeconns["#{newhost}:#{newport}"] = "#{dest_host}:#{dest_port}"
       end
 
       def _send_buffer
