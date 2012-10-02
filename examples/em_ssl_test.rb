@@ -30,6 +30,10 @@ module SSLTester
     @keyfile = keyfile
   end
 
+  def connection_completed
+    puts "Connection completed."
+  end
+
   def post_init
     puts "starting TLS"
     start_tls(:private_key_file => @keyfile, :cert_chain_file => @chainfile, :verify_peer => false)
