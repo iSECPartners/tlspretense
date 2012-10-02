@@ -2,7 +2,7 @@ require 'eventmachine'
 
 module PacketThief
   module EMHandlers
-    autoload :SSLInterceptor,   'packetthief/emhandlers/ssl_interceptor'
+    autoload :SSLServer,   'packetthief/emhandlers/ssl_server'
     autoload :TransparentProxy, 'packetthief/emhandlers/transparent_proxy'
     autoload :ProxyRedirector,  'packetthief/emhandlers/proxy_redirector'
   end

@@ -3,21 +3,55 @@ require 'openssl'
 module PacketThief
   module EMHandlers
 
-    # Preliminary SSL Transparent Proxy.
+    # Basic SSL/TLS Server built on Ruby's OpenSSL objects instead of on
+    # EventMachine's start_tls. This allows you to manipulate the SSLContext
+    # and other details of the connection that EM normally doesn't let you
+    # touch.
     #
+    # Subclass it and override any of the methods in the following example to
+    # use the the functionality.
+    #
+    # You can #send_data to send encrypted data to the other side, and
+    # #receive_data will be called when there is data for the handler.
     #
     #   EM.run {
-    #     SSLInterceptor.start 'localhost', 54321 do |p|
-    #       p.ctx.
+    #     SSLServer.start 'localhost', 54321 do |p|
+    #       def p.tls_pre_start
+    #         # modify p.ctx to configure your certificates, key, etc.
+    #       end
+    #
+    #       def servername_cb(sock, hostname)
+    #         # implement your own SNI handling callback. The default will
+    #         # return the originally configured context.
+    #       end
+    #
+    #       def p.tls_successful_handshake
+    #         # the handshake succeeded
+    #       end
+    #
+    #       def p.tls_failed_handshake(e)
+    #         # the ssl handshake failed, probably due to the client rejecting
+    #         # your certificate. =)
+    #       end
+    #
+    #       def p.tls_unbind
+    #         # unbind handler, called regardless of handshake success
+    #       end
+    #
+    #       def p.receive_data(data)
+    #         # do something with the unencrypted stream
+    #         p.send_data("some message") # data to be encrypted then sent to the client
+    #       end
+    #
     #     end
     #   }
     #
-    # Note: During #initialize and #post_init, the SSLInterceptor class
+    # Note: During #initialize and #post_init, this class
     # does not have access to its socket yet. Instead, use #tls_pre_start or
     # the code block you pass to .start to initialize the SSLContext, and use
     # #tls_post_accept to do anything once the SSL handshake has completed. You
     # can also override #servername_cb to perform the SNI callback.
-    class SSLInterceptor < ::EM::Connection
+    class SSLServer < ::EM::Connection
       attr_accessor :fd
       attr_accessor :ctx
       attr_accessor :tcpsocket
@@ -44,7 +78,6 @@ module PacketThief
 
           ::EM.watch sock, @ssl_class, *@args do |h|
             h.notify_readable = true
-#            h.notify_writable = true
             h.tcpsocket = sock
             # Now call custom setup for the context.
             h.tls_pre_start
@@ -67,7 +100,7 @@ module PacketThief
         serv = TCPServer.new host, port
 
         # We use InitialServer to listen for incoming connections. It will then
-        # create the actual SSLInterceptor.
+        # create the actual SSLServer.
         ::EM.watch serv, InitialServer, serv, ssl_class, args, block do |h|
           h.notify_readable = true
           h.notify_writable = true
@@ -141,7 +174,7 @@ module PacketThief
       def attempt_read
         begin
           data = @sslsocket.read_nonblock 4096 # much more than a network packet...
-          tls_client_recv(data)
+          tls_recv(data)
           notify_writable = false
         rescue EOFError
           # remote closed. time to wrap up
@@ -194,7 +227,7 @@ module PacketThief
       end
 
       # Called right after SSLSocket#accept_nonblock succeeds.
-      def tls_post_accept
+      def tls_successful_handshake
         puts "Accepted!"
       end
 
@@ -203,7 +236,7 @@ module PacketThief
       # thrown.
       #
       # The connection will be closed after this.
-      def tls_failed_accept(e)
+      def tls_failed_handshake(e)
         puts "Failed to accept: #{e.inspect}"
       end
 
@@ -227,13 +260,14 @@ module PacketThief
         # TODO: enable remote ssl.
       end
 
-
-      def tls_client_recv (data)
-        puts "tls_client_recv: #{data}"
+      def receive_data(data)
+        puts "tls_recv: #{data}"
       end
 
-      def tls_client_send
+      def send_data(data)
+        attempt_write(data)
       end
+
 
       def tls_unbind
         puts "tls unbind"

@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
-# This example just shows how to call the SSLInterceptor class with
-# PacketThief. All it does is receive data -- it does not attempt to send data
-# on.
+# This example just shows how to call the SSLServer class with PacketThief. All
+# it does is receive data -- it does not attempt to send data on.
 
 $: << 'lib'
 
@@ -41,7 +40,7 @@ cert = chain.shift
 
 EM.run do
 
-  PacketThief::EM::SSLInterceptor.start('127.0.0.1', 54321) do |h|
+  PacketThief::EM::SSLServer.start('127.0.0.1', 54321) do |h|
     puts "extra block"
     h.ctx.cert = cert
     h.ctx.extra_chain_cert = chain
