@@ -16,7 +16,10 @@ module PacketThief
     #
     #   EM.run {
     #     SSLServer.start 'localhost', 54321 do |p|
-    #       def p.tls_pre_start
+    #
+    #       # Note: this code block is actually too late to set up a new
+    #       # #post_init since it runs just after post_init.
+    #       def p.post_init
     #         # modify p.ctx to configure your certificates, key, etc.
     #       end
     #
@@ -34,7 +37,7 @@ module PacketThief
     #         # your certificate. =)
     #       end
     #
-    #       def p.tls_unbind
+    #       def p.unbind
     #         # unbind handler, called regardless of handshake success
     #       end
     #
@@ -57,6 +60,21 @@ module PacketThief
       attr_accessor :tcpsocket
       attr_accessor :sslsocket
 
+      def self.start(host, port, *args, &block)
+        ssl_class = self
+
+        serv = TCPServer.new host, port
+
+        # We use InitialServer to listen for incoming connections. It will then
+        # create the actual SSLServer.
+        ::EM.watch serv, InitialServer, serv, ssl_class, args, block do |h|
+          h.notify_readable = true
+          h.notify_writable = true
+        end
+      end
+
+      ####
+
       # Handles the initial listening socket. We can't seem to use
       # EM.start_server -> EM.detach -> em.watch without triggering
       # (in EventMachine 1.0.0):
@@ -76,11 +94,9 @@ module PacketThief
           puts "InitialServer: Received a new connection, spawning a #{@ssl_class}"
           sock = @servsocket.accept_nonblock
 
-          ::EM.watch sock, @ssl_class, *@args do |h|
+          ::EM.watch sock, @ssl_class, sock, *@args do |h|
             h.notify_readable = true
-            h.tcpsocket = sock
-            # Now call custom setup for the context.
-            h.tls_pre_start
+            # Now call the caller's block.
             @blk.call(h)
             # And finally finish initialization by applying the context to an
             # SSLSocket, and setting the internal state.
@@ -94,35 +110,29 @@ module PacketThief
         end
       end
 
-      def self.start(host, port, *args, &block)
-        ssl_class = self
+      ####
 
-        serv = TCPServer.new host, port
-
-        # We use InitialServer to listen for incoming connections. It will then
-        # create the actual SSLServer.
-        ::EM.watch serv, InitialServer, serv, ssl_class, args, block do |h|
-          h.notify_readable = true
-          h.notify_writable = true
-        end
-      end
-
-      def initialize
+      def initialize(tcpsocket)
         puts "ssl initialize"
-      end
-
-      def post_init
-        puts "ssl post_init"
         # Set up initial values
+        @tcpsocket = tcpsocket
         @ctx = OpenSSL::SSL::SSLContext.new
         @ctx.servername_cb = proc {|sslsocket, hostname| self.servername_cb(sslsocket, hostname) }
       end
 
+      # Note that post_init dos not have access to the tcpsocket (not added
+      # yet) or the sslsocket. #post_init gives you a chance to manipulate the
+      # SSLContext.
+      def post_init
+        puts "ssl post_init"
+      end
+
+      # Creates _sslsocket_ from _tcpsocket_ and _ctx_, and initializes the
+      # handler's internal state.
       def tls_begin
         @sslsocket = OpenSSL::SSL::SSLSocket.new(@tcpsocket, @ctx)
         @state = :initialized
       end
-
 
       def notify_readable
         puts "notify_readable"
@@ -152,6 +162,7 @@ module PacketThief
         end
       end
 
+      private
       def attempt_accept
         begin
           @sslsocket.accept_nonblock
@@ -171,6 +182,7 @@ module PacketThief
         end
       end
 
+      private
       def attempt_read
         begin
           data = @sslsocket.read_nonblock 4096 # much more than a network packet...
@@ -191,6 +203,7 @@ module PacketThief
         end
       end
 
+      private
       def attempt_write(data=nil)
         @write_buf ||= ""
         @write_buf << data if data
@@ -215,16 +228,17 @@ module PacketThief
         end
       end
 
+      private
       def handle_close
-          tls_unbind
+          unbind
           detach
           @sslsocket.close
           @tcpsocket.close
       end
 
-      # Override this if you want to manipulate the SSLContext or anything else before the SSLSocket is created.
-      def tls_pre_start
-      end
+      ####
+
+      public
 
       # Called right after SSLSocket#accept_nonblock succeeds.
       def tls_successful_handshake
@@ -252,24 +266,18 @@ module PacketThief
         sslsock.context
       end
 
-      def send_to_client(data)
-        # buffer the data and send some if possible.
-      end
-
-      def send_to_dest(data)
-        # TODO: enable remote ssl.
-      end
-
+      # Override this to do something with the unecrypted data.
       def receive_data(data)
         puts "tls_recv: #{data}"
       end
 
+      # Call this to send data to the other end of the connection.
       def send_data(data)
         attempt_write(data)
       end
 
-
-      def tls_unbind
+      # Override this to do something when the 
+      def unbind
         puts "tls unbind"
       end
 
