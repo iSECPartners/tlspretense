@@ -76,11 +76,11 @@ module PacketThief
       #
       # So we handle the server muckery ourselves.
       module InitialServer
-        def initialize(servsocket, ssl_class, args, blk)
+        def initialize(servsocket, ssl_class, args, block)
           @servsocket = servsocket
           @ssl_class = ssl_class
           @args = args
-          @blk = blk
+          @block = block
         end
 
         def notify_readable
@@ -90,7 +90,7 @@ module PacketThief
           ::EM.watch sock, @ssl_class, sock, *@args do |h|
             h.notify_readable = true
             # Now call the caller's block.
-            @blk.call(h)
+            @block.call(h) if @block
             # And finally finish initialization by applying the context to an
             # SSLSocket, and setting the internal state.
             h.tls_begin

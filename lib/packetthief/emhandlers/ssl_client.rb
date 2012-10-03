@@ -45,8 +45,8 @@ module PacketThief
     # Note: During #initialize and #post_init, this class
     # does not have access to its socket yet. Instead, use #tls_pre_start or
     # the code block you pass to .start to initialize the SSLContext, and use
-    # #tls_post_accept to do anything once the SSL handshake has completed. You
-    # can also override #servername_cb to perform the SNI callback.
+    # #tls_successful_handshake to do anything once the SSL handshake has
+    # completed.
     class SSLClient < AbstractSSLHandler
 
       def self.connect(host, port, *args, &block)
@@ -57,7 +57,7 @@ module PacketThief
         ::EM.watch sock, ssl_class, sock, *args do |h|
           h.notify_readable = true
 #          h.notify_writable = true
-          block.call(h)
+          block.call(h) if block
           h.tls_begin
         end
       end
