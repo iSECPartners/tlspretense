@@ -23,27 +23,53 @@ end
 
 class VerboseProxy < PacketThief::EM::SSLTransparentProxy
 
+  def client_desc
+    "Client #{client_host}:#{client_port}->#{dest_host}:#{dest_port} (#{dest_hostname})"
+  end
+
+  def dest_desc
+    "Dest #{dest_host}:#{dest_port}(#{dest_hostname})->#{client_host}:#{client_port}"
+  end
+
+  def servername_cb(sslsock, hostname)
+    puts "#{client_desc} request hostname: #{hostname}"
+    super(sslsock, hostname)
+  end
+
   def client_connected
-    puts "Client #{client_host}:#{client_port}->#{dest_host}:#{dest_port} connected"
-    connect_to_dest
+    puts "#{client_desc} connected and TLS handshake succeeded"
+    super
+  end
+
+  def client_handshake_failed(e)
+    puts "TLS handshake from #{client_desc} failed: #{e}"
   end
 
   def client_recv(data)
-    puts "Client #{client_host}:#{client_port}->#{dest_host}:#{dest_port} says: #{data[0,20].inspect}"
-    send_to_dest data
-  end
-
-  def dest_recv(data)
-    puts "Dest #{client_host}:#{client_port}->#{dest_host}:#{dest_port} says: #{data[0,20].inspect}"
-    send_to_client data
+    puts "#{client_desc} says: #{data[0,20].inspect}"
+    super(data)
   end
 
   def client_closed
-    puts "Client #{client_host}:#{client_port}->#{dest_host}:#{dest_port} closing"
+    puts "#{client_desc} closing"
+  end
+
+  def dest_connected
+    puts "#{dest_desc} connected"
+    puts "Remote certificates: #{dest_cert_chain.inspect}"
+  end
+
+  def dest_handshake_failed(e)
+    puts "TLS handshake to #{dest_desc} handshake failed: #{e}"
+  end
+
+  def dest_recv(data)
+    puts "#{dest_desc} says: #{data[0,20].inspect}"
+    super(data)
   end
 
   def dest_closed
-    puts "Dest #{client_host}:#{client_port}->#{dest_host}:#{dest_port} closing"
+    puts "#{dest_desc} closing"
   end
 
 end

@@ -16,29 +16,24 @@ module PacketThief
 
         # Sets up references to the client proxy connection handler that created
         # this handler.
-        def initialize(tcpsocket, client_conn)
+        def initialize(tcpsocket, client_conn, ctx)
           super(tcpsocket)
           @client = client_conn
+          @ctx = ctx
 
           @connected = false
           @closing = false
-        end
-
-        def post_init
-          puts "post init"
-          @ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
-          @hostname = @client.dest_hostname if @client.dest_hostname
+          @tls_hostname = @client.dest_hostname if @client.dest_hostname
         end
 
         # send on successful handshake instead of on post_init.
         def tls_successful_handshake
-          puts "Handshake to #{@client.dest_host}:#{@client.dest_port} (#{@hostname}) succeeded"
-          puts "Remote certificates: #{sslsocket.peer_cert_chain.inspect}"
+          @client.dest_connected
           @client._send_buffer
         end
 
         def tls_failed_handshake(e)
-          puts "Handshake to #{@client.dest_host}:#{@client.dest_port} (#{@hostname}) failed"
+          @client.dest_handshake_failed(e)
         end
 
         # Transmit data sent by the destinaton to the client.
@@ -83,7 +78,12 @@ module PacketThief
       # to choose a certificate to present.
       attr_accessor :dest_hostname
 
+      # The SSLContext that will be used on the connection to the destination.
+      # Initially, its verify_mode is set to OpenSSL::SSL::VERIFY_NONE.
+      attr_accessor :dest_ctx
+
       def post_init
+        super
         @closing = false
 
         @client = self
@@ -101,8 +101,12 @@ module PacketThief
           return
         end
 
+        @dest_ctx = OpenSSL::SSL::SSLContext.new
+        @dest_ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
       end
 
+      # Just calls client_connected to keep things straightforward.
       def tls_successful_handshake
         client_connected
       end
@@ -123,8 +127,7 @@ module PacketThief
 
       # Initiate the connection to @dest_host:@dest_port.
       def connect_to_dest
-        @dest = ProxyConnection.connect(@dest_host, @dest_port, self)
-#        @dest = ::EM.connect(@dest_host, @dest_port, ProxyConnection, self)
+        @dest = ProxyConnection.connect(@dest_host, @dest_port, self, @dest_ctx)
         newport, newhost = Socket::unpack_sockaddr_in(@dest.get_sockname)
         # Add the new connection to the list to prevent loops.
         @@activeconns["#{newhost}:#{newport}"] = "#{dest_host}:#{dest_port}"
@@ -150,19 +153,32 @@ module PacketThief
         send_data data
       end
 
+      # Returns the certificate chain for the destination, or nil if the
+      # destination connection does not exist yet.
+      def dest_cert_chain
+        return @dest.sslsocket.peer_cert_chain if @dest
+        nil
+      end
+
+      #### Callbacks
+
       # Set _dest_hostname_ in addition to the default behavior.
       def servername_cb(sslsock, hostname)
-        puts "Client asked to connect to #{@dest_hostname}"
         @dest_hostname = hostname
 
         super(sslsock, hostname)
       end
 
-      # This method is called when a client connects. The default behavior is
-      # to begin initating the connection to the original destination. Override
-      # this method to change its behavior.
+      # This method is called when a client connects, and the TLS handhsake has
+      # completed. The default behavior is to begin initating the connection to
+      # the original destination. Override this method to change its behavior.
       def client_connected
         connect_to_dest
+      end
+
+      # This method is called when the TLS handshake between the client and the
+      # proxy fails. It does nothing by default.
+      def client_handshake_failed
       end
 
       # This method is called when the proxy receives data from the client
@@ -173,17 +189,27 @@ module PacketThief
         send_to_dest data
       end
 
+      # Called when the client connection closes. At present, it only provides
+      # informational utility.
+      def client_closed
+      end
+
+      # Called when the connection to and the TLS handshake between the proxy
+      # and the destination succeeds. The default behavior does nothing.
+      def dest_connected
+      end
+
+      # Called when the TLS handshake between the proxy and the destination
+      # fails.
+      def dest_handshake_failed(e)
+      end
+
       # Called when the proxy receives data from the destination connection.
       # The default behavior calls #dest_recv() to send the data to the client.
       #
       # Override it to analyze or modify the data.
       def dest_recv(data)
         send_to_client data
-      end
-
-      # Called when the client connection closes. At present, it only provides
-      # informational utility.
-      def client_closed
       end
 
       # Called when the original destination connection closes. At present, it only provides

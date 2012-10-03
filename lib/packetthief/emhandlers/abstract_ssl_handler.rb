@@ -122,6 +122,9 @@ module PacketThief
           # trigger this)
           @state = :read_needs_to_write
           notify_writable = true
+        rescue OpenSSL::SSL::SSLError => e
+          puts "SSLError: #{self.inspect} : #{e.inspect}"
+          handle_close
         else
           @state = :ready_to_read
         end
@@ -137,25 +140,27 @@ module PacketThief
 #        puts "#{self.class} attempt_write"
         write_buffer << data if data
         # do not attempt to write until we are ready!
-        unless @state == :initialized or @state == :new
-          begin
-            count_written = @sslsocket.write_nonblock write_buffer
-          rescue IO::WaitWritable
+        return if @state == :initialized or @state == :new
+        begin
+          count_written = @sslsocket.write_nonblock write_buffer
+        rescue IO::WaitWritable
+          notify_writable = true
+        rescue IO::WaitReadable
+          @state = :write_needs_to_read
+        rescue OpenSSL::SSL::SSLError => e
+          puts "SSLError: #{self.inspect} : #{e.inspect}"
+          handle_close
+        else
+          # if we didn't write everything
+          if count_written < write_buffer.bytesize
+            # shrink the buf
+            #
+            # byteslice was added in ruby 1.9.x. in ruby 1.8.7, bytesize is
+            # aliased to length, implying that a character coresponds to a
+            # byte.
+            write_buffer = write_buffer.respond_to?(:byteslice) ? write_buffer.byteslice(count_written..-1) : write_buffer.slice(count_written..-1)
+            # and wait for writable.
             notify_writable = true
-          rescue IO::WaitReadable
-            @state = :write_needs_to_read
-          else
-            # if we didn't write everything
-            if count_written < write_buffer.bytesize
-              # shrink the buf
-              #
-              # byteslice was added in ruby 1.9.x. in ruby 1.8.7, bytesize is
-              # aliased to length, implying that a character coresponds to a
-              # byte.
-              write_buffer = write_buffer.respond_to?(:byteslice) ? write_buffer.byteslice(count_written..-1) : write_buffer.slice(count_written..-1)
-              # and wait for writable.
-              notify_writable = true
-            end
           end
         end
       end
