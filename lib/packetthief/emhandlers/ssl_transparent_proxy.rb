@@ -2,10 +2,10 @@ module PacketThief
   module EMHandlers
 
     # Provides a transparent proxy for any TCP connection.
-    class TransparentProxy < ::EM::Connection
+    class SSLTransparentProxy < SSLServer
 
       # Represents a connection out to the original destination.
-      module ProxyConnection
+      class ProxyConnection < SSLClient
         # Boolean that represents whether this handler has started to
         # close/unbind. Used to ensure there is no unbind-loop between the two
         # connections that make up the proxy.
@@ -16,7 +16,8 @@ module PacketThief
 
         # Sets up references to the client proxy connection handler that created
         # this handler.
-        def initialize(client_conn)
+        def initialize(tcpsocket, client_conn)
+          super(tcpsocket)
           @client = client_conn
 
           @connected = false
@@ -24,7 +25,20 @@ module PacketThief
         end
 
         def post_init
+          puts "post init"
+          @ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          @hostname = @client.dest_hostname if @client.dest_hostname
+        end
+
+        # send on successful handshake instead of on post_init.
+        def tls_successful_handshake
+          puts "Handshake to #{@client.dest_host}:#{@client.dest_port} (#{@hostname}) succeeded"
+          puts "Remote certificates: #{sslsocket.peer_cert_chain.inspect}"
           @client._send_buffer
+        end
+
+        def tls_failed_handshake(e)
+          puts "Handshake to #{@client.dest_host}:#{@client.dest_port} (#{@hostname}) failed"
         end
 
         # Transmit data sent by the destinaton to the client.
@@ -64,8 +78,10 @@ module PacketThief
       # connections that make up the proxy.
       attr_accessor :closing
 
-      # When the proxy should connect to a destination.
-      attr_accessor :when_to_connect_to_dest
+      # If a client specifies a TLS hostname extension (SNI) as the hostname,
+      # then we can forward that fact on to the real server. We can also use it
+      # to choose a certificate to present.
+      attr_accessor :dest_hostname
 
       def post_init
         @closing = false
@@ -85,6 +101,9 @@ module PacketThief
           return
         end
 
+      end
+
+      def tls_successful_handshake
         client_connected
       end
 
@@ -104,7 +123,8 @@ module PacketThief
 
       # Initiate the connection to @dest_host:@dest_port.
       def connect_to_dest
-        @dest = ::EM.connect(@dest_host, @dest_port, ProxyConnection, self)
+        @dest = ProxyConnection.connect(@dest_host, @dest_port, self)
+#        @dest = ::EM.connect(@dest_host, @dest_port, ProxyConnection, self)
         newport, newhost = Socket::unpack_sockaddr_in(@dest.get_sockname)
         # Add the new connection to the list to prevent loops.
         @@activeconns["#{newhost}:#{newport}"] = "#{dest_host}:#{dest_port}"
@@ -130,6 +150,13 @@ module PacketThief
         send_data data
       end
 
+      # Set _dest_hostname_ in addition to the default behavior.
+      def servername_cb(sslsock, hostname)
+        puts "Client asked to connect to #{@dest_hostname}"
+        @dest_hostname = hostname
+
+        super(sslsock, hostname)
+      end
 
       # This method is called when a client connects. The default behavior is
       # to begin initating the connection to the original destination. Override
