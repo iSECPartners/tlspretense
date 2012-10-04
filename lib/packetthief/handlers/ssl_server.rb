@@ -16,10 +16,17 @@ module PacketThief
     #     SSLServer.start 'localhost', 54321 do |p|
     #
     #       # Note: this code block is actually too late to set up a new
-    #       # #post_init since it runs just after post_init.
+    #       # #post_init since it runs just after post_init. Instead, you would
+    #       # use post_init in a subclass.
     #       def p.post_init
     #         # modify p.ctx to configure your certificates, key, etc.
     #       end
+    #
+    #       # In this example, the following would work in this initialization
+    #       # block:
+    #       h.ctx.cert = cert
+    #       h.ctx.extra_chain_cert = chain
+    #       h.ctx.key = key
     #
     #       def servername_cb(sock, hostname)
     #         # implement your own SNI handling callback. The default will

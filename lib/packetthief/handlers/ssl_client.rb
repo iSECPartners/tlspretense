@@ -16,10 +16,14 @@ module PacketThief
     #     SSLClient.connect "www.isecpartners.com", 443 do |p|
     #
     #       # Note: this code block is actually too late to set up a new
-    #       # #post_init since it runs just after post_init.
+    #       # #post_init since it runs just after post_init. You can use
+    #       # #post_init on a subclass though.
     #       def p.post_init
     #         # modify p.ctx to configure your certificates, key, etc.
     #       end
+    #
+    #       # The following makes more sense for the initialization block.
+    #       h.ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
     #
     #       def p.tls_successful_handshake
     #         # the handshake succeeded
