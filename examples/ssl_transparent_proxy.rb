@@ -21,7 +21,7 @@ Signal.trap("INT") do
   exit
 end
 
-class VerboseProxy < PacketThief::EM::SSLTransparentProxy
+class VerboseProxy < PacketThief::Handlers::SSLTransparentProxy
 
   def client_desc
     "Client #{client_host}:#{client_port}->#{dest_host}:#{dest_port} (#{dest_hostname})"

@@ -1,5 +1,5 @@
 module PacketThief
-  module EMHandlers
+  module Handlers
 
     # This SSL proxy needs a CA certificate (or chain) and private key. It then
     # uses that information to automatically generate host certificates. It

@@ -1,5 +1,5 @@
 module PacketThief
-  module EMHandlers
+  module Handlers
 
     # Basic SSL/TLS Client built on Ruby's OpenSSL objects instead of on
     # EventMachine's start_tls. This allows you to manipulate the SSLContext

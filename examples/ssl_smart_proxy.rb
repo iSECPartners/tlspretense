@@ -6,7 +6,7 @@ require 'rubygems'
 require 'eventmachine'
 require 'packetthief' # needs root
 
-class VerboseProxy < PacketThief::EM::SSLSmartProxy
+class VerboseProxy < PacketThief::Handlers::SSLSmartProxy
 
   def client_desc
     "Client #{client_host}:#{client_port}->#{dest_host}:#{dest_port} (#{dest_hostname})"
@@ -105,7 +105,7 @@ EM.run do
   VerboseProxy.start('127.0.0.1', 54321, cacert, key) do |h|
 #    h.ctx.ssl_version = :TLSv1_server
   end
-  EM.start_server('127.0.0.1', 54322, PacketThief::EM::TransparentProxy) do |h|
+  EM.start_server('127.0.0.1', 54322, PacketThief::Handlers::TransparentProxy) do |h|
     def h.client_recv(data)
       puts "HTTP: #{data}"
     end

@@ -23,7 +23,7 @@ end
 
 EM.run do
 
-  EM.start_server('127.0.0.1', 54321, PacketThief::EM::ProxyRedirector, 'localhost', 8080)
+  EM.start_server('127.0.0.1', 54321, PacketThief::Handlers::ProxyRedirector, 'localhost', 8080)
 
 end
 PacketThief.revert

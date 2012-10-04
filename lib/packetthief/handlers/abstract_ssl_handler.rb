@@ -1,7 +1,7 @@
 require 'openssl'
 
 module PacketThief
-  module EMHandlers
+  module Handlers
 
     # Parent class for both SSLServer and SSLClient.
     #

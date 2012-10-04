@@ -1,5 +1,5 @@
 module PacketThief
-  module EMHandlers
+  module Handlers
 
     # Instead of forwarding the connection to the original host, forwards it to
     # a configured host instead.

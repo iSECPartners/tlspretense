@@ -11,7 +11,7 @@ require 'packetthief' # needs root
 
 EM.run do
 
-  PacketThief::EM::SSLClient.connect('www.isecpartners.com', 443) do |h|
+  PacketThief::Handlers::SSLClient.connect('www.isecpartners.com', 443) do |h|
     h.ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
     h.ctx.ssl_version = :TLSv1_client
 

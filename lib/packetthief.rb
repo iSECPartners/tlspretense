@@ -6,8 +6,7 @@ module PacketThief
   autoload :Netfilter, 'packetthief/netfilter'
   autoload :Ipfw, 'packetthief/ipfw'
 
-  autoload :EMHandlers, 'packetthief/emhandlers'
-  autoload :EM,         'packetthief/emhandlers'
+  autoload :Handlers, 'packetthief/handlers'
 
   def self.method_missing(m, *args, &block)
     case RUBY_PLATFORM
