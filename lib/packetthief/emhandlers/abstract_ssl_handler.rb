@@ -130,9 +130,14 @@ module PacketThief
         end
       end
 
-      private
+      public
       def write_buffer
         @write_buffer ||= ""
+      end
+
+      public
+      def write_buffer=(rhs)
+        @write_buffer = rhs
       end
 
       private
@@ -151,17 +156,18 @@ module PacketThief
           puts "SSLError: #{self.inspect} : #{e.inspect}"
           close_connection
         else
-          # if we didn't write everything
-          if count_written < write_buffer.bytesize
-            # shrink the buf
-            #
-            # byteslice was added in ruby 1.9.x. in ruby 1.8.7, bytesize is
-            # aliased to length, implying that a character coresponds to a
-            # byte.
-            write_buffer = write_buffer.respond_to?(:byteslice) ? write_buffer.byteslice(count_written..-1) : write_buffer.slice(count_written..-1)
-            # and wait for writable.
-            notify_writable = true
-          end
+          # shrink the buf
+          #
+          # byteslice was added in ruby 1.9.x. in ruby 1.8.7, bytesize is
+          # aliased to length, implying that a character coresponds to a
+          # byte.
+          @write_buffer = if write_buffer.respond_to?(:byteslice)
+                            write_buffer.byteslice(count_written..-1)
+                          else
+                            write_buffer.slice(count_written..-1)
+                          end
+          # if we didn't write everything, wait for writable.
+          notify_writable = true if write_buffer.bytesize > 0
         end
       end
 
