@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "packetthief"
   gem.homepage = "http://github.com/aetherknight/packetthief"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Framework for intercepting packets on Mac OS X/BSD/Linux}
+  gem.description = %Q{Framework for intercepting packets, redirecting them to a handler, and doing something with the "stolen" connection.}
   gem.email = "aetherknight@gmail.com"
   gem.authors = ["William (B.J.) Snow Orvis"]
   # dependencies defined in Gemfile
