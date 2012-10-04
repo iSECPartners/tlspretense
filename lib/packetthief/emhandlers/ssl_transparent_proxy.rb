@@ -128,6 +128,7 @@ module PacketThief
 
       # Initiate the connection to @dest_host:@dest_port.
       def connect_to_dest
+        return if @dest
         @dest = SSLProxyConnection.connect(@dest_host, @dest_port, self, @dest_ctx)
         newport, newhost = Socket::unpack_sockaddr_in(@dest.get_sockname)
         # Add the new connection to the list to prevent loops.
