@@ -185,7 +185,7 @@ module PacketThief
         detach
         @sslsocket.close if @sslsocket
         @tcpsocket.close
-        unbind
+#        unbind
       end
 
       def close_connection_after_writing
