@@ -3,23 +3,37 @@ module SSLTest
 
     attr_reader :id
     attr_reader :title
-    attr_reader :certchain
+    attr_reader :certchainalias
     attr_reader :expected_result
 
-    def initialize(testconf, certmanager)
-      @raw = testconf.dup
+    attr_reader :certchain
+    attr_reader :key
+    attr_reader :hosttotest
+
+    def initialize(config, certmanager, testdesc)
+      @config = config
+      @certmanager = certmanager
+      @raw = testdesc.dup
       @id = @raw['alias']
       @title = @raw['name']
-      @certchain = @raw['certchain']
+      @certchainalias = @raw['certchain']
       @expected_result = @raw['expected_result']
-      @certmanager = certmanager
     end
 
     def run
-#      EM.run do
-#        SSLInterceptor
-#      end
-      #return result... success fail, reason for fail?
+      @certchain = @certmanager.get_chain(@certchainalias)
+      @key = @certmanager.get_key(@certchainalias[0])
+      @hosttotest = @config.hosttotest
+
+      PacketThief.redirect(:to_ports => @config.listener_port).where(:protocol => :tcp, :dest_port => @config.dest_port).run
+      at_exit { PacketThief.revert }
+      EM.run do
+        TestListener.start('127.0.0.1',@config.listener_port, self)
+      end
+      PacketThief.revert
+
+      SSLTestResult.new(self)
     end
+
   end
 end
