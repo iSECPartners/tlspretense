@@ -115,12 +115,5 @@ module PacketThief
       end
       Socket::unpack_sockaddr_in(sockname)
     end
-
-    # Returns the [port, host] for an EM:Connection that was redirected by
-    # ipfw.
-    def self.conn_original_dest(connection)
-      Socket::unpack_sockaddr_in(connection.getsockname)
-    end
-
   end
 end
