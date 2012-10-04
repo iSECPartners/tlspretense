@@ -5,7 +5,7 @@ module PacketThief
     class SSLTransparentProxy < SSLServer
 
       # Represents a connection out to the original destination.
-      class ProxyConnection < SSLClient
+      class SSLProxyConnection < SSLClient
         # Boolean that represents whether this handler has started to
         # close/unbind. Used to ensure there is no unbind-loop between the two
         # connections that make up the proxy.
@@ -128,7 +128,7 @@ module PacketThief
 
       # Initiate the connection to @dest_host:@dest_port.
       def connect_to_dest
-        @dest = ProxyConnection.connect(@dest_host, @dest_port, self, @dest_ctx)
+        @dest = SSLProxyConnection.connect(@dest_host, @dest_port, self, @dest_ctx)
         newport, newhost = Socket::unpack_sockaddr_in(@dest.get_sockname)
         # Add the new connection to the list to prevent loops.
         @@activeconns["#{newhost}:#{newport}"] = "#{dest_host}:#{dest_port}"
