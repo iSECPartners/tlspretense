@@ -113,7 +113,7 @@ module PacketThief
           notify_writable = false
         rescue EOFError
           # remote closed. time to wrap up
-          handle_close
+          close_connection
         rescue IO::WaitReadable
           # we had no data to read.
           notify_readable = true
@@ -124,7 +124,7 @@ module PacketThief
           notify_writable = true
         rescue OpenSSL::SSL::SSLError => e
           puts "SSLError: #{self.inspect} : #{e.inspect}"
-          handle_close
+          close_connection
         else
           @state = :ready_to_read
         end
@@ -149,7 +149,7 @@ module PacketThief
           @state = :write_needs_to_read
         rescue OpenSSL::SSL::SSLError => e
           puts "SSLError: #{self.inspect} : #{e.inspect}"
-          handle_close
+          close_connection
         else
           # if we didn't write everything
           if count_written < write_buffer.bytesize
@@ -165,11 +165,6 @@ module PacketThief
         end
       end
 
-      private
-      def handle_close
-        close_connection
-      end
-
       ####
 
       public
@@ -182,7 +177,7 @@ module PacketThief
 
       def close_connection
         detach
-        @sslsocket.close
+        @sslsocket.close if @sslsocket
         @tcpsocket.close
         unbind
       end

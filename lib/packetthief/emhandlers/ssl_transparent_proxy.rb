@@ -9,7 +9,7 @@ module PacketThief
         # Boolean that represents whether this handler has started to
         # close/unbind. Used to ensure there is no unbind-loop between the two
         # connections that make up the proxy.
-        attr_accessor :closing
+        attr_accessor :closed
 
         # Boolean that represents whether the connection has connected yet.
         attr_accessor :connected
@@ -22,7 +22,7 @@ module PacketThief
           @ctx = ctx
 
           @connected = false
-          @closing = false
+          @closed = false
           @tls_hostname = @client.dest_hostname if @client.dest_hostname
         end
 
@@ -45,8 +45,9 @@ module PacketThief
         # already closing.
         def unbind
           @client.dest_closed
-          self.closing = true
-          @client.close_connection_after_writing if @client and not @client.closing
+          self.closed = true
+          @client.dest = nil
+          @client.close_connection_after_writing if @client and not @client.closed
         end
 
       end
@@ -71,7 +72,7 @@ module PacketThief
       # Boolean that represents whether this handler has started to
       # close/unbind. Used to ensure there is no unbind-loop between the two
       # connections that make up the proxy.
-      attr_accessor :closing
+      attr_accessor :closed
 
       # If a client specifies a TLS hostname extension (SNI) as the hostname,
       # then we can forward that fact on to the real server. We can also use it
@@ -84,7 +85,7 @@ module PacketThief
 
       def post_init
         super
-        @closing = false
+        @closed = false
 
         @client = self
         @dest = nil
@@ -120,10 +121,10 @@ module PacketThief
       def unbind
         client_closed
         @@activeconns.delete "#{client_host}:#{client_port}"
-        self.closing = true
-        @dest.close_connection_after_writing if @dest and not @dest.closing
+        self.closed = true
+#        @dest.client = nil if @dest
+        @dest.close_connection_after_writing if @dest and not @dest.closed
       end
-
 
       # Initiate the connection to @dest_host:@dest_port.
       def connect_to_dest
