@@ -76,7 +76,7 @@ class VerboseProxy < PacketThief::Handlers::SSLSmartProxy
 end
 
 if ARGV.length != 2
-  puts "script cacert.pem keypem"
+  puts "script cacert.pem key.pem"
   exit 1
 end
 cacert = OpenSSL::X509::Certificate.new(File.read(ARGV[0]))
