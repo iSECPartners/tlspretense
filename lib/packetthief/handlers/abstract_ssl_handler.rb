@@ -123,7 +123,7 @@ module PacketThief
           @state = :read_needs_to_write
           notify_writable = true
         rescue OpenSSL::SSL::SSLError => e
-          puts "SSLError: #{self.inspect} : #{e.inspect}"
+          puts "#{self.class}: #{e} (#{e.class})"
           close_connection
         else
           @state = :ready_to_read
@@ -153,7 +153,7 @@ module PacketThief
         rescue IO::WaitReadable
           @state = :write_needs_to_read
         rescue OpenSSL::SSL::SSLError => e
-          puts "SSLError: #{self.inspect} : #{e.inspect}"
+          puts "#{self.class}: #{e} (#{e.class})"
           close_connection
         else
           # shrink the buf

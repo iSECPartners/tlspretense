@@ -56,14 +56,9 @@ module PacketThief
           pfssl.connect
 #          puts pfssl.peer_cert.subject
           return pfssl.peer_cert
-        rescue OpenSSL::SSL::SSLError => e
-#          puts "#{self.inspect} Error doing preflight SSL connection: #{e.inspect}"
-          puts "#{self.class}: Error doing preflight SSL connection: #{e.inspect}"
-          close_connection
-        rescue Errno::ECONNREFUSED => e
-#          puts "#{self.inspect} Error doing preflight SSL connection: #{e}"
-          puts "#{self.class}: Error doing preflight SSL connection: #{e}"
-          close_connection
+        rescue OpenSSL::SSL::SSLError, Errno::ECONNREFUSED => e
+          puts "#{self.class}: Error doing preflight SSL connection: #{e} (#{e.class})"
+          raise
         ensure
           pfssl.close if pfssl
         end
