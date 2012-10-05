@@ -9,7 +9,11 @@ module CertMaker
   class CertificateSuiteGenerator
     attr_accessor :certificates
 
-    def initialize(certinfos)
+    # certinfos should be a hash-like where each entry describes a certificate.
+    # defaulthostname should be a string that will be inserted into %HOSTNAME%
+    # in certificate subject lines.
+    def initialize(certinfos, defaulthostname)
+      @defaulthostname = defaulthostname
       @certinfos = certinfos
       @certificates = {}
     end
@@ -55,6 +59,8 @@ module CertMaker
         generate_certificate(signeralias,@certinfos[signeralias]) unless @certificates.has_key? signeralias
         cf.ca_key = @certificates[signeralias][:key]
       end
+      # doctor the certinfo's subject line.
+      certinfo['subject'] = certinfo['subject'].gsub(/%HOSTNAME%/, @defaulthostname)
 
       cert, key = cf.create(certinfo)
       puts "Created #{calias}"

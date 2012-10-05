@@ -1,10 +1,27 @@
 ---
-defaultsubject: &defaultsubject "C=US, CN=my.hostname.com"
-defaultsubjectwithnull: &defaultsubjectwithnull "C=US, CN=my.hostname.com\0.foo.com"
+# This hostname is the one that the test runner will actually perform its test
+# against. All other intercepted SSL connections will use the original
+# certificate, but doctored to use the goodca. For this hostname, the SSL
+# interceptor will present the configured certificate chain of generated
+# certificates.
+#
+# Additionally, the defaultsubject and defaultsubjectwithnull strings will
+# replace %HOSTNAME% with this value during certificate generation.
+hostname: my.hostname.com
 
 # Meta-configuration for certificate generation. These values affect the
 # default settings for certificate generation.
 certmaker:
+  # The default subject string used by the generated certificates. Note that
+  # the substring %HOSTNAME% will be replaced with the value of hostname.
+  #defaultsubject: &defaultsubject "C=US, CN=my.hostname.com"
+  defaultsubject: &defaultsubject "C=US, CN=%HOSTNAME%"
+
+  # The default subject string for the null in subject certificate test.
+  # Intended to be almost identical to the defaultsubject.
+  #defaultsubjectwithnull: &defaultsubjectwithnull "C=US, CN=my.hostname.com\0.foo.com"
+  defaultsubjectwithnull: &defaultsubjectwithnull "C=US, CN=%HOSTNAME%\0.foo.com"
+
   # The directory where pregenerated certificates should be stored.
   outdir: certs
 
