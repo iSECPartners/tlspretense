@@ -23,5 +23,17 @@ module SSLTest
       test_list.map { |name| @raw['tests'].select { |test| test['alias'] == name }[0] }
     end
 
+    def hosttotest
+      @raw['hostname']
+    end
+
+    def listener_port
+      @raw['listener_port']
+    end
+
+    def packetthief
+      @raw['packetthief']
+    end
+
   end
 end

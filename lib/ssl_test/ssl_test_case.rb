@@ -7,7 +7,7 @@ module SSLTest
     attr_reader :expected_result
 
     attr_reader :certchain
-    attr_reader :key
+    attr_reader :keychain
     attr_reader :hosttotest
 
     def initialize(config, certmanager, testdesc)
@@ -22,17 +22,29 @@ module SSLTest
 
     def run
       @certchain = @certmanager.get_chain(@certchainalias)
-      @key = @certmanager.get_key(@certchainalias[0])
+      @keychain = @certmanager.get_keychain(@certchainalias)
       @hosttotest = @config.hosttotest
 
-      PacketThief.redirect(:to_ports => @config.listener_port).where(:protocol => :tcp, :dest_port => @config.dest_port).run
+      PacketThief.redirect(:to_ports => @config.listener_port).where(@config.packetthief).run
       at_exit { PacketThief.revert }
-      EM.run do
-        TestListener.start('127.0.0.1',@config.listener_port, self)
-      end
+#      if EM.reactor_running?
+#        TestListener.start('127.0.0.1',@config.listener_port, self)
+#      else
+        EM.run do
+          TestListener.start('127.0.0.1',@config.listener_port, self)
+          EM.add_periodic_timer(5) { puts "EM connection count: #{EM.connection_count}" }
+        end
+#      end
       PacketThief.revert
 
       SSLTestResult.new(self)
+    end
+
+    # callback to get test status.
+    def test_completed(listener, result)
+      @listener = listener
+      @result = result
+      EM.stop_event_loop
     end
 
   end

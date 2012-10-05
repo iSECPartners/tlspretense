@@ -1,4 +1,16 @@
 ---
+# Configuration options to pass to PacketThief to configure your firewall. Note
+# that you need the initial colon in the key names for now in order to make the
+# keys be Ruby Symbols instead of Ruby Strings.
+packetthief:
+  :protocol: tcp
+  :dest_port: 443
+  :in_interface: en1
+
+# The port that PacketThief should redirect traffic to, and the port that the
+# SSL interceptor will run on during each test.
+listener_port: 54321
+
 # This hostname is the one that the test runner will actually perform its test
 # against. All other intercepted SSL connections will use the original
 # certificate, but doctored to use the goodca. For this hostname, the SSL

@@ -76,7 +76,7 @@ module SSLTest
       end
 
       it "creates an ssl test case" do
-        SSLTestCase.should_receive(:new).with(test_data, cert_manager)
+        SSLTestCase.should_receive(:new).with(config, cert_manager, test_data)
 
         @runner = Runner.new([],stdin, stdout)
         @runner.run_test test_data

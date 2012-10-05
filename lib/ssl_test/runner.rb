@@ -24,7 +24,7 @@ module SSLTest
 
     # Runs a test based on the test description.
     def run_test(test)
-      @results << SSLTestCase.new(test, @cert_manager).run
+      @results << SSLTestCase.new(@config, @cert_manager, test).run
     end
 
   end

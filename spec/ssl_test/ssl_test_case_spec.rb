@@ -2,15 +2,16 @@ require File.expand_path(File.join(File.dirname(__FILE__),'..','spec_helper'))
 
 module SSLTest
   describe SSLTestCase do
-    let(:cert_manager) { double("cert_manager", :get_chain => double('chain'), :get_key => double('key')) }
+    let(:cert_manager) { double("cert_manager", :get_chain => double('chain'), :get_keychain => double('keychain')) }
     let(:config) do
-      double("config", :dest_port => 443, :listener_port => 54321, :hosttotest => "my.hostname.com")
+      double("config", :dest_port => 443, :listener_port => 54321, :hosttotest => "my.hostname.com", :packetthief => { :protocol => 'tcp', :dest_port => 443, :in_interface => 'en1' } )
     end
 
     before(:each) do
       PacketThief.stub_chain(:redirect, :where, :run)
       PacketThief.stub(:revert)
       EM.stub(:run).and_yield
+      EM.stub(:add_periodic_timer)
       TestListener.stub(:start)
     end
 
@@ -29,7 +30,7 @@ module SSLTest
 
         it "acquires a certificate chain and key" do
           cert_manager.should_receive(:get_chain).with(%w{baseline goodca}).and_return([double('baseline cert'), double('goodca cert')])
-          cert_manager.should_receive(:get_key).with('baseline').and_return(double('baseline key'))
+          cert_manager.should_receive(:get_keychain).with(%w{baseline goodca}).and_return([double('baseline key'), double('goodca key')])
 
           SSLTestCase.new(config, cert_manager, testdesc).run
         end
@@ -38,7 +39,7 @@ module SSLTest
           it "launches packet thief with configuration values" do
             @ptrule = double("ptrule")
             PacketThief.should_receive(:redirect).with(:to_ports => 54321).and_return(@ptrule)
-            @ptrule.should_receive(:where).with(:protocol => :tcp, :dest_port => 443).and_return(@ptrule)
+            @ptrule.should_receive(:where).with(:protocol => 'tcp', :dest_port => 443, :in_interface => 'en1').and_return(@ptrule)
             @ptrule.should_receive(:run)
 
             SSLTestCase.new(config, cert_manager, testdesc).run
