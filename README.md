@@ -31,5 +31,4 @@ TODO
   it or not, null name there, etc.
 * truly unique serial numbers for a given CA. Alternatively, we could use the
   first cert's serial as a starting point and increment from there.
-* Allow the user to configure a premade CA as the good CA.
 
