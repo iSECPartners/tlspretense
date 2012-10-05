@@ -12,7 +12,8 @@ module CertMaker
     # certinfos should be a hash-like where each entry describes a certificate.
     # defaulthostname should be a string that will be inserted into %HOSTNAME%
     # in certificate subject lines.
-    def initialize(certinfos, defaulthostname)
+    def initialize(certinfos, defaulthostname, config={})
+      @config = config
       @defaulthostname = defaulthostname
       @certinfos = certinfos
       @certificates = {}
@@ -61,11 +62,32 @@ module CertMaker
       end
       # doctor the certinfo's subject line.
       certinfo['subject'] = certinfo['subject'].gsub(/%HOSTNAME%/, @defaulthostname)
+      # doctor the serial number.
+      if @config.has_key? 'missing_serial_generation'
+        unless certinfo.has_key? 'serial'
+          case @config['missing_serial_generation']
+          when "random"
+            certinfo['serial'] = randomserial
+          else
+            certinfo['serial'] = @config['missing_serial_generation']
+          end
+        end
+      end
 
       cert, key = cf.create(certinfo)
       puts "Created #{calias}"
 
       @certificates[calias] = { :cert => cert, :key => key }
+    end
+
+    def randomserial
+      range = 2**30
+      begin
+        require 'securerandom'
+        SecureRandom.random_number range
+      rescue LoadError # no securerandom, so use weaker rand.
+        rand(range)
+      end
     end
 
   end

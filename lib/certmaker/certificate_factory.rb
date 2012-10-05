@@ -47,7 +47,7 @@ module CertMaker
       # Certificate basics
       nc = OpenSSL::X509::Certificate.new
       nc.version = 2
-      nc.serial = 1
+      nc.serial = args.indifferent_fetch(:serial, 1)
       nc.subject = OpenSSL::X509::Name.parse(args.indifferent_fetch(:subject, self.subject))
       nc.public_key = nk.public_key
 

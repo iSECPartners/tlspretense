@@ -25,6 +25,17 @@ certmaker:
   # The directory where pregenerated certificates should be stored.
   outdir: certs
 
+  # If a serial number is not explicitly set on a certificate definition, then
+  # this value helps decide how the certificate factory generates the
+  # certificate. Possible values:
+  #
+  # * <a number>  Use this predefined value as the serial number. Note that
+  #               some SSL clients (eg, Firefox) will detect duplicate serial
+  #               numbers during a single run of the application.
+  #
+  # * random      randomly generate a serial number
+  missing_serial_generation: random
+
 certs:
   goodca: &goodca
     subject: "C=US, CN=Trusted CA"
