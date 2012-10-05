@@ -1,9 +1,13 @@
 ---
 defaultsubject: &defaultsubject "C=US, CN=my.hostname.com"
 defaultsubjectwithnull: &defaultsubjectwithnull "C=US, CN=my.hostname.com\0.foo.com"
-outdir: certs
 
-certtemplates:
+# Meta-configuration for certificate generation. These values affect the
+# default settings for certificate generation.
+certmaker:
+  # The directory where pregenerated certificates should be stored.
+  outdir: certs
+
 certs:
   goodca: &goodca
     subject: "C=US, CN=Trusted CA"

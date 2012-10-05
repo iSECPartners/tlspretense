@@ -14,13 +14,13 @@ module CertMaker
   #
   # Config is usually a data structure derived from parsing a YAML file.
   def make_certs(config, verbose=false)
-    FileUtils.mkdir_p config['outdir'], :verbose => verbose
+    FileUtils.mkdir_p config['certmaker']['outdir'], :verbose => verbose
 
     certs = CertificateSuiteGenerator.new(config['certs']).certificates
 
     certs.each do |calias, ck|
-      File.open(File.join(config['outdir'],calias+"cert.pem"),"wb") { |f| f.write ck[:cert] }
-      File.open(File.join(config['outdir'],calias+"key.pem"),"wb") { |f| f.write ck[:key] }
+      File.open(File.join(config['certmaker']['outdir'],calias+"cert.pem"),"wb") { |f| f.write ck[:cert] }
+      File.open(File.join(config['certmaker']['outdir'],calias+"key.pem"),"wb") { |f| f.write ck[:key] }
     end
 
   end
