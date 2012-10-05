@@ -36,6 +36,21 @@ module CertMaker
 
     def generate_certificate(calias, certinfo)
       puts "Generating #{calias}..."
+
+      # Check for customgoodca.
+      if calias == 'goodca' and @config.has_key? 'customgoodca'
+        certfile = @config['customgoodca']['certfile']
+        keyfile = @config['customgoodca']['keyfile']
+        keypass = @config['customgoodca'].fetch('keypass',nil)
+        puts "customgoodca set. Using: #{certfile} instead of generating goodca."
+        rawcert = File.read(certfile)
+        rawkey = File.read(keyfile)
+        goodcert = OpenSSL::X509::Certificate.new(rawcert)
+        goodkey = OpenSSL::PKey.read(rawkey, keypass)
+        @certificates[calias] = { :cert => goodcert, :key => goodkey }
+        return
+      end
+
       cf = CertificateFactory.new
 
       # configure the issuer

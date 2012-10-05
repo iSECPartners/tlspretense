@@ -36,6 +36,17 @@ certmaker:
   # * random      randomly generate a serial number
   missing_serial_generation: random
 
+  # customgoodca allows you to load a CA certificate and key from a file. If
+  # you want to use it, uncomment `customgoodca:` and ensure that certfile: and
+  # keyfile: contain a path to their respective PEM encoded files. Leave the
+  # lines commented if you want to generate a new goodca.
+  #customgoodca:
+  #  certfile: relative/to/cwd/cacert.pem
+  #  keyfile:  /or/absolute/path/keyfile.pem
+  #  # Uncomment keypass and set the password only if you need a password. If
+  #  # there is no password, leave it commented out.
+  #  #keypass: changeme
+
 certs:
   goodca: &goodca
     subject: "C=US, CN=Trusted CA"
