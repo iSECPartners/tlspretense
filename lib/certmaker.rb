@@ -16,7 +16,7 @@ module CertMaker
   def make_certs(config, verbose=false)
     FileUtils.mkdir_p config['certmaker']['outdir'], :verbose => verbose
 
-    certs = CertificateSuiteGenerator.new(config['certs'], config['hostname']).certificates
+    certs = CertificateSuiteGenerator.new(config['certs'], config['hostname'], config['certmaker']).certificates
 
     certs.each do |calias, ck|
       File.open(File.join(config['certmaker']['outdir'],calias+"cert.pem"),"wb") { |f| f.write ck[:cert] }
