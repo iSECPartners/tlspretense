@@ -101,7 +101,7 @@ module PacketThief
         rescue OpenSSL::SSL::SSLError => e
           # ssl handshake failed. Likely due to client rejecting our certificate!
           tls_failed_handshake(e)
-          handle_close
+          close_connection
         end
       end
 
