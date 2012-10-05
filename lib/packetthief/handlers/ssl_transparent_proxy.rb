@@ -83,7 +83,7 @@ module PacketThief
       # Initially, its verify_mode is set to OpenSSL::SSL::VERIFY_NONE.
       attr_accessor :dest_ctx
 
-      def post_init
+      def initialize(tcpsocket)
         super
         @closed = false
 

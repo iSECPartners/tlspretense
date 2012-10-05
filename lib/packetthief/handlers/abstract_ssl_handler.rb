@@ -98,7 +98,7 @@ module PacketThief
         rescue IO::WaitWritable
           # accept_nonblock needs to wait until it can write again.
           notify_writable = true
-        rescue OpenSSL::SSL::SSLError => e
+        rescue OpenSSL::SSL::SSLError, Errno::ECONNREFUSED => e
           # ssl handshake failed. Likely due to client rejecting our certificate!
           tls_failed_handshake(e)
           close_connection

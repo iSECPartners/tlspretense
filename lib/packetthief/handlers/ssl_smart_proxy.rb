@@ -20,21 +20,22 @@ module PacketThief
           @ca_chain = [ca_chain]
         end
         @key = key
-      end
 
-      def post_init
-        super
-
-        # preflight the original destination.
-        @ctx.cert = lookup_cert
-        @ctx.extra_chain_cert = @ca_chain
-        @ctx.key = @key
+        begin
+          # preflight the original destination.
+          @ctx.cert = lookup_cert
+          @ctx.extra_chain_cert = @ca_chain
+          @ctx.key = @key
+        rescue OpenSSL::SSL::SSLError, Errno::ECONNREFUSED
+          close_connection
+        end
       end
 
 #      def client_connected
 #        # don't try to connect to dest here.
 #      end
 #
+
       def servername_cb(sslsock, hostname)
         super
         newctx = sslsock.context.dup

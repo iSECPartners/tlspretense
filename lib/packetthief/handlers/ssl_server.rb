@@ -100,7 +100,7 @@ module PacketThief
             @block.call(h) if @block
             # And finally finish initialization by applying the context to an
             # SSLSocket, and setting the internal state.
-            h.tls_begin
+            h.tls_begin unless h.tcpsocket.closed?
           end
 
         end
