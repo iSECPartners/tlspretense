@@ -31,4 +31,7 @@ TODO
   it or not, null name there, etc.
 * truly unique serial numbers for a given CA. Alternatively, we could use the
   first cert's serial as a starting point and increment from there.
+* Build certs and chains of certs for each test so that something like
+  s\_server could use them.
 
+vim:ft=markdown
