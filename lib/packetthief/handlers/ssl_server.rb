@@ -61,6 +61,10 @@ module PacketThief
     # can also override #servername_cb to perform the SNI callback.
     class SSLServer < AbstractSSLHandler
 
+      # reference to the InitialServer that created the current handler. exists
+      # so you can call #stop_server
+      attr_accessor :server_handler
+
       def self.start(host, port, *args, &block)
         ssl_class = self
 
@@ -71,6 +75,7 @@ module PacketThief
         ::EM.watch serv, InitialServer, serv, ssl_class, args, block do |h|
           h.notify_readable = true
         end
+
       end
 
       ####
@@ -95,6 +100,7 @@ module PacketThief
           sock = @servsocket.accept_nonblock
 
           ::EM.watch sock, @ssl_class, sock, *@args do |h|
+            h.server_handler = self
             h.notify_readable = true
             # Now call the caller's block.
             @block.call(h) if @block
@@ -107,6 +113,14 @@ module PacketThief
 
         def notify_writable
           puts "server socket notify writable"
+        end
+
+        # This must be called explicitly. EM doesn't seem to have a callback for when the EM::run call ends.
+        def close
+          unless @servsocket.closed?
+            detach
+            @servsocket.close
+          end
         end
       end
 
@@ -137,6 +151,12 @@ module PacketThief
       # SSLContext.
       def servername_cb(sslsock, hostname)
         sslsock.context
+      end
+
+      # Stops the InitialListener sever handler that spawned this handler. Due
+      # to our use of EM.watch, we can't rely on EM to close the socket.
+      def stop_server
+        @server_handler.close
       end
 
     end
