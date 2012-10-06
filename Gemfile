@@ -3,7 +3,7 @@ source "http://rubygems.org"
 # Example:
 #   gem "activesupport", ">= 2.3.5"
 
-gem "packetthief", "~> 0.1.0"
+gem "packetthief", "~> 0.2.0"
 gem "eventmachine", ">= 1.0.0"
 
 # Add dependencies to develop your gem here.

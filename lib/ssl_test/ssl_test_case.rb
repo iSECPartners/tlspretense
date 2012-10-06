@@ -10,6 +10,9 @@ module SSLTest
     attr_reader :keychain
     attr_reader :hosttotest
 
+    attr_reader :goodcacert
+    attr_reader :goodcakey
+
     def initialize(config, certmanager, testdesc)
       @config = config
       @certmanager = certmanager
@@ -21,9 +24,13 @@ module SSLTest
     end
 
     def run
+      puts "Starting test: #{@id}"
       @certchain = @certmanager.get_chain(@certchainalias)
       @keychain = @certmanager.get_keychain(@certchainalias)
       @hosttotest = @config.hosttotest
+
+      @goodcacert = @certmanager.get_cert("goodca")
+      @goodcakey = @certmanager.get_key("goodca")
 
       PacketThief.redirect(:to_ports => @config.listener_port).where(@config.packetthief).run
       at_exit { PacketThief.revert }
@@ -34,6 +41,7 @@ module SSLTest
           TestListener.start('127.0.0.1',@config.listener_port, self)
           EM.add_periodic_timer(5) { puts "EM connection count: #{EM.connection_count}" }
         end
+        puts "Finished test: #{@id}"
 #      end
       PacketThief.revert
 

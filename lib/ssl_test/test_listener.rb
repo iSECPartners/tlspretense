@@ -15,7 +15,8 @@ module SSLTest
       @hosttotest = testcase.hosttotest
       @hostcert = chain.shift
       @hostkey = keychain.shift
-      super(tcpsocket, chain, keychain[0])
+      # Use the goodca for hosts we don't care to test against.
+      super(tcpsocket, testcase.goodcacert, testcase.goodcakey)
 
       @test_status = :running
       @testing_host = false
@@ -29,7 +30,6 @@ module SSLTest
 
     # Override to check for the hostname we are testing.
     def servername_cb(sslsock, hostname)
-      puts "SNI sent by client"
       check_for_hosttotest(super(sslsock, hostname))
     end
 
