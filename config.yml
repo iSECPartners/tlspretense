@@ -250,7 +250,7 @@ tests:
   name: Intermediate certificate lacks BasicConstraints
   certchain:
   - signedbynobcint
-  - nobcintermeidate
+  - nobcintermediate
   - goodca
 
 - alias: badsigonintermediate
