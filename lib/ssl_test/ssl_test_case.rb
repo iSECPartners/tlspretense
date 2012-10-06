@@ -51,6 +51,7 @@ module SSLTest
     # callback to get test status.
     def test_completed(listener, result)
       @listener = listener
+      @listener.stop_server
       @result = result
       EM.stop_event_loop
     end
