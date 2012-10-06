@@ -220,7 +220,7 @@ module PacketThief
       #
       # The connection will be closed after this.
       def tls_failed_handshake(e)
-        puts "#{self.inspect} Failed to accept: #{e.inspect}"
+        puts "#{self.class} Failed to accept: #{e} (#{e.class})"
       end
 
       # Override this to do something with the unecrypted data.
