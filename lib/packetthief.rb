@@ -5,6 +5,7 @@ module PacketThief
   autoload :RedirectRule, 'packetthief/redirect_rule'
   autoload :Netfilter, 'packetthief/netfilter'
   autoload :Ipfw, 'packetthief/ipfw'
+  autoload :PF,           'packetthief/pf'
 
   autoload :Handlers, 'packetthief/handlers'
   autoload :Util, 'packetthief/util'
