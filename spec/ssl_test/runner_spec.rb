@@ -11,12 +11,17 @@ module SSLTest
     let(:conf_certs) { double('conf certs') }
     let(:config) { double("config", :tests => test_data, 'certs' => conf_certs, 'action' => :runtests) }
     let(:cert_manager) { double("certificate manager") }
+    let(:report) { double('report') }
+    let(:testcaseresult) { double('test case result') }
+    let(:testcase) { double('test case', :run => testcaseresult) }
 
 
     before(:each) do
       Config.stub(:load_conf).and_return(config)
       Config.stub(:new).and_return(config)
       CertificateManager.stub(:new).and_return(cert_manager)
+      SSLTestCase.stub(:new).and_return(testcase)
+      SSLTestReport.stub(:new).and_return(report)
     end
 
     describe "#initialize" do
@@ -70,14 +75,9 @@ module SSLTest
     end
 
     describe "#run_test" do
-      let(:testcaseresult) { double('test case result') }
-      let(:testcase) { double('test case', :run => testcaseresult) }
-      before(:each) do
-        SSLTestCase.stub(:new).and_return(testcase)
-      end
 
       it "creates an ssl test case" do
-        SSLTestCase.should_receive(:new).with(config, cert_manager, test_data)
+        SSLTestCase.should_receive(:new).with(config, cert_manager, report, test_data)
 
         @runner = Runner.new([],stdin, stdout)
         @runner.run_test test_data

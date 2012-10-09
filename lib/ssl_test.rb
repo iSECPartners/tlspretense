@@ -7,6 +7,7 @@ module SSLTest
   autoload :Config,       'ssl_test/config'
   autoload :Runner,       'ssl_test/runner'
   autoload :SSLTestCase,  'ssl_test/ssl_test_case'
+  autoload :SSLTestReport,  'ssl_test/ssl_test_report'
   autoload :SSLTestResult,  'ssl_test/ssl_test_result'
   autoload :TestListener, 'ssl_test/test_listener'
 end

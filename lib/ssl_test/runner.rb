@@ -42,6 +42,7 @@ module SSLTest
       @cert_manager = CertificateManager.new(@config.certs)
 
       @results = []
+      @report = SSLTestReport.new
     end
 
     def run
@@ -54,6 +55,7 @@ module SSLTest
         end
       when :runtests
         @results = []
+        @report = SSLTestReport.new
         @config.tests( @test_list.empty? ? nil : @test_list).each do |test|
           run_test test
         end
@@ -64,7 +66,7 @@ module SSLTest
 
     # Runs a test based on the test description.
     def run_test(test)
-      @results << SSLTestCase.new(@config, @cert_manager, test).run
+      @results << SSLTestCase.new(@config, @cert_manager, @report, test).run
     end
 
     def display_test(test)
