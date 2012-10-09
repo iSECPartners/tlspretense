@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "packetthief"
-  s.version = "0.2.0"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["William (B.J.) Snow Orvis"]
-  s.date = "2012-10-06"
+  s.date = "2012-10-09"
   s.description = "Framework for intercepting packets, redirecting them to a handler, and doing something with the \"stolen\" connection."
   s.email = "aetherknight@gmail.com"
   s.extra_rdoc_files = [
@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
     "examples/certs/samplekey.pem",
     "examples/em_ssl_test.rb",
     "examples/redirector.rb",
+    "examples/setup_iptables.sh",
     "examples/ssl_client_simple.rb",
     "examples/ssl_server_simple.rb",
     "examples/ssl_smart_proxy.rb",
@@ -47,11 +48,13 @@ Gem::Specification.new do |s|
     "lib/packetthief/handlers/transparent_proxy.rb",
     "lib/packetthief/ipfw.rb",
     "lib/packetthief/netfilter.rb",
+    "lib/packetthief/pf.rb",
     "lib/packetthief/redirect_rule.rb",
     "lib/packetthief/util.rb",
     "packetthief.gemspec",
     "spec/packetthief/ipfw_spec.rb",
     "spec/packetthief/netfilter_spec.rb",
+    "spec/packetthief/pf_spec.rb",
     "spec/packetthief_spec.rb",
     "spec/spec_helper.rb"
   ]
