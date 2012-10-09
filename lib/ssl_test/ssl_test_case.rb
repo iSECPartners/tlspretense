@@ -35,10 +35,10 @@ module SSLTest
       PacketThief.redirect(:to_ports => @config.listener_port).where(@config.packetthief).run
       at_exit { PacketThief.revert }
 #      if EM.reactor_running?
-#        TestListener.start('127.0.0.1',@config.listener_port, self)
+#        TestListener.start('',@config.listener_port, self)
 #      else
         EM.run do
-          TestListener.start('127.0.0.1',@config.listener_port, self)
+          TestListener.start('',@config.listener_port, self)
           EM.add_periodic_timer(5) { puts "EM connection count: #{EM.connection_count}" }
         end
         puts "Finished test: #{@id}"

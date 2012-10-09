@@ -5,7 +5,10 @@
 packetthief:
   :protocol: tcp
   :dest_port: 443
-  :in_interface: en1
+  # Linux-like interface:
+  :in_interface: eth1
+  # Mac OS X-like interface:
+  # :in_interface: en1
 
 # The port that PacketThief should redirect traffic to, and the port that the
 # SSL interceptor will run on during each test.
