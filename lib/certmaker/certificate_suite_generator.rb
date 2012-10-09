@@ -42,13 +42,17 @@ module CertMaker
         certfile = @config['customgoodca']['certfile']
         keyfile = @config['customgoodca']['keyfile']
         keypass = @config['customgoodca'].fetch('keypass',nil)
-        puts "customgoodca set. Using: #{certfile} instead of generating goodca."
-        rawcert = File.read(certfile)
-        rawkey = File.read(keyfile)
-        goodcert = OpenSSL::X509::Certificate.new(rawcert)
-        goodkey = OpenSSL::PKey.read(rawkey, keypass)
-        @certificates[calias] = { :cert => goodcert, :key => goodkey }
-        return
+        if File.exist? certfile and File.exist? keyfile
+          puts "Customgoodca defined and the CA's files exist. We will use it instead of generating a new goodca."
+          rawcert = File.read(certfile)
+          rawkey = File.read(keyfile)
+          goodcert = OpenSSL::X509::Certificate.new(rawcert)
+          goodkey = OpenSSL::PKey.read(rawkey, keypass)
+          @certificates[calias] = { :cert => goodcert, :key => goodkey }
+          return
+        else
+          puts "#{certfile} or #{keyfile} does not exist! We will generate a new one."
+        end
       end
 
       cf = CertificateFactory.new

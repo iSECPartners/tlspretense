@@ -25,4 +25,37 @@ module CertMaker
 
   end
   module_function :make_certs
+
+  # Ensure that the custom ca exists.
+  def make_ca(config, verbose=false)
+    unless config['certmaker'].has_key? 'customgoodca'
+      puts "certmaker does not have a 'customgoodca' entry, so a CA will be regenerated every time."
+      return
+    end
+
+    cacert = config['certmaker']['customgoodca']['certfile']
+    cakey = config['certmaker']['customgoodca']['keyfile']
+
+    if File.exist? cacert and File.exist? cakey
+      puts "CA and CA's key exist."
+    elsif File.exist? cacert and not File.exist? cakey
+      raise "CA certificate exists, but the key file does not exist?!"
+    elsif not File.exist? cacert and File.exist? cakey
+      raise "CA certificate does not exist, but the key file exists?!"
+    else
+      puts "Generating a new CA"
+      cacertdir = File.dirname(config['certmaker']['customgoodca']['certfile'])
+      FileUtils.mkdir_p cacertdir, :verbose => verbose
+      cakeydir = File.dirname(config['certmaker']['customgoodca']['keyfile'])
+      FileUtils.mkdir_p cakeydir, :verbose => verbose
+      csg = CertificateSuiteGenerator.new(config['certs'], config['hostname'], config['certmaker'])
+      csg.generate_certificate('goodca',config['certs']['goodca'])
+      cadata = csg.certificates['goodca']
+      File.open(cacert,"wb") { |f| f.write cadata[:cert] }
+      File.open(cakey,"wb") { |f| f.write cadata[:key] }
+      puts "New CA generated."
+      puts "Make sure you remove or comment out the passphrase in config.yml if you had one previously set!"
+    end
+  end
+  module_function :make_ca
 end

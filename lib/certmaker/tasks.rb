@@ -1,7 +1,17 @@
 
 namespace :certs do
+
+  desc "Checks for a CA, and generates it if needed."
+  task :ca do
+    require 'certmaker'
+    require 'yaml'
+
+    y = YAML.load_file('config.yml')
+    CertMaker.make_ca y
+  end
+
   desc "Generate a suite of test certificates"
-  task :ssl do
+  task :ssl => [ 'certs:ca' ] do
     require 'certmaker'
     require 'yaml'
 
