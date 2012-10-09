@@ -26,10 +26,30 @@ Basic use:
     PacketThief.redirect(:to_ports => 65432).where(:protocol => :tcp, :dest_port => 443).run
     at_exit { PacketThief.revert }
 
-This will set up Firewall/routing rules to redirect packets matching the .where clause to the
-localhost port specified by the redirect() clause. The Kernel#at_exit handler
-calls the .revert method which will remove the firewall rules added by
-PacketThief.
+This will set up Firewall/routing rules to redirect packets matching the .where
+clause to the localhost port specified by the redirect() clause. The
+Kernel#at_exit handler calls the .revert method which will remove the firewall
+rules added by PacketThief.
+
+You can then capture network traffic by opening a listening socket your
++:to_ports+ destination. When you create the socket, set the hostname to a
+blank string to have it listen on all interfaces -- this winds up being more
+compatible with different firewalls.
+
+Using a TCPServer:
+
+    TCPServer.new('', 65432)
+
+or (untested):
+
+    TCPServer.new(65432)
+
+Using EventMachine:
+
+    EM.run {
+        start_server '', 65432, MyHandler
+    }
+
 
 In your listener code you can recover the original destination by passing in an
 accepted socket or an EventMachine::Connection-based handler.
