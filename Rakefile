@@ -15,11 +15,11 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "packetthief"
-  gem.homepage = "http://github.com/aetherknight/packetthief"
+  gem.homepage = "https://github.com/iSECPartners/"
   gem.license = "MIT"
   gem.summary = %Q{Framework for intercepting packets on Mac OS X/BSD/Linux}
   gem.description = %Q{Framework for intercepting packets, redirecting them to a handler, and doing something with the "stolen" connection.}
-  gem.email = "aetherknight@gmail.com"
+  gem.email = "bjorvis@isecpartners.com"
   gem.authors = ["William (B.J.) Snow Orvis"]
   # dependencies defined in Gemfile
 end
@@ -43,7 +43,9 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
+  rdoc.main = 'README.rdoc'
   rdoc.title = "packetthief #{version}"
   rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('LICENSE*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

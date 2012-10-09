@@ -5,36 +5,57 @@ something with the "stolen" connection.
 
 == Description
 
+PacketThief is a little Ruby framework for programatically intercepting network
+traffic. It provides an abstraction around configuring various OS firewalls and
+for gathering information about the original connection, and it offers several
+sample handler classes (for use with EventMachine) for intercepting and
+forwarding traffic. If you want a full fledged security tool for intercepting
+and analyzing network traffic, check out
+{Mallory}[http://intrepidusgroup.com/insight/mallory/] instead.
+
 PacketThief is currently intended to be run on a computer that should be
 configured as the gateway for whatever network traffic you wish to intercept.
-You then use it to configure your OS's firewall and network routing to send
-specified network traffic to a socket. The socket handling code can then read
-the data, modify it, send it on to the original destination (although
-originating from gateway), etc.
+You then use PacketThief to configure your OS firewall and network routing to
+send specified network traffic to a socket. The socket handling code can then
+read the data, modify it, send it on to the original destination (although the
+new connection will originate from the gateway), etc.
 
-Currently, PacketThief supports basic redirection like the above
-line on Ipfw (Mac OS X, BSD) and Netfilter (Linux). It also more than likely
-requires your PacketThief-based script to be run as root in order to modify
-your system's firewall.
+Currently, PacketThief supports basic redirection using Ipfw (Mac OS X, BSD)
+and Netfilter (Linux). It also more than likely requires your PacketThief-based
+script to be run as root in order to modify your system's firewall.
 
 == Usage
+
+First, you must configure the system that will run PacketThief to be able to
+intercept network traffic. If that host system has two network interfaces (such
+as a laptop with ethernet and wifi), then you can turn the system into a router
+by configure one interface to be an external interface that can communicate
+with your main network and the Internet, and the other interface can be
+configured as the gateway for one or more devices/client systems that you would
+like to test.
+
+NATing multiple network interfaces can be easily done in Mac OS X by enabling
+Internet Sharing in the Sharing System Preference pane, which will also let you
+configure your wifi to be a wireless access point. For Linux, take a look at
+the +examples/setup_iptables.sh+ script, or {search the Internet for tutorials
+on various ways to set up Mallory}[https://bitbucket.org/IntrepidusGroup/mallory/wiki/Home].
 
 Basic use:
 
     require 'packetthief'
     # redirect tcp traffic destined for port 443 to localhost port 65432:
     PacketThief.redirect(:to_ports => 65432).where(:protocol => :tcp, :dest_port => 443).run
-    at_exit { PacketThief.revert }
+    at_exit { PacketThief.revert } # Remove our firewall rules when we exit
 
 This will set up Firewall/routing rules to redirect packets matching the .where
 clause to the localhost port specified by the redirect() clause. The
 Kernel#at_exit handler calls the .revert method which will remove the firewall
 rules added by PacketThief.
 
-You can then capture network traffic by opening a listening socket your
-+:to_ports+ destination. When you create the socket, set the hostname to a
-blank string to have it listen on all interfaces -- this winds up being more
-compatible with different firewalls.
+You can then capture network traffic in your script by opening a listening
+socket your +:to_ports+ destination. When you create the socket, set the
+hostname to a blank string to have it listen on all interfaces -- this winds up
+being more compatible with different firewalls.
 
 Using a TCPServer:
 
@@ -90,6 +111,8 @@ Note that connections initiated both on the Mac and on any device from the netwo
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
 == Copyright
+
+Copyright (c) 2012 iSEC Partners
 
 See LICENSE.txt for further details.
 
