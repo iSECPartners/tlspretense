@@ -35,6 +35,10 @@ module SSLTest
       @raw['packetthief']
     end
 
+    def pause?
+      @opts[:pause]
+    end
+
     def action
       @opts[:action]
     end

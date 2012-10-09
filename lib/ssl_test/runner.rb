@@ -5,6 +5,7 @@ module SSLTest
     attr_reader :results
 
     DEFAULT_OPTS = {
+        :pause => false,
         :config => Config::DEFAULT,
         :action => :runtests,
       }
@@ -14,6 +15,10 @@ module SSLTest
 
       opts = OptionParser.new do |opts|
         opts.banner = "Usage: #{$0} [options] [tests to run]"
+
+        opts.on("-p","--[no-]pause", "Pause between tests") do |v|
+          options[:pause] = true
+        end
 
         opts.on("-c", "--config path/to/config.yml",
                 "Specify a custom config.yml file",
@@ -56,8 +61,11 @@ module SSLTest
       when :runtests
         @results = []
         @report = SSLTestReport.new
+        first = true
         @config.tests( @test_list.empty? ? nil : @test_list).each do |test|
+          pause if @config.pause? and not first
           run_test test
+          first = false
         end
       else
         raise "Unknown action: #{opts[:action]}"
@@ -73,6 +81,11 @@ module SSLTest
       @stdout.printf "%s: %s\n", test['alias'], test['name']
       @stdout.printf "  %s\n", test['certchain'].inspect
       @stdout.puts ''
+    end
+
+    def pause
+      @stdout.puts "Press Enter to continue."
+      @stdin.gets
     end
 
   end

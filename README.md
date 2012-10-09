@@ -132,7 +132,6 @@ TODO
 * Configuration option for disabling PacketThief when managing firewall rules
 
 * SSLTest Command-line
-  * Command line option to pause between tests
   * Print results
   * Command line option to specify where to write the results to
 

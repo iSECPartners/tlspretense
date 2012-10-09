@@ -11,7 +11,7 @@ module SSLTest
     let(:test_data) { [test_foo, test_bar] }
     let(:test_wrongcname) { double('test wrongcname') }
     let(:conf_certs) { double('conf certs') }
-    let(:config) { double("config", :tests => test_data, 'certs' => conf_certs, 'action' => :runtests) }
+    let(:config) { double("config", :tests => test_data, 'certs' => conf_certs, 'action' => :runtests, 'pause?' => false) }
     let(:cert_manager) { double("certificate manager") }
     let(:report) { double('report') }
     let(:testcaseresult) { double('test case result') }
@@ -20,7 +20,6 @@ module SSLTest
     subject { Runner.new(args, stdin, stdout) }
 
     before(:each) do
-      Config.stub(:load_conf).and_return(config)
       Config.stub(:new).and_return(config)
       CertificateManager.stub(:new).and_return(cert_manager)
       SSLTestCase.stub(:new).and_return(testcase)
@@ -91,6 +90,57 @@ module SSLTest
 
         subject.run_test test_data
       end
+
+    end
+
+    describe "pausing between tests" do
+      context "when ARGV contains -p or --pause" do
+        context "when ARGV specifies 1 test" do
+          let(:args) { %w{-p baseline} }
+          it "does not pause" do
+            subject.should_not_receive(:pause)
+
+            subject.run
+          end
+        end
+        context "when ARGV specifies 3 tests" do
+          let(:args) { %w{-p baseline another athird} }
+
+          let(:baseline) { double('baseline test desc') }
+          let(:another) { double('another test desc') }
+          let(:athird) { double('athird test desc') }
+
+          before(:each) do
+            Config.should_receive(:new) do |args|
+              args[:pause].should == true
+              config.stub(:pause?).and_return(true)
+              config
+            end
+          end
+
+          it "pauses between each test" do
+            config.stub(:tests).with(['baseline','another','athird']).and_return([baseline, another, athird])
+
+            subject.should_receive(:run_test).with(baseline).ordered
+            subject.should_receive(:pause).ordered
+            subject.should_receive(:run_test).with(another).ordered
+            subject.should_receive(:pause).ordered
+            subject.should_receive(:run_test).with(athird).ordered
+
+            subject.run
+          end
+        end
+      end
+
+      describe "#pause" do
+        it "waits for the user to press enter to continue" do
+          stdout.stub(:puts)
+          stdin.should_receive(:gets)
+
+          subject.pause
+        end
+      end
+
 
     end
 
