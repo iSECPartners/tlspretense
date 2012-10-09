@@ -3,3 +3,4 @@ rdoc
 doc .yardoc
 .bundle
 pkg
+tags
