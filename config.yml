@@ -193,6 +193,14 @@ certs:
     <<: *baseline
     issuer: expiredintermediate
 
+  signedwithmd5:
+    <<: *baseline
+    signing_alg: MD5
+
+  signedwithmd4:
+    <<: *baseline
+    signing_alg: MD4
+
 tests:
 # baseline
 - alias: baseline
