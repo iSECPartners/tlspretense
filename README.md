@@ -1,17 +1,22 @@
 SSL Client Testing
 ==================
 
-A Set of tools for testing an SSL client's certificate validation.
+A set of tools for testing an SSL client's certificate validation.
 
 
 Description
 -----------
 
 Ssl\_client\_testing provides a set of tools to test SSL certificate
-validation. It currently provides two sets of libraries for this purpose:
+validation, with a focus on mostly blackbox testing. It requires a (Linux,
+MacOSX, BSD) system that runs the test by intercepting network traffic, and it
+requires the client to be configured to trust the test framework's CA.
 
-* *CertMaker*, which generates SSL certificates with a variety of flaws
-* *SSLTest*, a framework for running tests using various certificate chains.
+It currently provides two sets of libraries for this purpose:
+
+* *CertMaker*, which generates SSL certificate and certificate chains with a
+  variety of flaws
+* *SSLTest*, a framework for running tests using various certificate chains
 
 
 CertMaker
