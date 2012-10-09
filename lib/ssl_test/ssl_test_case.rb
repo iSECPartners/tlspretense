@@ -13,9 +13,10 @@ module SSLTest
     attr_reader :goodcacert
     attr_reader :goodcakey
 
-    def initialize(config, certmanager, testdesc)
+    def initialize(config, certmanager, report, testdesc)
       @config = config
       @certmanager = certmanager
+      @report = report
       @raw = testdesc.dup
       @id = @raw['alias']
       @title = @raw['name']
@@ -32,28 +33,41 @@ module SSLTest
       @goodcacert = @certmanager.get_cert("goodca")
       @goodcakey = @certmanager.get_key("goodca")
 
+      @start_time = Time.now
+
       PacketThief.redirect(:to_ports => @config.listener_port).where(@config.packetthief).run
       at_exit { PacketThief.revert }
-#      if EM.reactor_running?
-#        TestListener.start('',@config.listener_port, self)
-#      else
+
+      @started_em = false
+      if EM.reactor_running?
+        TestListener.start('',@config.listener_port, self)
+      else
+        @started_em = true
         EM.run do
           TestListener.start('',@config.listener_port, self)
           EM.add_periodic_timer(5) { puts "EM connection count: #{EM.connection_count}" }
         end
-        puts "Finished test: #{@id}"
-#      end
-      PacketThief.revert
+      end
 
-      SSLTestResult.new(self)
+#      SSLTestResult.new(self)
     end
 
     # callback to get test status.
-    def test_completed(listener, result)
-      @listener = listener
-      @listener.stop_server
-      @result = result
-      EM.stop_event_loop
+    def test_completed(listener, actual_result)
+      str = SSLTestResult.new(@id, (actual_result.to_s == @expected_result))
+      str.description = @title
+      str.expected_result = @expected_result
+      str.actual_result = actual_result.to_s
+      str.start_time = @start_time
+      str.stop_time = Time.now
+
+      @report.add_result(str)
+
+      puts "Finished test: #{@id}"
+      listener.stop_server
+
+      EM.stop_event_loop if @started_em
+      PacketThief.revert
     end
 
   end
