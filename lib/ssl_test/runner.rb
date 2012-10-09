@@ -5,7 +5,7 @@ module SSLTest
     attr_reader :results
 
     DEFAULT_OPTS = {
-        :config => "config.yml",
+        :config => Config::DEFAULT,
         :action => :runtests,
       }
 
@@ -33,19 +33,19 @@ module SSLTest
     end
 
     def initialize(args, stdin, stdout)
-      opts, args = parse_args(args)
-      @options = opts
+      @options, args = parse_args(args)
       @test_list = args
       @stdin = stdin
       @stdout = stdout
 
-      @config = Config.load_conf @options[:config]
+      @config = Config.new @options
       @cert_manager = CertificateManager.new(@config.certs)
+
       @results = []
     end
 
     def run
-      case @options[:action]
+      case @config.action
       when :list
         @stdout.puts "These are the test I will perform and their descriptions:"
         @stdout.puts ''

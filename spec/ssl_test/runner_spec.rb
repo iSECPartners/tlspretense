@@ -9,12 +9,13 @@ module SSLTest
     let(:test_data) { [test_foo, test_bar] }
     let(:test_wrongcname) { double('test wrongcname') }
     let(:conf_certs) { double('conf certs') }
-    let(:config) { double("config", :tests => test_data, 'certs' => conf_certs ) }
+    let(:config) { double("config", :tests => test_data, 'certs' => conf_certs, 'action' => :runtests) }
     let(:cert_manager) { double("certificate manager") }
 
 
     before(:each) do
       Config.stub(:load_conf).and_return(config)
+      Config.stub(:new).and_return(config)
       CertificateManager.stub(:new).and_return(cert_manager)
     end
 
@@ -22,8 +23,8 @@ module SSLTest
       context "when ARGS is empty" do
         let(:args) { [] }
         it "loads the config from the default location" do
-          Config.should_receive(:load_conf).and_return(config)
           @runner = Runner.new(args, stdin, stdout)
+          Config.should_receive(:new).and_return(config)
           @runner.stub(:run_test)
 
           @runner.run

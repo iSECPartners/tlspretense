@@ -6,15 +6,15 @@ module SSLTest
     attr_reader :raw
     attr_reader :certs
 
-    def self.load_conf(filename=nil)
-      filename = DEFAULT if filename == nil
-
-      Config.new(filename)
+    def self.load_conf(opts)
+      Config.new(opts)
     end
 
     # TODO: do some basic type validation on the config file.
-    def initialize(filename)
-      @raw = YAML.load_file(filename)
+    def initialize(opts)
+      @opts = opts
+
+      @raw = YAML.load_file(@opts[:config])
       @certs = @raw['certs']
     end
 
@@ -33,6 +33,10 @@ module SSLTest
 
     def packetthief
       @raw['packetthief']
+    end
+
+    def action
+      @opts[:action]
     end
 
   end
