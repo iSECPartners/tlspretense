@@ -22,7 +22,8 @@ listener_port: 54321
 #
 # Additionally, the defaultsubject and defaultsubjectwithnull strings will
 # replace %HOSTNAME% with this value during certificate generation.
-hostname: my.hostname.com
+#hostname: my.hostname.com
+hostname: www.isecpartners.com
 
 # Meta-configuration for certificate generation. These values affect the
 # default settings for certificate generation.
