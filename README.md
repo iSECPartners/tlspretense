@@ -68,17 +68,18 @@ Requirements
 Obviously, this framework requires a certain amount of setup, and it has some
 requirements:
 
-* The system running SSLTest must have the NetFilter or IPFW firewalls. In
-  other words Linux, MacOSX 10.6, or BSD. (PF support forthcoming)
-
-* The test runner needs to be run as root in order to manipulate the
-  firewall, such as with `sudo`.
-
 * Ruby 1.9.x is needed for full Server Name Indicatio (SNI) support. It must
   also be built against a version of OpenSSL that has SNI fully enabled. Ruby
   1.8.7 supports the SNI callback on the server-side of an SSL connection, but
   Ruby 1.8.7's version of the OpenSSL extension does not have a way for clients
   to request an SNI hostname.
+
+* PacketThief, which is used for intercepting packeets, currently requires the
+  NetFilter or IPFW firewalls. In other words Linux, MacOSX 10.6, or BSD with
+  IPFW. (PF support forthcoming)
+
+* The test runner needs to be run as root in order to manipulate the
+  firewall, such as with `sudo`.
 
 * The SSLTest system needs to be able to intercept the client's network
   traffic. A common setup for doing this when testing mobile code is to plug
@@ -124,6 +125,8 @@ TODO
 
 * Document how to deal with certificate pinning and other things that may make
   testing certificate validation logic difficult.
+
+* Configuration option for disabling PacketThief when managing firewall rules
 
 * SSLTest Command-line
   * Command line option to pause between tests
