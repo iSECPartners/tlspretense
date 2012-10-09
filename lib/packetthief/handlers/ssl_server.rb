@@ -13,7 +13,8 @@ module PacketThief
     # #receive_data will be called when there is data for the handler.
     #
     #   EM.run {
-    #     SSLServer.start 'localhost', 54321 do |p|
+    #     # Leave the hostname blank for Linux's netfilter.
+    #     SSLServer.start '', 54321 do |p|
     #
     #       # Note: this code block is actually too late to set up a new
     #       # #post_init since it runs just after post_init. Instead, you would

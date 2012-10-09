@@ -8,6 +8,10 @@ module PacketThief
   # iptables -t nat -A PREROUTING -p tcp --destination-port <DEST> -j REDIRECT --to-ports <LISTENER>
   #
   # Currently only implements IPv4.
+  #
+  # Note that the listening socket must have a blank hostname. If it is set to
+  # 127.0.0.1, then the socket will only run on the loopback device, and
+  # traffic that gets redirected from another device won't reach it.
   class Netfilter
 
     # Manages IPTablesRules. It actually runs the rule, and it tracks the rule

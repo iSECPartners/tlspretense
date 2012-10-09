@@ -50,7 +50,7 @@ end
 
 EM.run do
 
-  EM.start_server('127.0.0.1', 54321, VerboseProxy)
+  EM.start_server('', 54321, VerboseProxy)
 
 end
 PacketThief.revert

@@ -32,7 +32,7 @@ end
 
 EM.run do
 
-  PacketThief::Handlers::SSLServer.start('127.0.0.1', 54321) do |h|
+  PacketThief::Handlers::SSLServer.start('', 54321) do |h|
     puts "extra block"
     h.ctx.cert = cert
     h.ctx.extra_chain_cert = chain

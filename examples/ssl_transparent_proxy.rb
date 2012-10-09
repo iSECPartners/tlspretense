@@ -86,7 +86,7 @@ end
 
 EM.run do
 
-  VerboseProxy.start('127.0.0.1', 54321) do |h|
+  VerboseProxy.start('', 54321) do |h|
     h.ctx.cert = cert
     h.ctx.extra_chain_cert = chain
     h.ctx.key = key

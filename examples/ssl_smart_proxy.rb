@@ -102,10 +102,10 @@ end
 
 EM.run do
 
-  VerboseProxy.start('127.0.0.1', 54321, cacert, key) do |h|
+  VerboseProxy.start('', 54321, cacert, key) do |h|
 #    h.ctx.ssl_version = :TLSv1_server
   end
-  EM.start_server('127.0.0.1', 54322, PacketThief::Handlers::TransparentProxy) do |h|
+  EM.start_server('', 54322, PacketThief::Handlers::TransparentProxy) do |h|
     def h.client_recv(data)
       puts "HTTP: #{data}"
     end

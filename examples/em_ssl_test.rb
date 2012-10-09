@@ -55,7 +55,7 @@ end
 
 PacketThief.redirect(:to_ports => 54321).where(:protocol => :tcp, :dest_port => 443).run
 EM.run {
-  EM.start_server('127.0.0.1', 54321, SSLTester, 'chain.pem', 'key.pem')
+  EM.start_server('', 54321, SSLTester, 'chain.pem', 'key.pem')
 
   Signal.trap("TERM") do
     puts "Received SIGTERM"
