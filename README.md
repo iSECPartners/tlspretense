@@ -113,8 +113,6 @@ Limitations
 TODO
 ----
 
-* Differentiate generating goodca from the rest of the certificates.
-
 * Add more support for subjectAltName. Eg, testing whether the hostname is in
   it or not, null name there, etc.
 
@@ -135,7 +133,6 @@ TODO
 
 * SSLTest Command-line
   * Command line option to pause between tests
-  * Command line option to print a list of all tests
   * Print results
   * Command line option to specify where to write the results to
 

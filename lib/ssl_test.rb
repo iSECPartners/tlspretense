@@ -1,5 +1,6 @@
 require 'packetthief'
 require 'eventmachine'
+require 'optparse'
 
 module SSLTest
   autoload :CertificateManager, 'ssl_test/certificate_manager'
