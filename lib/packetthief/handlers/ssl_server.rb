@@ -117,7 +117,7 @@ module PacketThief
         end
 
         # This must be called explicitly. EM doesn't seem to have a callback for when the EM::run call ends.
-        def close
+        def stop_server
           unless @servsocket.closed?
             detach
             @servsocket.close
@@ -157,7 +157,7 @@ module PacketThief
       # Stops the InitialListener sever handler that spawned this handler. Due
       # to our use of EM.watch, we can't rely on EM to close the socket.
       def stop_server
-        @server_handler.close
+        @server_handler.stop_server
       end
 
     end
