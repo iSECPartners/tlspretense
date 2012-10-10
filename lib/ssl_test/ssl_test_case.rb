@@ -45,15 +45,12 @@ module SSLTest
         @started_em = true
         EM.run do
           # @listener handles the initial server socket, not the accepted connections.
-          @listener = TestListener.start('',@config.listener_port, self)
+          @listener = TestListener.start('',@config.listener_port, @goodcacert, @goodcakey, @hosttotest, @certchain, @keychain[0]) do |h|
+            h.on_test_completed { |result| self.test_completed result }
+          end
           EM.open_keyboard InputHandler do |h|
-            h.on ' ' do
-              self.test_completed(h, :skipped)
-            end
-
-            h.on 'q' do
-              self.stop_testing
-            end
+            h.on(' ') { self.test_completed :skipped }
+            h.on('q') { self.stop_testing }
           end
           EM.add_periodic_timer(5) { puts "EM connection count: #{EM.connection_count}" }
         end

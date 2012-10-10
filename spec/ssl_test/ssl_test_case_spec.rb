@@ -2,9 +2,33 @@ require File.expand_path(File.join(File.dirname(__FILE__),'..','spec_helper'))
 
 module SSLTest
   describe SSLTestCase do
-    let(:cert_manager) { double("cert_manager", :get_chain => double('chain'), :get_keychain => double('keychain'), :get_cert => double('cert'), :get_key => double('key')) }
+    let(:certchain) { double('certchain') }
+    let(:keychain) { [ double('firstkey'), double('secondkey'), double('cakey') ] }
+    let(:goodcacert) { double('goodcacert') }
+    let(:goodcakey) { double('goodcakey') }
+    let(:cert_manager) do
+      @cert_manager = double(
+        "cert_manager",
+        :get_chain => certchain,
+        :get_keychain => keychain,
+        :get_cert => double('cert'),
+        :get_key => double('key')
+      )
+      @cert_manager.stub(:get_cert).with('goodca').and_return(goodcacert)
+      @cert_manager.stub(:get_key).with('goodca').and_return(goodcakey)
+      @cert_manager
+    end
     let(:config) do
-      double("config", :dest_port => 443, :listener_port => 54321, :hosttotest => "my.hostname.com", :packetthief => { :protocol => 'tcp', :dest_port => 443, :in_interface => 'en1' } )
+      double("config",
+             :dest_port => 443,
+             :listener_port => 54321,
+             :hosttotest => "my.hostname.com",
+             :packetthief => {
+               :protocol => 'tcp',
+               :dest_port => 443,
+               :in_interface => 'en1'
+             }
+            )
     end
     let(:testdesc) do
       {
@@ -57,10 +81,23 @@ module SSLTest
         end
 
         it "launches a test runner" do
-          TestListener.should_receive(:start).with('',54321,subject)
+          @tl = double('test listener')
+          TestListener.should_receive(:start).with('',54321,goodcacert, goodcakey, 'my.hostname.com', certchain, keychain[0]).and_return(@tl)
 
           subject.run
         end
+
+        it "sets the test runner's test completed callback to run #test_completed" do
+          @tl = double('test listener')
+          @result = double('result')
+          TestListener.stub(:start).and_yield(@tl).and_return(@tl)
+
+          @tl.should_receive(:on_test_completed).and_yield(@result)
+          subject.should_receive(:test_completed).with(@result)
+
+          subject.run
+        end
+
 
       end
     end

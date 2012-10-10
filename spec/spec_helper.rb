@@ -8,6 +8,13 @@ require 'ssl_test'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
+  config.backtrace_clean_patterns = [
+    /\/lib\d*\/ruby\//,
+    /bin\//,
+#    /gems/,
+    /spec\/spec_helper\.rb/,
+    /lib\/rspec\/(core|expectations|matchers|mocks)/
+  ]
 
 end
 
