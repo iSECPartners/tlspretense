@@ -22,6 +22,7 @@ module SSLTest
       PacketThief.stub(:revert)
       EM.stub(:run).and_yield
       EM.stub(:add_periodic_timer)
+      EM.stub(:open_keyboard)
       TestListener.stub(:start)
     end
 
@@ -55,18 +56,10 @@ module SSLTest
         end
 
         it "launches a test runner" do
-#          @chain = double('chain')
-#          @key = double('baseline key')
-#          cert_manager.stub(:get_chain).with(%w{baseline goodca}).and_return(@chain)
-#          cert_manager.stub(:get_key).with('baseline').and_return(@key)
           TestListener.should_receive(:start).with('',54321,subject)
 
           subject.run
         end
-
-#        it "returns an SSLTestResult object when finished" do
-#          SSLTestCase.new(config, cert_manager, testdesc).run.should be_kind_of SSLTestResult
-#        end
 
       end
     end
@@ -163,6 +156,16 @@ module SSLTest
             report.should_receive(:add_result).with(result)
 
             subject.test_completed(listener, :rejected)
+          end
+        end
+
+        context "when the listener reports a still running test that has stopped" do
+          it "just returns" do
+            SSLTestResult.should_not_receive(:new)
+            EM.should_not_receive(:stop_event_loop)
+            listener.should_not_receive(:stop_server)
+
+            subject.test_completed(listener, :running)
           end
         end
 

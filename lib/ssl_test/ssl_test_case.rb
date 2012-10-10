@@ -55,6 +55,7 @@ module SSLTest
 
     # callback to get test status.
     def test_completed(listener, actual_result)
+      return if actual_result == :running
       str = SSLTestResult.new(@id, (actual_result.to_s == @expected_result))
       str.description = @title
       str.expected_result = @expected_result
