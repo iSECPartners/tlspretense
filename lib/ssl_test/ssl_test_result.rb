@@ -1,4 +1,6 @@
 module SSLTest
+  # SSLTestResults are created by running SSLTestCases. They are then added to
+  # an SSLTestReport so that they can be included in that report.
   class SSLTestResult
 
     attr_reader   :id

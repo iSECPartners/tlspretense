@@ -1,4 +1,6 @@
 module SSLTest
+  # Represents a single test case. It performs the test it represents and adds
+  # its result to a report.
   class SSLTestCase
 
     attr_reader :id
@@ -24,6 +26,9 @@ module SSLTest
       @expected_result = @raw['expected_result']
     end
 
+    # Sets up and launches the current test. It gathers the certificates and
+    # keys needed to launch a TestListener, sets up PacketThief, and
+    # (currently) also sets up the keyboard user interface.
     def run
       puts "Starting test: #{@id}"
       @certchain = @certmanager.get_chain(@certchainalias)
@@ -45,6 +50,7 @@ module SSLTest
         @started_em = true
         EM.run do
           # @listener handles the initial server socket, not the accepted connections.
+          # h in the code block is for each accepted connection.
           @listener = TestListener.start('',@config.listener_port, @goodcacert, @goodcakey, @hosttotest, @certchain, @keychain[0]) do |h|
             h.on_test_completed { |result| self.test_completed result }
           end
@@ -63,7 +69,8 @@ module SSLTest
       PacketThief.revert
     end
 
-    # callback to get test status.
+    # Called when a test completes or is skipped. It adds an SSLTestResult to
+    # the report, and it cleans up after itself.
     def test_completed(actual_result)
       return if actual_result == :running
 
@@ -85,6 +92,7 @@ module SSLTest
       cleanup
     end
 
+    # Callback to cleanup and exit.
     def stop_testing
       cleanup
       exit

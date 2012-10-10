@@ -1,4 +1,6 @@
 module SSLTest
+  # Represents an entire report. SSLTestCases add results to it, which it can
+  # later format.
   class SSLTestReport
 
     def initialize
