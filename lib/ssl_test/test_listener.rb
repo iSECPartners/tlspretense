@@ -72,7 +72,7 @@ module SSLTest
       super
       puts "unbind"
       if @testing_host
-        @testcase.test_completed(self, @test_status)
+        @testcase.test_completed(@test_status)
       end
     end
 

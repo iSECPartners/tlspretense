@@ -3,18 +3,13 @@
 module SSLTest
   # EM handler to handle keyboard input while a test is running.
   module InputHandler
-    def initialize(testcase, listenerserver, stdin)
-      @testcase = testcase
-      @listenerserver = listenerserver
+
+    def initialize(stdin=$stdin)
       @stdin = stdin
+      @actions = {}
 
       # Set the term to accept keystrokes immediately.
       @stdin.enable_raw_chars
-    end
-
-    # mirror the TestListener
-    def stop_server
-      @listenerserver.close
     end
 
     def unbind
@@ -24,20 +19,17 @@ module SSLTest
 
     # Receives one character at a time.
     def receive_data(data)
-      case data
-      when ' '
-        do_skip_test
-      when 'q'
-        do_stop_testing
+      raise "data was longer than 1 char: #{data.inspect}" if data.length != 1
+      p @actions
+      if @actions.has_key? data
+        @actions[data].call
       end
     end
 
-    def do_skip_test
-      @testcase.test_completed(self, :skipped)
-    end
-
-    def do_stop_testing
-      @testcase.stop_testing
+    def on(char, blk=nil, &block)
+      puts "Warning: setting a keyboard handler for a keystroke that is longer than one char: #{char.inspect}" if char.length != 1
+      raise ArgumentError, "No block passed in" if blk == nil and block == nil
+      @actions[char] = ( blk ? blk : block)
     end
 
   end

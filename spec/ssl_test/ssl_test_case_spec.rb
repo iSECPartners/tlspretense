@@ -23,6 +23,7 @@ module SSLTest
       EM.stub(:run).and_yield
       EM.stub(:add_periodic_timer)
       EM.stub(:open_keyboard)
+      EM.stub(:stop_event_loop)
       TestListener.stub(:start)
     end
 
@@ -71,11 +72,16 @@ module SSLTest
                             :start_time= => nil, :stop_time= => nil) }
       before(:each) do
         SSLTestResult.stub(:new).and_return(result)
+        TestListener.stub(:start).and_return(listener)
       end
 
       context "when the expected result is a successful connection" do
         before(:each) do
           testdesc['expected_result'] = 'connected'
+        end
+
+        before(:each) do
+          subject.run
         end
 
         context "when the listener reports success" do
@@ -88,25 +94,25 @@ module SSLTest
             result.should_receive(:start_time=)
             result.should_receive(:stop_time=)
 
-            subject.test_completed(listener, :connected)
+            subject.test_completed(:connected)
           end
           it "adds the result to a report" do
 
             report.should_receive(:add_result).with(result)
 
-            subject.test_completed(listener, :connected)
+            subject.test_completed(:connected)
           end
 
           it "stops the current listener's server socket" do
             listener.should_receive(:stop_server)
 
-            subject.test_completed(listener, :connected)
+            subject.test_completed(:connected)
           end
 
           it "reverts PacketThief" do
             PacketThief.should_receive(:revert)
 
-            subject.test_completed(listener, :connected)
+            subject.test_completed(:connected)
           end
 
           context "when the SSLTestCase started the event loop" do
@@ -120,7 +126,7 @@ module SSLTest
             it "stops the event loop" do
               EM.should_receive(:stop_event_loop)
 
-              subject.test_completed(listener, :connected)
+              subject.test_completed(:connected)
             end
           end
 
@@ -135,7 +141,7 @@ module SSLTest
             it "does not stop the event loop" do
               EM.should_not_receive(:stop_event_loop)
 
-              subject.test_completed(listener, :connected)
+              subject.test_completed(:connected)
             end
           end
 
@@ -150,12 +156,12 @@ module SSLTest
             result.should_receive(:start_time=)
             result.should_receive(:stop_time=)
 
-            subject.test_completed(listener, :rejected)
+            subject.test_completed(:rejected)
           end
           it "adds the result to a report" do
             report.should_receive(:add_result).with(result)
 
-            subject.test_completed(listener, :rejected)
+            subject.test_completed(:rejected)
           end
         end
 
@@ -165,7 +171,7 @@ module SSLTest
             EM.should_not_receive(:stop_event_loop)
             listener.should_not_receive(:stop_server)
 
-            subject.test_completed(listener, :running)
+            subject.test_completed(:running)
           end
         end
 

@@ -44,18 +44,32 @@ module SSLTest
       else
         @started_em = true
         EM.run do
-          tl = TestListener.start('',@config.listener_port, self)
-          EM.open_keyboard InputHandler, self, tl, $stdin
+          # @listener handles the initial server socket, not the accepted connections.
+          @listener = TestListener.start('',@config.listener_port, self)
+          EM.open_keyboard InputHandler do |h|
+            h.on ' ' do
+              self.test_completed(h, :skipped)
+            end
+
+            h.on 'q' do
+              self.stop_testing
+            end
+          end
           EM.add_periodic_timer(5) { puts "EM connection count: #{EM.connection_count}" }
         end
       end
+    end
 
-#      SSLTestResult.new(self)
+    def cleanup
+      @listener.stop_server if @listener
+      EM.stop_event_loop if @started_em
+      PacketThief.revert
     end
 
     # callback to get test status.
-    def test_completed(listener, actual_result)
+    def test_completed(actual_result)
       return if actual_result == :running
+
       str = SSLTestResult.new(@id, (actual_result.to_s == @expected_result))
       str.description = @title
       str.expected_result = @expected_result
@@ -70,17 +84,12 @@ module SSLTest
       else
         puts "Finished test: #{@id}"
       end
-      listener.stop_server
 
-      EM.stop_event_loop if @started_em
-      PacketThief.revert
+      cleanup
     end
 
     def stop_testing
-      # we ought to close the server socket for TestListener here too, but we exit
-      EM.stop_event_loop if @started_em
-      PacketThief.revert
-
+      cleanup
       exit
     end
 
