@@ -46,7 +46,6 @@ module SSLTest
       @config = Config.new @options
       @cert_manager = CertificateManager.new(@config.certs)
 
-      @results = []
       @report = SSLTestReport.new
     end
 
@@ -59,7 +58,6 @@ module SSLTest
           display_test test
         end
       when :runtests
-        @results = []
         @report = SSLTestReport.new
         first = true
         @config.tests( @test_list.empty? ? nil : @test_list).each do |test|
@@ -67,6 +65,7 @@ module SSLTest
           run_test test
           first = false
         end
+        @report.print_results(@stdout)
       else
         raise "Unknown action: #{opts[:action]}"
       end
@@ -74,7 +73,7 @@ module SSLTest
 
     # Runs a test based on the test description.
     def run_test(test)
-      @results << SSLTestCase.new(@config, @cert_manager, @report, test).run
+      SSLTestCase.new(@config, @cert_manager, @report, test).run
     end
 
     def display_test(test)

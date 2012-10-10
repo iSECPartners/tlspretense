@@ -13,7 +13,7 @@ module SSLTest
     let(:conf_certs) { double('conf certs') }
     let(:config) { double("config", :tests => test_data, 'certs' => conf_certs, 'action' => :runtests, 'pause?' => false) }
     let(:cert_manager) { double("certificate manager") }
-    let(:report) { double('report') }
+    let(:report) { double('report', :print_results => nil) }
     let(:testcaseresult) { double('test case result') }
     let(:testcase) { double('test case', :run => testcaseresult) }
 
@@ -79,18 +79,11 @@ module SSLTest
 
         subject.run_test test_data
       end
-      it "then runs the test case" do
+      it "runs the test case" do
         testcase.should_receive(:run).and_return(testcaseresult)
 
         subject.run_test test_data
       end
-      it "stores the result" do
-
-        subject.results.should_receive(:<<).with(testcaseresult)
-
-        subject.run_test test_data
-      end
-
     end
 
     describe "pausing between tests" do
