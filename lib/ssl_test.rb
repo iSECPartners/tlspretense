@@ -3,6 +3,8 @@ require 'eventmachine'
 require 'optparse'
 require 'termios'
 
+require 'ssl_test/ext_core/io_raw_input'
+
 module SSLTest
   autoload :CertificateManager, 'ssl_test/certificate_manager'
   autoload :Config,       'ssl_test/config'

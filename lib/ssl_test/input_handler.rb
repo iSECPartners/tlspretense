@@ -9,11 +9,7 @@ module SSLTest
       @stdin = stdin
 
       # Set the term to accept keystrokes immediately.
-      @oldtermios = Termios.tcgetattr(@stdin)
-      newt = @oldtermios.dup
-      newt.c_lflag &= ~Termios::ICANON
-      newt.c_lflag &= ~Termios::ECHO
-      Termios.tcsetattr(@stdin, Termios::TCSANOW, newt)
+      @stdin.enable_raw_chars
     end
 
     # mirror the TestListener
@@ -23,7 +19,7 @@ module SSLTest
 
     def unbind
       # Clean up by resotring the old termios
-      Termios.tcsetattr(@stdin, Termios::TCSANOW, @oldtermios)
+      @stdin.disable_raw_chars
     end
 
     # Receives one character at a time.
