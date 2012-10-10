@@ -208,7 +208,7 @@ tests:
   certchain:
   - baseline
   - goodca
-  expected_result: connect
+  expected_result: connected
 
 # cname tests
 - alias: wrongcname
@@ -216,13 +216,14 @@ tests:
   certchain:
   - wrongcname
   - goodca
-  expected_result: reject
+  expected_result: rejected
 
 - alias: nullincname
   name: Null character in CNAME
   certchain:
   - nullincname
   - goodca
+  expected_result: rejected
 
 # key usage
 - alias: notwebserver
@@ -230,31 +231,35 @@ tests:
   certchain:
   - notwebserver
   - goodca
-  expected_result: reject
+  expected_result: rejected
 
 # cert chain issues
 - alias: selfsigned
   name: Selfsigned certificate
   certchain:
   - selfsigned
+  expected_result: rejected
 
 - alias: unknownca
   name: Signed by an untrusted CA
   certchain:
   - unknowncacert
   - unknownca
+  expected_result: rejected
 
 - alias: differentkeyca
   name: Signed by an untrusted CA (provided in the chain) with the same name but a different key
   certchain:
   - signedbydifferentkey
   - cawithdifferentkey
+  expected_result: rejected
 
 - alias: badsignature
   name: Bad signature
   certchain:
   - badsignature
   - goodca
+  expected_result: rejected
 
 - alias: cafalseintermediate
   name: "Intermediate certificate where BasicConstraints sets CA:FALSE"
@@ -262,6 +267,7 @@ tests:
   - signedbycafalseint
   - cafalseintermediate
   - goodca
+  expected_result: rejected
 
 - alias: nobcintermediate
   name: Intermediate certificate lacks BasicConstraints
@@ -269,6 +275,7 @@ tests:
   - signedbynobcint
   - nobcintermediate
   - goodca
+  expected_result: rejected
 
 - alias: badsigonintermediate
   name: Intermediate certificate has bad signature from CA
@@ -276,6 +283,7 @@ tests:
   - signedbybadsigintermediate
   - badsigintermediate
   - goodca
+  expected_result: rejected
 
 
 - alias: signedwithmd5
@@ -283,12 +291,14 @@ tests:
   certchain:
   - signedwithmd5
   - goodca
+  expected_result: rejected
 
 - alias: signedwithmd4
   name: Certificate signed with MD4
   certchain:
   - signedwithmd4
   - goodca
+  expected_result: rejected
 
 ## Need OpenSSL built with MD2 support
 #- alias: signedwithmd2
@@ -296,18 +306,21 @@ tests:
 #  certchain:
 #  - signedwithmd2
 #  - goodca
+#  expected_result: rejected
 
 - alias: expiredcert
   name: Certificate that has expired
   certchain:
   - expiredcert
   - goodca
+  expected_result: rejected
 
 - alias: notyetvalidcert
   name: Certificate that is valid in the future
   certchain:
   - notyetvalidcert
   - goodca
+  expected_result: rejected
 
 - alias: expiredintermediate
   name: Certificate signed by an intermediate that has expired
@@ -315,10 +328,12 @@ tests:
   - signedbyexpiredint
   - expiredintermediate
   - goodca
+  expected_result: rejected
 
 #- alias: expiredca
 #  name: "Certificate signed by a trusted, but expired CA"
 #  certchain:
 #  - signedbyexpiredca
 #  - expiredca
+#  expected_result: rejected
 
