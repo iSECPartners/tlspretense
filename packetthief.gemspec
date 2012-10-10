@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "packetthief"
-  s.version = "0.3.1"
+  s.version = "0.3.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["William (B.J.) Snow Orvis"]
-  s.date = "2012-10-09"
+  s.date = "2012-10-10"
   s.description = "Framework for intercepting packets, redirecting them to a handler, and doing something with the \"stolen\" connection."
   s.email = "bjorvis@isecpartners.com"
   s.extra_rdoc_files = [
