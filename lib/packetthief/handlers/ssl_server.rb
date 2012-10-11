@@ -63,7 +63,7 @@ module PacketThief
     class SSLServer < AbstractSSLHandler
 
       # reference to the InitialServer that created the current handler. exists
-      # so you can call #stop_server
+      # so you can call #stop_server or do something else to it directly.
       attr_accessor :server_handler
 
       def self.start(host, port, *args, &block)
@@ -89,6 +89,10 @@ module PacketThief
       #
       # So we handle the server muckery ourselves.
       module InitialServer
+
+        # Set a Ruby Logger that will also be added to accepted connections.
+        attr_accessor :logger
+
         def initialize(servsocket, ssl_class, args, block)
           @servsocket = servsocket
           @ssl_class = ssl_class
@@ -97,12 +101,13 @@ module PacketThief
         end
 
         def notify_readable
-          puts "InitialServer: Received a new connection, spawning a #{@ssl_class}"
+          @logger.debug "#{self.class}(#{@ssl_class}): Received a new connection, spawning a #{@ssl_class}" if @logger
           sock = @servsocket.accept_nonblock
 
           ::EM.watch sock, @ssl_class, sock, *@args do |h|
             h.server_handler = self
             h.notify_readable = true
+            h.logger = @logger
             # Now call the caller's block.
             @block.call(h) if @block
             # And finally finish initialization by applying the context to an
@@ -113,7 +118,7 @@ module PacketThief
         end
 
         def notify_writable
-          puts "server socket notify writable"
+          @logger.debug "#{self.class}(#{@ssl_class}): Server socket notify writable" if @logger
         end
 
         # This must be called explicitly. EM doesn't seem to have a callback for when the EM::run call ends.
@@ -122,6 +127,10 @@ module PacketThief
             detach
             @servsocket.close
           end
+        end
+
+        def unbind
+          @logger.debug "#{self.class}(#{@ssl_class}): Stopping server socket" if @logger
         end
       end
 

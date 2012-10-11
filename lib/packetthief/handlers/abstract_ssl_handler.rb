@@ -25,8 +25,11 @@ module PacketThief
       # is applied to the SSLSocket during #tls_begin.
       attr_accessor :sni_hostname
 
+      # An optional Ruby Logger for debugging output.
+      attr_accessor :logger
+
       def initialize(tcpsocket)
-#        puts "#{self.class} initialize"
+        @logger.debug "#{self.class}: initialize" if @logger
         # Set up initial values
         @tcpsocket = tcpsocket
         @ctx = OpenSSL::SSL::SSLContext.new
@@ -43,7 +46,7 @@ module PacketThief
       # point, it will be added to the SSLSocket in order to enable sending a
       # hostname in the SNI TLS extension.
       def tls_begin
-#        puts "#{self.class} tls begin"
+        @logger.debug "#{self.class}: tls begin" if @logger
         @sslsocket = OpenSSL::SSL::SSLSocket.new(@tcpsocket, @ctx)
         @sslsocket.hostname = @sni_hostname if @sni_hostname
         @state = :initialized
@@ -52,7 +55,7 @@ module PacketThief
       # Calls accept_nonblock/connect_nonblock, read_nonblock, or
       # write_nonblock based on the current state of the connection.
       def notify_readable
-#        puts "#{self.class} notify_readable state: #{@state}"
+        @logger.debug "#{self.class} notify_readable state: #{@state}" if @logger
         case @state
         when :initialized
           attempt_connection
@@ -66,7 +69,7 @@ module PacketThief
       # We only care about notify_writable if we are waiting to write for some
       # reason.
       def notify_writable
-#        puts "#{self.class} notify_writable state: #{@state}"
+        @logger.debug "#{self.class} notify_writable state: #{@state}" if @logger
         notify_writable = false # disable it now. if we still need it, we'll renabled it.
         case @state
         when :initialized
@@ -123,7 +126,7 @@ module PacketThief
           @state = :read_needs_to_write
           notify_writable = true
         rescue OpenSSL::SSL::SSLError => e
-          puts "#{self.class}: #{e} (#{e.class})"
+          @logger.error "#{self.class}: #{e} (#{e.class})" if @logger
           close_connection
         else
           @state = :ready_to_read
@@ -142,7 +145,7 @@ module PacketThief
 
       private
       def attempt_write(data=nil)
-#        puts "#{self.class} attempt_write"
+        @logger.debug "#{self.class} attempt_write" if @logger
         write_buffer << data if data
         # do not attempt to write until we are ready!
         return if @state == :initialized or @state == :new
@@ -153,7 +156,7 @@ module PacketThief
         rescue IO::WaitReadable
           @state = :write_needs_to_read
         rescue OpenSSL::SSL::SSLError => e
-          puts "#{self.class}: #{e} (#{e.class})"
+          @logger.error "#{self.class}: #{e} (#{e.class})" if @logger
           close_connection
         else
           # shrink the buf
@@ -177,7 +180,7 @@ module PacketThief
 
       # Call this to send data to the other end of the connection.
       def send_data(data)
-#        puts "#{self.class} send_data"
+        @logger.debug "#{self.class}: send_data: #{data.inspect}" if @logger
         attempt_write(data)
       end
 
@@ -211,7 +214,7 @@ module PacketThief
       # Called right after the SSL handshake succeeds. This is your "new"
       # #post_init.
       def tls_successful_handshake
-        puts "Succesful handshake!"
+        @logger.debug "#{self.class}: Succesful handshake!" if @logger
       end
 
       # Called right after accept_nonblock fails for some unknown reason. The
@@ -220,17 +223,17 @@ module PacketThief
       #
       # The connection will be closed after this.
       def tls_failed_handshake(e)
-        puts "#{self.class} Failed to accept: #{e} (#{e.class})"
+        @logger.error "#{self.class}: Failed to accept: #{e} (#{e.class})" if @logger
       end
 
       # Override this to do something with the unecrypted data.
       def receive_data(data)
-        puts "tls_recv: #{data}"
+        @logger.debug "#{self.class}: receive_data: #{data.inspect}" if @logger
       end
 
       # Override this to do something when the socket is finished.
       def unbind
-        puts "tls unbind"
+        @logger.debug "#{self.class}: unbind" if @logger
       end
 
     end
