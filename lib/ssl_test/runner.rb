@@ -8,6 +8,8 @@ module SSLTest
         :pause => false,
         :config => Config::DEFAULT,
         :action => :runtests,
+        :loglevel => 'INFO',
+        :logfile => '-'
       }
 
     def parse_args(args)
@@ -30,6 +32,15 @@ module SSLTest
           options[:action] = :list
         end
 
+        opts.on("--log-level=loglevel", "Set the log level. It can be one of:",
+                "  DEBUG, INFO, WARN, ERROR, FATAL", "  (Default: INFO, or whatever config.yml sets)") do |l|
+          options[:loglevel] = l
+        end
+
+        opts.on("--log-file=somefile.log", "Specify the file to write logs to.","  (Default: - (STDOUT))") do |l|
+          options[:logfile] = l
+        end
+
       end
 
       args = args.dup
@@ -45,6 +56,9 @@ module SSLTest
 
       @config = Config.new @options
       @cert_manager = CertificateManager.new(@config.certs)
+      @logger = Logger.new(@config.logfile)
+      @logger.level = @config.loglevel
+      @app_context = AppContext.new(@config, @cert_manager, @logger)
 
       @report = SSLTestReport.new
     end
@@ -73,7 +87,7 @@ module SSLTest
 
     # Runs a test based on the test description.
     def run_test(test)
-      SSLTestCase.new(@config, @cert_manager, @report, test).run
+      SSLTestCase.new(@app_context, @report, test).run
     end
 
     def display_test(test)

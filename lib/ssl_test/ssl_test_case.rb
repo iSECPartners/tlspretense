@@ -4,24 +4,16 @@ module SSLTest
   class SSLTestCase
 
     attr_reader :id
-    attr_reader :title
-    attr_reader :certchainalias
-    attr_reader :expected_result
+    attr_reader :description
 
-    attr_reader :certchain
-    attr_reader :keychain
-    attr_reader :hosttotest
-
-    attr_reader :goodcacert
-    attr_reader :goodcakey
-
-    def initialize(config, certmanager, report, testdesc)
-      @config = config
-      @certmanager = certmanager
+    def initialize(appctx, report, testdesc)
+      @appctx = appctx
+      @config = @appctx.config
+      @certmanager = @appctx.cert_manager
       @report = report
       @raw = testdesc.dup
       @id = @raw['alias']
-      @title = @raw['name']
+      @description = @raw['name']
       @certchainalias = @raw['certchain']
       @expected_result = @raw['expected_result']
     end
@@ -75,7 +67,7 @@ module SSLTest
       return if actual_result == :running
 
       str = SSLTestResult.new(@id, (actual_result.to_s == @expected_result))
-      str.description = @title
+      str.description = @description
       str.expected_result = @expected_result
       str.actual_result = actual_result.to_s
       str.start_time = @start_time

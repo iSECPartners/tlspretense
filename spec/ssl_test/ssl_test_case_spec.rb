@@ -39,6 +39,8 @@ module SSLTest
       }
     end
     let(:report) { double("report", :add_result => nil) }
+    let(:logger) { Logger.new(nil) }
+    let(:app_context) { AppContext.new(config, cert_manager, logger) }
 
 
     before(:each) do
@@ -51,7 +53,7 @@ module SSLTest
       TestListener.stub(:start)
     end
 
-    subject { SSLTestCase.new(config, cert_manager, report, testdesc) }
+    subject { SSLTestCase.new(app_context, report, testdesc) }
 
     describe "#run" do
 

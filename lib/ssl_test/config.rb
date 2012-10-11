@@ -43,5 +43,25 @@ module SSLTest
       @opts[:action]
     end
 
+    def loglevel
+      levelstr = if @opts.has_key? :loglevel
+        @opts[:loglevel].upcase
+      elsif @raw.has_key? 'log' and @raw['log'].has_key? 'level'
+        @raw['log']['level'].upcase
+      else
+        'INFO'
+      end
+      Logger.const_get(levelstr)
+    end
+
+    def logfile
+      if @opts[:logfile] == '-'
+        STDOUT
+      else
+        @opts[:logfile]
+      end
+    end
+
+
   end
 end
