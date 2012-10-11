@@ -155,7 +155,7 @@ certs:
 #    addextensions:
 #    - "subjectAltName=DNS:%HOSTNAME%\x00.foo.com, DNS:another.com"
 
-  parentdomaininsubjectaltname: &parentdomaininsubjectaltname
+  parentinsubjectaltname: &parentinsubjectaltname
     <<: *subjectaltnameonly
     addextensions:
     - "subjectAltName=DNS:%PARENTHOSTNAME%"
