@@ -44,9 +44,9 @@ module SSLTest
           # @listener handles the initial server socket, not the accepted connections.
           # h in the code block is for each accepted connection.
           @listener = TestListener.start('',@config.listener_port, @goodcacert, @goodcakey, @hosttotest, @certchain, @keychain[0]) do |h|
-            h.logger = @appctx.logger
             h.on_test_completed { |result| self.test_completed result }
           end
+          @listener.logger = @appctx.logger
           EM.open_keyboard InputHandler do |h|
             h.on(' ') { self.test_completed :skipped }
             h.on('q') { self.stop_testing }

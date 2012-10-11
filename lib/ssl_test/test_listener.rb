@@ -11,8 +11,6 @@ module SSLTest
   # corresponds to the hostname the test suite is testing off of.
   class TestListener < PacketThief::Handlers::SSLSmartProxy
 
-    attr_accessor :logger
-
     # For all hosts that do not match _hosttotest_, we currently use the
     # _cacert_ and re-sign the original cert provided by the actual host. This
     # will cause issues with certificate revocation.
@@ -32,7 +30,6 @@ module SSLTest
       @hostcert = chain.shift
       @hostkey = keytotest
       @extrachain = chain
-      @logger = logger
       # Use the goodca for hosts we don't care to test against.
       super(tcpsocket, cacert, cakey)
 
