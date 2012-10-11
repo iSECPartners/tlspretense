@@ -1,11 +1,9 @@
-SSL Client Testing
-==================
+= SSL Client Testing
 
 A set of tools for testing an SSL client's certificate validation.
 
 
-Description
------------
+== Description
 
 Ssl\_client\_testing provides a set of tools to test SSL certificate
 validation, with a focus on mostly blackbox testing. It requires a (Linux,
@@ -19,8 +17,7 @@ It currently provides two sets of libraries for this purpose:
 * *SSLTest*, a framework for running tests using various certificate chains
 
 
-CertMaker
-=========
+== CertMaker
 
 CertMaker provides tools for building and managing certificates, especially
 certificates that vary from each other in only slightly different ways. It is
@@ -47,8 +44,7 @@ the ability to generate a suite of certificates from a Hash configuration, such
 as the one in config.yml.
 
 
-SSLTest
-=======
+== SSLTest
 
 SSLTest provides a test harness for testing SSL certificate validation. It runs
 on a system placed between the SSL/TLS client to-be-tested and the local
@@ -67,8 +63,7 @@ order to make interception easier).
 
 TODO: Usage
 
-Requirements
-------------
+=== Requirements
 
 Obviously, this framework requires a certain amount of setup, and it has some
 requirements:
@@ -96,8 +91,7 @@ requirements:
   either generate a new goodca and install it in the client's trust store, or
   you can use an existing test CA to generate the test certificates.
 
-Limitations
------------
+=== Limitations
 
 * The Server Name Indication (SNI) TLS extension does not have full support in
   Ruby 1.8.7.
@@ -110,8 +104,7 @@ Limitations
 * It currently uses the goodca to re-sign certificates from hostnames that do
   not match the configured test hostname.
 
-TODO
-----
+=== TODO
 
 * Fix the subjectAltName null byte test. It requires manual construction of the
   ASN1 encoding due to the null byte causing a truncation somewhere in OpenSSL
@@ -156,4 +149,3 @@ TODO
 * SSLTest Command-line
   * Command line option to specify where to write the results to
 
-vim:ft=markdown
