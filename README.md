@@ -113,8 +113,30 @@ Limitations
 TODO
 ----
 
-* Add more support for subjectAltName. Eg, testing whether the hostname is in
-  it or not, null name there, etc.
+* Fix the subjectAltName null byte test. It requires manual construction of the
+  ASN1 encoding due to the null byte causing a truncation somewhere in OpenSSL
+  or Ruby's OpenSSL.
+
+* Add wildcard tests
+  * cert hostname: \*.%PARENTHOSTNAME%
+  * bad hostname: \*.other.com
+  * tld hostname: \*.%TLDHOSTNAME% (reject)
+  * do we want to test more complicated wildcards?
+
+* Advanced: Add name constraints tests.
+  * success: dnsName of leaf matches exactly the dnsName permitted constraint
+    nameConstraints=permitted;dnsName:%HOSTNAME%
+  * reject: constraint is a different hostname
+    nameConstraints=permitted;dnsName:some.other.com
+  * success: dnsName of leaf is a subdomain in addition to dnsName constraint
+    constraint = parent domain of hostname (need to ensure hostname has enough labels)
+    nameConstraints=permitted;dnsName:%PARENTHOSTNAME%
+    do it this way vs trying a subdomain of the original hostname to
+  * reject: constraint is a slightly different hostname
+    nameConstraints=permitted;dnsName:a%HOSTNAME%
+  * success: dirname matches the default subject's DN
+  * reject: dirname does not match the default subject's DN
+  * URI constraints
 
 * truly unique serial numbers for a given CA. Alternatively, we could use the
   first cert's serial as a starting point and increment from there.
@@ -132,7 +154,6 @@ TODO
 * Configuration option for disabling PacketThief when managing firewall rules
 
 * SSLTest Command-line
-  * Print results
   * Command line option to specify where to write the results to
 
 vim:ft=markdown

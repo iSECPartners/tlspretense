@@ -15,6 +15,7 @@ module CertMaker
     def initialize(certinfos, defaulthostname, config={})
       @config = config
       @defaulthostname = defaulthostname
+      @parenthostname = defaulthostname.sub(/^[\w-]+\./, '') # remove left-most label
       @certinfos = certinfos
       @certificates = {}
     end
@@ -79,8 +80,14 @@ module CertMaker
         generate_certificate(signeralias,@certinfos[signeralias]) unless @certificates.has_key? signeralias
         cf.ca_key = @certificates[signeralias][:key]
       end
-      # doctor the certinfo's subject line.
-      certinfo['subject'] = certinfo['subject'].gsub(/%HOSTNAME%/, @defaulthostname)
+      # doctor the certinfo's subject line and any extensions.
+      certinfo['subject'] = certinfo['subject'].gsub(/%HOSTNAME%/, @defaulthostname).gsub(/%PARENTHOSTNAME%/, @parenthostname)
+      if certinfo.has_key? 'extensions'
+        certinfo['extensions'] = certinfo['extensions'].map { |ext| ext.gsub(/%HOSTNAME%/, @defaulthostname).gsub(/%PARENTHOSTNAME%/, @parenthostname) }
+      end
+      if certinfo.has_key? 'addextensions'
+        certinfo['addextensions'] = certinfo['addextensions'].map { |ext| ext.gsub(/%HOSTNAME%/, @defaulthostname).gsub(/%PARENTHOSTNAME%/, @parenthostname) }
+      end
       # doctor the serial number.
       if @config.has_key? 'missing_serial_generation'
         unless certinfo.has_key? 'serial'

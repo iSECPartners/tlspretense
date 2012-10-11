@@ -30,13 +30,15 @@ hostname: www.isecpartners.com
 certmaker:
   # The default subject string used by the generated certificates. Note that
   # the substring %HOSTNAME% will be replaced with the value of hostname.
-  #defaultsubject: &defaultsubject "C=US, CN=my.hostname.com"
   defaultsubject: &defaultsubject "C=US, CN=%HOSTNAME%"
 
   # The default subject string for the null in subject certificate test.
   # Intended to be almost identical to the defaultsubject.
-  #defaultsubjectwithnull: &defaultsubjectwithnull "C=US, CN=my.hostname.com\0.foo.com"
   defaultsubjectwithnull: &defaultsubjectwithnull "C=US, CN=%HOSTNAME%\0.foo.com"
+
+  # a subject string, but with the the hostname's parent domain instead of its
+  # domain. A test that should fail.
+  defaultparentsubject: &defaultparentsubject "C=US, CN=%PARENTHOSTNAME%"
 
   # The directory where pregenerated certificates should be stored.
   outdir: certs
@@ -115,10 +117,48 @@ certs:
     <<: *baseline
     subject: "C=US, CN=www.foo.com"
 
+  parentcname: &parentcname
+    <<: *baseline
+    subject: *defaultparentsubject
+
   nullincname: &nullincname
     <<: *baseline
     subject: *defaultsubjectwithnull
 
+  baselinesubjectaltname: &baselinesubjectaltname
+    <<: *baseline
+    addextensions:
+    - "subjectAltName=DNS:%HOSTNAME%"
+
+  subjectaltnameonly: &subjectaltnameonly
+    <<: *baseline
+    subject: "C=US, O=My Awesome Organization"
+    addextensions:
+    - "subjectAltName=DNS:%HOSTNAME%"
+
+  wrongsubjectaltnamerightsubject: &wrongsubjectaltnamerightsubject
+    <<: *baseline
+    addextensions:
+    - "subjectAltName=DNS:www.foo.com"
+
+  wrongsubjectaltnamewrongsubject: &wrongsubjectaltnamewrongsubject
+    <<: *baseline
+    subject: "C=US, CN=www.foo.com"
+    addextensions:
+    - "subjectAltName=DNS:www.foo.com"
+
+  # This fails to generate as desired. the null byte truncates the
+  # subjectAltName somewhere within OpenSSL. We need to manually construct the
+  # ASN1 encoding ourselves.
+#  nullinsubjectaltname: &nullinsubjectaltname
+#    <<: *subjectaltnameonly
+#    addextensions:
+#    - "subjectAltName=DNS:%HOSTNAME%\x00.foo.com, DNS:another.com"
+
+  parentdomaininsubjectaltname: &parentdomaininsubjectaltname
+    <<: *subjectaltnameonly
+    addextensions:
+    - "subjectAltName=DNS:%PARENTHOSTNAME%"
 
   notwebserver: &notwebserver
     <<: *baseline
@@ -205,6 +245,17 @@ certs:
     <<: *baseline
     signing_alg: MD4
 
+  expiredca: &expiredca
+    <<: *goodca
+    subject: "C=US, CN=Expired CA"
+    not_before: -365
+    not_after: -30
+
+  signedbyexpiredca:
+    <<: *baseline
+    issuer: expiredca
+
+
 tests:
 # baseline
 - alias: baseline
@@ -222,10 +273,61 @@ tests:
   - goodca
   expected_result: rejected
 
+# cname tests
+- alias: parentcname
+  name: "Parent domain's CNAME"
+  certchain:
+  - parentcname
+  - goodca
+  expected_result: rejected
+
 - alias: nullincname
   name: Null character in CNAME
   certchain:
   - nullincname
+  - goodca
+  expected_result: rejected
+
+# subjectAltName tests
+- alias: happysubjectaltname
+  name: Hostname is a dnsName in subjectAltName and in subject
+  certchain:
+  - baselinesubjectaltname
+  - goodca
+  expected_result: connected
+
+- alias: happysubjectaltnameonly
+  name: hostname only a dnsName subjectAltName
+  certchain:
+  - subjectaltnameonly
+  - goodca
+  expected_result: connected
+
+- alias: wrongsubjectaltnamewrongsubject
+  name: hostname in neither subjectAltName nor subject
+  certchain:
+  - wrongsubjectaltnamewrongsubject
+  - goodca
+  expected_result: rejected
+
+- alias: wrongsubjectaltnamerightsubject
+  name: hostname in subject but not in subjectAltName
+  certchain:
+  - wrongsubjectaltnamerightsubject
+  - goodca
+  expected_result: rejected
+
+#- alias: nullinsubjectaltname
+#  name: "null byte in subjectAltName"
+#  certchain:
+#  - nullinsubjectaltname
+#  - goodca
+#  expected_result: rejected
+#
+- alias: parentinsubjectaltname
+  name: "parent domain in subjectAltName"
+  certchain:
+  - parentinsubjectaltname
   - goodca
   expected_result: rejected
 
@@ -289,7 +391,6 @@ tests:
   - goodca
   expected_result: rejected
 
-
 - alias: signedwithmd5
   name: Certificate signed with MD5
   certchain:
@@ -334,6 +435,8 @@ tests:
   - goodca
   expected_result: rejected
 
+# This requires installing the expired CA that is also installed into the
+# client's trusted root store.
 #- alias: expiredca
 #  name: "Certificate signed by a trusted, but expired CA"
 #  certchain:
