@@ -68,6 +68,10 @@ certmaker:
     # password protection.
     #keypass: changeme
 
+logger:
+  level: INFO
+  file: '-'
+
 certs:
   goodca: &goodca
     subject: "C=US, CN=Trusted CA"

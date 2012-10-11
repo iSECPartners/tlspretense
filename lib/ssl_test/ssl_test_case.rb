@@ -22,7 +22,7 @@ module SSLTest
     # keys needed to launch a TestListener, sets up PacketThief, and
     # (currently) also sets up the keyboard user interface.
     def run
-      puts "Starting test: #{@id}"
+      @appctx.logger.info "#{@id}: Starting test"
       @certchain = @certmanager.get_chain(@certchainalias)
       @keychain = @certmanager.get_keychain(@certchainalias)
       @hosttotest = @config.hosttotest
@@ -44,13 +44,14 @@ module SSLTest
           # @listener handles the initial server socket, not the accepted connections.
           # h in the code block is for each accepted connection.
           @listener = TestListener.start('',@config.listener_port, @goodcacert, @goodcakey, @hosttotest, @certchain, @keychain[0]) do |h|
+            h.logger = @appctx.logger
             h.on_test_completed { |result| self.test_completed result }
           end
           EM.open_keyboard InputHandler do |h|
             h.on(' ') { self.test_completed :skipped }
             h.on('q') { self.stop_testing }
           end
-          EM.add_periodic_timer(5) { puts "EM connection count: #{EM.connection_count}" }
+          EM.add_periodic_timer(5) { @appctx.logger.info "EM connection count: #{EM.connection_count}" }
         end
       end
     end
@@ -76,9 +77,9 @@ module SSLTest
       @report.add_result(str)
 
       if actual_result == :skipped
-        puts "Skipping test: #{@id}"
+        @appctx.logger.info "#{@id}: Skipping test"
       else
-        puts "Finished test: #{@id}"
+        @appctx.logger.info "#{@id}: Finished test"
       end
 
       cleanup

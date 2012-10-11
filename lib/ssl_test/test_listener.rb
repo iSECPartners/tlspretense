@@ -11,6 +11,8 @@ module SSLTest
   # corresponds to the hostname the test suite is testing off of.
   class TestListener < PacketThief::Handlers::SSLSmartProxy
 
+    attr_accessor :logger
+
     # For all hosts that do not match _hosttotest_, we currently use the
     # _cacert_ and re-sign the original cert provided by the actual host. This
     # will cause issues with certificate revocation.
@@ -25,12 +27,12 @@ module SSLTest
     # * _keytotest_   [OpenSSL::PKey::PKey] The key corresponding to the leaf
     #   node in _chaintotest_.
     def initialize(tcpsocket, cacert, cakey, hosttotest, chaintotest, keytotest)
-      puts "initialize"
       @hosttotest = hosttotest
       chain = chaintotest.dup
       @hostcert = chain.shift
       @hostkey = keytotest
       @extrachain = chain
+      @logger = logger
       # Use the goodca for hosts we don't care to test against.
       super(tcpsocket, cacert, cakey)
 
@@ -43,7 +45,7 @@ module SSLTest
     # the check happen after the parent class already added a re-signed
     # certificate to +@ctx+.
     def post_init
-      puts "Connection received"
+      logger.debug "Conntection received" if logger
       check_for_hosttotest(@ctx)
     end
 
@@ -79,7 +81,7 @@ module SSLTest
     # If the client completes connecting, then they trusted our cert chain.
     def tls_successful_handshake
       super
-      puts "successful handshake"
+      logger.debug "successful handshake" if logger
       if @testing_host
         @test_status = :connected
       end
@@ -89,7 +91,7 @@ module SSLTest
     # chain.
     def tls_failed_handshake(e)
       super
-      puts "failed handshake"
+      logger.debug "failed handshake" if logger
       if @testing_host
         @test_status = :rejected
       end
@@ -102,7 +104,7 @@ module SSLTest
     # Report our result.
     def unbind
       super
-      puts "unbind"
+      logger.debug "unbind" if logger
       if @testing_host
         @test_completed_cb.call(@test_status) if @test_completed_cb
       end

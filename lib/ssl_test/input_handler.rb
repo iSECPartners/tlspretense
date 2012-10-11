@@ -20,7 +20,6 @@ module SSLTest
     # Receives one character at a time.
     def receive_data(data)
       raise "data was longer than 1 char: #{data.inspect}" if data.length != 1
-      p @actions
       if @actions.has_key? data
         @actions[data].call
       end

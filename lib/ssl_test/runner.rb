@@ -58,6 +58,10 @@ module SSLTest
       @cert_manager = CertificateManager.new(@config.certs)
       @logger = Logger.new(@config.logfile)
       @logger.level = @config.loglevel
+      @logger.datetime_format = "%Y-%m-%d %H:%M:%S %Z"
+      @logger.formatter = proc do |severity, datetime, progname, msg|
+          "#{datetime}:#{severity}: #{msg}\n"
+      end
       @app_context = AppContext.new(@config, @cert_manager, @logger)
 
       @report = SSLTestReport.new

@@ -90,7 +90,7 @@ module SSLTest
         end
 
         it "sets the test runner's test completed callback to run #test_completed" do
-          @tl = double('test listener')
+          @tl = double('test listener', :logger= => nil)
           @result = double('result')
           TestListener.stub(:start).and_yield(@tl).and_return(@tl)
 
