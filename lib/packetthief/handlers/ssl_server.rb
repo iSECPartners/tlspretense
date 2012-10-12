@@ -116,7 +116,7 @@ module PacketThief
         end
 
         def notify_writable
-          logdebug "#{self.class}(#{@ssl_class}): Server socket notify writable"
+          logdebug "(#{@ssl_class}): Server socket notify writable"
         end
 
         # This must be called explicitly. EM doesn't seem to have a callback for when the EM::run call ends.
@@ -128,7 +128,7 @@ module PacketThief
         end
 
         def unbind
-          logdebug "#{self.class}(#{@ssl_class}): Stopping server socket"
+          logdebug "(#{@ssl_class}): Stopping server socket"
         end
       end
 
