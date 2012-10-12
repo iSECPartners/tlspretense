@@ -1,4 +1,6 @@
 require 'socket'
+require 'logger'
+
 require 'eventmachine'
 
 module PacketThief
@@ -8,6 +10,7 @@ module PacketThief
   autoload :PF,           'packetthief/pf'
 
   autoload :Handlers, 'packetthief/handlers'
+  autoload :Logging,  'packetthief/logging'
   autoload :Util, 'packetthief/util'
 
   def self.method_missing(m, *args, &block)

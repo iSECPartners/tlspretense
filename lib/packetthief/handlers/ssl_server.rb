@@ -89,9 +89,7 @@ module PacketThief
       #
       # So we handle the server muckery ourselves.
       module InitialServer
-
-        # Set a Ruby Logger that will also be added to accepted connections.
-        attr_accessor :logger
+        include Logging
 
         def initialize(servsocket, ssl_class, args, block)
           @servsocket = servsocket
@@ -101,7 +99,7 @@ module PacketThief
         end
 
         def notify_readable
-          @logger.debug "#{self.class}(#{@ssl_class}): Received a new connection, spawning a #{@ssl_class}" if @logger
+          logdebug "#{self.class}(#{@ssl_class}): Received a new connection, spawning a #{@ssl_class}"
           sock = @servsocket.accept_nonblock
 
           ::EM.watch sock, @ssl_class, sock, *@args do |h|
@@ -118,7 +116,7 @@ module PacketThief
         end
 
         def notify_writable
-          @logger.debug "#{self.class}(#{@ssl_class}): Server socket notify writable" if @logger
+          logdebug "#{self.class}(#{@ssl_class}): Server socket notify writable"
         end
 
         # This must be called explicitly. EM doesn't seem to have a callback for when the EM::run call ends.
@@ -130,7 +128,7 @@ module PacketThief
         end
 
         def unbind
-          @logger.debug "#{self.class}(#{@ssl_class}): Stopping server socket" if @logger
+          logdebug "#{self.class}(#{@ssl_class}): Stopping server socket"
         end
       end
 

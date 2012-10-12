@@ -97,7 +97,7 @@ module PacketThief
         @dest_port, @dest_host = PacketThief.original_dest(self)
 
         if @@activeconns.has_key? "#{client_host}:#{client_port}"
-          @logger.warn "#{self.class}: loop detected! Stopping the loop." if @logger
+          logwarn "#{self.class}: loop detected! Stopping the loop."
           close_connection
           return
         end

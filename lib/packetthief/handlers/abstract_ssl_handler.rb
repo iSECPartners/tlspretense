@@ -7,6 +7,7 @@ module PacketThief
     #
     # TODO: get_peer_cert, get_peername, etc.
     class AbstractSSLHandler < ::EM::Connection
+      include Logging
 
       # The OpenSSL::SSL::SSLContext. Modify this in post_init or in the
       # initializing code block to add certificates, etc.
@@ -25,11 +26,8 @@ module PacketThief
       # is applied to the SSLSocket during #tls_begin.
       attr_accessor :sni_hostname
 
-      # An optional Ruby Logger for debugging output.
-      attr_accessor :logger
-
       def initialize(tcpsocket)
-        @logger.debug "#{self.class}: initialize" if @logger
+        logdebug "initialize"
         # Set up initial values
         @tcpsocket = tcpsocket
         @ctx = OpenSSL::SSL::SSLContext.new
@@ -46,7 +44,7 @@ module PacketThief
       # point, it will be added to the SSLSocket in order to enable sending a
       # hostname in the SNI TLS extension.
       def tls_begin
-        @logger.debug "#{self.class}: tls begin" if @logger
+        logdebug "tls begin", :sni_hostname => @sni_hostname
         @sslsocket = OpenSSL::SSL::SSLSocket.new(@tcpsocket, @ctx)
         @sslsocket.hostname = @sni_hostname if @sni_hostname
         @state = :initialized
@@ -55,7 +53,7 @@ module PacketThief
       # Calls accept_nonblock/connect_nonblock, read_nonblock, or
       # write_nonblock based on the current state of the connection.
       def notify_readable
-        @logger.debug "#{self.class} notify_readable state: #{@state}" if @logger
+        logdebug "notify_readable", :state => @state
         case @state
         when :initialized
           attempt_connection
@@ -69,7 +67,7 @@ module PacketThief
       # We only care about notify_writable if we are waiting to write for some
       # reason.
       def notify_writable
-        @logger.debug "#{self.class} notify_writable state: #{@state}" if @logger
+        logdebug "notify_writable", :state => @state
         notify_writable = false # disable it now. if we still need it, we'll renabled it.
         case @state
         when :initialized
@@ -126,7 +124,7 @@ module PacketThief
           @state = :read_needs_to_write
           notify_writable = true
         rescue OpenSSL::SSL::SSLError => e
-          @logger.error "#{self.class}: #{e} (#{e.class})" if @logger
+          logerror "#{self.class}: #{e} (#{e.class})"
           close_connection
         else
           @state = :ready_to_read
@@ -145,7 +143,7 @@ module PacketThief
 
       private
       def attempt_write(data=nil)
-        @logger.debug "#{self.class} attempt_write" if @logger
+        logdebug "attempt_write"
         write_buffer << data if data
         # do not attempt to write until we are ready!
         return if @state == :initialized or @state == :new
@@ -156,7 +154,7 @@ module PacketThief
         rescue IO::WaitReadable
           @state = :write_needs_to_read
         rescue OpenSSL::SSL::SSLError => e
-          @logger.error "#{self.class}: #{e} (#{e.class})" if @logger
+          logerror "#{self.class}: #{e} (#{e.class})"
           close_connection
         else
           # shrink the buf
@@ -180,7 +178,7 @@ module PacketThief
 
       # Call this to send data to the other end of the connection.
       def send_data(data)
-        @logger.debug "#{self.class}: send_data: #{data.inspect}" if @logger
+        logdebug "send_data:", :data => data
         attempt_write(data)
       end
 
@@ -214,7 +212,7 @@ module PacketThief
       # Called right after the SSL handshake succeeds. This is your "new"
       # #post_init.
       def tls_successful_handshake
-        @logger.debug "#{self.class}: Succesful handshake!" if @logger
+        logdebug "Succesful handshake!"
       end
 
       # Called right after accept_nonblock fails for some unknown reason. The
@@ -223,17 +221,17 @@ module PacketThief
       #
       # The connection will be closed after this.
       def tls_failed_handshake(e)
-        @logger.error "#{self.class}: Failed to accept: #{e} (#{e.class})" if @logger
+        logerror "#{self.class}: Failed to accept: #{e} (#{e.class})"
       end
 
       # Override this to do something with the unecrypted data.
       def receive_data(data)
-        @logger.debug "#{self.class}: receive_data: #{data.inspect}" if @logger
+        logdebug "receive_data:", :data => data
       end
 
       # Override this to do something when the socket is finished.
       def unbind
-        @logger.debug "#{self.class}: unbind" if @logger
+        logdebug "unbind"
       end
 
     end
