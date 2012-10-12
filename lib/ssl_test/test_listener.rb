@@ -42,7 +42,7 @@ module SSLTest
     # the check happen after the parent class already added a re-signed
     # certificate to +@ctx+.
     def post_init
-      logger.debug "Conntection received" if logger
+      logdebug "Conntection received"
       check_for_hosttotest(@ctx)
     end
 
@@ -78,7 +78,7 @@ module SSLTest
     # If the client completes connecting, then they trusted our cert chain.
     def tls_successful_handshake
       super
-      logger.debug "successful handshake" if logger
+      logdebug "successful handshake"
       if @testing_host
         @test_status = :connected
       end
@@ -88,7 +88,7 @@ module SSLTest
     # chain.
     def tls_failed_handshake(e)
       super
-      logger.debug "failed handshake" if logger
+      logdebug "failed handshake"
       if @testing_host
         @test_status = :rejected
       end
@@ -101,7 +101,7 @@ module SSLTest
     # Report our result.
     def unbind
       super
-      logger.debug "unbind" if logger
+      logdebug "unbind"
       if @testing_host
         @test_completed_cb.call(@test_status) if @test_completed_cb
       end

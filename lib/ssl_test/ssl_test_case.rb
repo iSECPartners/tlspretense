@@ -51,7 +51,7 @@ module SSLTest
             h.on(' ') { self.test_completed :skipped }
             h.on('q') { self.stop_testing }
           end
-          EM.add_periodic_timer(5) { @appctx.logger.info "EM connection count: #{EM.connection_count}" }
+          EM.add_periodic_timer(5) { @appctx.logger.debug "EM connection count: #{EM.connection_count}" }
         end
       end
     end
