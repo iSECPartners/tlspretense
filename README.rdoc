@@ -23,7 +23,7 @@ CertMaker provides tools for building and managing certificates, especially
 certificates that vary from each other in only slightly different ways. It is
 currently run through the project's Rakefile:
 
-    rake certs:ssl
+    rake certs:generate
 
 This task uses certificate descriptions in config.yml to generate certificates
 and unencrypted private keys for each described certificate. It can generate

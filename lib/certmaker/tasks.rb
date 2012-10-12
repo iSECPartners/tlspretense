@@ -11,7 +11,7 @@ namespace :certs do
   end
 
   desc "Generate a suite of test certificates"
-  task :ssl => [ 'certs:ca' ] do
+  task :generate => [ 'certs:ca' ] do
     require 'certmaker'
     require 'yaml'
 
