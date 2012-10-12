@@ -46,7 +46,14 @@ module PacketThief
       def tls_begin
         logdebug "tls begin", :sni_hostname => @sni_hostname
         @sslsocket = OpenSSL::SSL::SSLSocket.new(@tcpsocket, @ctx)
-        @sslsocket.hostname = @sni_hostname if @sni_hostname
+        if @sni_hostname
+          if @sslsocket.respond_to? :hostname
+            @sslsocket.hostname = @sni_hostname
+          else
+            logwarn "#{@sslsocket.class} does not support setting an SNI hostname! This requires Ruby 1.9.x built against OpenSSL with SNI support.",
+              :ruby_version => RUBY_VERSION
+          end
+        end
         @state = :initialized
       end
 

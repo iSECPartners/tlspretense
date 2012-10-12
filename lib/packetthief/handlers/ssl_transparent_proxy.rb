@@ -23,7 +23,7 @@ module PacketThief
 
           @connected = false
           @closed = false
-          @tls_hostname = @client.dest_hostname if @client.dest_hostname
+          sni_hostname = @client.dest_hostname if @client.dest_hostname
         end
 
         # send on successful handshake instead of on post_init.
