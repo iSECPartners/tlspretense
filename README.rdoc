@@ -1,11 +1,11 @@
-= SSL Client Testing
+= TLSPretense --- SSL Client Testing Framework
 
 A set of tools for testing an SSL client's certificate validation.
 
 
 == Description
 
-Ssl\_client\_testing provides a set of tools to test SSL certificate
+TLSPretense provides a set of tools to test SSL certificate
 validation, with a focus on mostly blackbox testing. It requires a (Linux,
 MacOSX, BSD) system that runs the test by intercepting network traffic, and it
 requires the client to be configured to trust the test framework's CA.

@@ -10,4 +10,4 @@ if [ "${RUBY}x" == "x" ] ; then
     fi
 fi
 
-sudo bundle exec ${RUBY} bin/ssl_test_runner.rb $@
+sudo bundle exec ${RUBY} bin/tlspretense.rb $@

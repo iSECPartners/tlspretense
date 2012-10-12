@@ -15,11 +15,11 @@ require 'rake'
 #require 'jeweler'
 #Jeweler::Tasks.new do |gem|
 #  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-#  gem.name = "ssl_client_test"
-#  gem.homepage = ""
+#  gem.name = "tlspretense"
+#  gem.homepage = "https://github.com/iSECPartners/tlspretense"
 #  gem.license = "MIT"
-#  gem.summary = %Q{TODO: one-line summary of your gem}
-#  gem.description = %Q{TODO: longer description of your gem}
+#  gem.summary = %Q{A set of tools for testing an SSL/TLS client's certificate validation}
+#  gem.description = %Q{TLSPretense provides a set of tools to test SSL/TLS certificate validation. It includes a library for generating certificates and a test framework for running tests against a client by intercepting client network traffic.}
 #  gem.email = "bjorvis@isecpartners.com"
 #  gem.authors = ["William (B.J.) Snow Orvis"]
 #  # dependencies defined in Gemfile
@@ -45,7 +45,7 @@ Rake::RDocTask.new do |rdoc|
 
   rdoc.rdoc_dir = 'rdoc'
   rdoc.main = 'README.rdoc'
-  rdoc.title = "ssl_client_testing #{version}"
+  rdoc.title = "TLSPretense #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
