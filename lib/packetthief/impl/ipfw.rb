@@ -9,9 +9,17 @@ module Impl
   #
   # [1]: https://trac.macports.org/wiki/howto/SetupInterceptionSquid
   #
-  # sudo ipfw add 1013 fwd 127.0.0.1,3129 tcp from any to any 80 recv INTERFACE
+  # Sample rule:
+  #
+  #     sudo ipfw add 1013 fwd 127.0.0.1,3129 tcp from any to any 80 recv INTERFACE
+  #
+  # Note that in Mac OS X 10.7 Lion, Apple still includes ipfw, but they are
+  # using pfctl to do network firewalling and routing.
   class Ipfw
     module IpfwRuleHandler
+
+      include Logging
+
       attr_accessor :active_rules
 
       # Executes a rule and holds onto it for later removal.
@@ -22,9 +30,19 @@ module Impl
 
         args.concat rule.to_ipfw_command
 
+        # Lion claims net.inet.ip.scopedroute is read only. According to: http://pastebin.com/NzAARKVG it is possible to set it at boot time:
+        # /Library/Preferences/SystemConfiguration/com.apple.Boot.plist:
+        # <dict>
+        #     <key>Kernel Flags</key>
+        #     <string>net.inet.ip.scopedroute=0</string>
+        # </dict>
         if /darwin/ === RUBY_PLATFORM
           unless system(*%W{/usr/sbin/sysctl -w net.inet.ip.scopedroute=0})
-            raise "Command #{args.inspect} exited with error code #{$?.inspect}"
+            if /darwin1[1-9]/ === RUBY_PLATFORM
+              logerror "Failed to set net.inet.ip.scopedroute=0. As of Lion, this is marked read-only after boot. However, you might be able to get IPFW working by setting the sysctl in /Library/Preferences/SystemConfiguration/com.apple.Boot.plist"
+            else
+              raise "Command /usr/sbin/sysctl -w net.inet.ip.scopedroute=0 exited with error code #{$?.inspect}."
+            end
           end
         end
 

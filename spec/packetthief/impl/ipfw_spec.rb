@@ -27,6 +27,26 @@ module Impl
             Ipfw.redirect(:to_ports => 65432).where(:protocol => :tcp, :dest_port => 443).run
           end
         end
+
+        context "when the system is Lion and setting net.inet.ip.scopedroute fails" do
+          before(:each) do
+            Ipfw.should_receive(:system).with(*%W{/usr/sbin/sysctl -w net.inet.ip.scopedroute=0}).and_return(false)
+          end
+          it "does not raise an exception" do
+            with_constants :RUBY_PLATFORM => "x86_64-darwin11" do
+              expect do
+                Ipfw.redirect(:to_ports => 65432).where(:protocol => :tcp, :dest_port => 443).run
+              end.to_not raise_error
+            end
+          end
+          it "logs the error" do
+            with_constants :RUBY_PLATFORM => "x86_64-darwin11" do
+              Ipfw.should_receive(:logerror)
+
+              Ipfw.redirect(:to_ports => 65432).where(:protocol => :tcp, :dest_port => 443).run
+            end
+          end
+        end
       end
 
       context "when it is told to watch a particular interface" do

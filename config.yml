@@ -33,7 +33,7 @@ packetthief:
   #
   # - netfilter                 Linux netfilter
   #
-  # - ipfw                      MacOSX/BSD ipfw
+  # - ipfw                      MacOSX10.6/BSD ipfw
   #implementation: manual(www.isecpartners.com)
 
   # The remaining options are used to construct the firewall rule:
