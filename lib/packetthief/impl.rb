@@ -4,6 +4,6 @@ module PacketThief
   module Impl
   autoload :Netfilter,  'packetthief/impl/netfilter'
   autoload :Ipfw,       'packetthief/impl/ipfw'
-  autoload :PF,         'packetthief/impl/pf'
+  autoload :PFDivert,         'packetthief/impl/pf_divert'
   end
 end

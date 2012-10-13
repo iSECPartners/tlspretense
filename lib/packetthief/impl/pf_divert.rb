@@ -2,7 +2,9 @@
 
 module PacketThief
 module Impl
-  # Use PF to redirect traffic.
+  # Use PF to redirect traffic. This implementation only works with versions of
+  # PF that have the divert-to keyword, which is relatively new (For example,
+  # Mac OS X 10.7 does not support it).
   #
   # Squid uses ioctl with DIOCNATLOOK to get a pfioc_natlook data structure to
   # get the original destination using rdr-to rules. However, according to [1],
@@ -16,8 +18,12 @@ module Impl
   #
   # pass in on en1 proto tcp from any to any port 443 divert-to 127.0.0.1 port 54321
   #
-  class PF
-    module PFRuleHandler
+  # divert-to is a relatively "new" feature in pf. 9_9
+  #   mac os 10.7 lacks it
+  #
+  # a possible alternative is rdr
+  class PFDivert
+    module PFDivertRuleHandler
       attr_accessor :active_rules
 
       # Executes a rule and holds onto it for later removal.
@@ -52,9 +58,9 @@ module Impl
         @active_rules = []
       end
     end
-    extend PFRuleHandler
+    extend PFDivertRuleHandler
 
-    class PFRule < RedirectRule
+    class PFDivertRule < RedirectRule
 
       attr_accessor :rule_number
 
@@ -98,7 +104,7 @@ module Impl
     end
 
     def self.redirect(args={})
-      rule = PFRule.new(self)
+      rule = PFDivertRule.new(self)
       rule.redirect(args)
     end
 

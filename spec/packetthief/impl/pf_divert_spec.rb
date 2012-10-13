@@ -2,8 +2,8 @@ require File.expand_path(File.join(File.dirname(__FILE__),'..','..','spec_helper
 
 module PacketThief
 module Impl
-  describe PF do
-    subject { PF }
+  describe PFDivert do
+    subject { PFDivert }
 
     before(:each) do
       subject.stub(:system).and_return(:true)
