@@ -34,6 +34,9 @@ packetthief:
   # - netfilter                 Linux netfilter
   #
   # - ipfw                      MacOSX10.6/BSD ipfw
+  #
+  # - manual(destination)       If you choose manual, you must also choose a
+  #                             default destination address or hostname.
   #implementation: manual(www.isecpartners.com)
 
   # The remaining options are used to construct the firewall rule:

@@ -216,7 +216,11 @@ module SSLTest
 
     describe "configuring packetthief" do
       before(:each) do
+        PacketThief.instance_variable_set(:@implementation, nil)
         Config.stub(:new).and_return(config)
+      end
+      after(:each) do
+        PacketThief.instance_variable_set(:@implementation, nil)
       end
       context "when the config does not specify an implementation" do
         before(:each) do
@@ -237,6 +241,25 @@ module SSLTest
 
         it "sets the firewall to :netfilter" do
           PacketThief.should_receive(:implementation=).with('netfilter')
+
+          subject
+        end
+      end
+
+      context "when the config specifies manual(somehost)" do
+        before(:each) do
+          config.stub(:packetthief).and_return( {'implementation' => 'manual(somehost)', 'dest_port' => 654} )
+          PacketThief.stub(:set_dest)
+        end
+
+        it "sets the firewall to :manual" do
+          PacketThief.should_receive(:implementation=).with(:manual)
+
+          subject
+        end
+
+        it "sets the manual destination to the given hostname and dest_port" do
+          PacketThief.should_receive(:set_dest).with('somehost', 654)
 
           subject
         end

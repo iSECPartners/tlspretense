@@ -64,7 +64,17 @@ module SSLTest
       end
       @app_context = AppContext.new(@config, @cert_manager, @logger)
 
-      PacketThief.implementation = @config.packetthief['implementation'] if @config.packetthief.has_key? 'implementation'
+      if @config.packetthief.has_key? 'implementation'
+        impl = @config.packetthief['implementation']
+        case impl
+        when /manual\(/i
+          PacketThief.implementation = :manual
+          host = /manual\((.*)\)/i.match(impl)[1]
+          PacketThief.set_dest(host, @config.packetthief.fetch('dest_port',443))
+        else
+          PacketThief.implementation = impl
+        end
+      end
 
       @report = SSLTestReport.new
     end
