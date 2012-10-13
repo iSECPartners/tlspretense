@@ -38,6 +38,7 @@ module SSLTest
         'expected_result' => 'connect'
       }
     end
+    let(:listener) { double("listener", :logger= => nil, :stop_server => nil) }
     let(:report) { double("report", :add_result => nil) }
     let(:logger) { Logger.new(nil) }
     let(:app_context) { AppContext.new(config, cert_manager, logger) }
@@ -50,7 +51,7 @@ module SSLTest
       EM.stub(:add_periodic_timer)
       EM.stub(:open_keyboard)
       EM.stub(:stop_event_loop)
-      TestListener.stub(:start)
+      TestListener.stub(:start).and_return(listener)
     end
 
     subject { SSLTestCase.new(app_context, report, testdesc) }
@@ -83,7 +84,7 @@ module SSLTest
         end
 
         it "launches a test runner" do
-          @tl = double('test listener')
+          @tl = double('test listener', :logger= => nil)
           TestListener.should_receive(:start).with('',54321,goodcacert, goodcakey, 'my.hostname.com', certchain, keychain[0]).and_return(@tl)
 
           subject.run
@@ -105,7 +106,6 @@ module SSLTest
     end
 
     describe "#test_completed" do
-      let(:listener) { double("listener", :stop_server => nil) }
       let(:result) { double("result", :description= => nil,
                             :expected_result= => nil, :actual_result= => nil,
                             :start_time= => nil, :stop_time= => nil) }
@@ -158,7 +158,7 @@ module SSLTest
             before(:each) do
               EM.stub(:reactor_running?).and_return(false)
               EM.should_receive(:run).and_yield
-              TestListener.stub(:start)
+              TestListener.stub(:start).and_return(listener)
               subject.run
             end
 
