@@ -48,6 +48,7 @@ Rake::RDocTask.new do |rdoc|
   rdoc.title = "TLSPretense #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
+  rdoc.rdoc_files.include('doc/**/*.rdoc')
 end
 
 $: << "lib"

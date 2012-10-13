@@ -1,97 +1,79 @@
-= TLSPretense --- SSL Client Testing Framework
+= TLSPretense --- SSL/TLS Client Testing Framework
 
-A set of tools for testing an SSL client's certificate validation.
+A test framework for testing SSL/TLS client certificate validation.
 
 
 == Description
 
-TLSPretense provides a set of tools to test SSL certificate
-validation, with a focus on mostly blackbox testing. It requires a (Linux,
-MacOSX, BSD) system that runs the test by intercepting network traffic, and it
-requires the client to be configured to trust the test framework's CA.
+TLSPretense provides a test framework for testing SSL certificate
+validation. It generates a set of certificates containing specific flaws, and
+it presents the certificates to a client that has been configured to trust a CA
+used by TLSPretense. The test framework then configures its system's firewall
+to redirect and intercept network traffic so that the test runner can present
+its certificate to the client. To speed up testing, the test runner starts the
+next test as soon as the current test finishes.
 
-It currently provides two sets of libraries for this purpose:
+The test framework must be run on a Unix-like OS that contains a supported
+firewall, but the program being tested can run on any device whose network
+traffic can be routed through the system hosting the test framework. Currently,
+it supports netfilter and ipfw, which limits the test runner to Linux, MacOSX,
+and *BSD.
 
-* *CertMaker*, which generates SSL certificate and certificate chains with a
-  variety of flaws
-* *SSLTest*, a framework for running tests using various certificate chains
+== How It Works
 
+TLSPretense requires the TLS client software to be configured to trust a CA
+that TLPretense controls. That way "good" certificates created by TLSPretense
+will be accepted by the client.
 
-== CertMaker
+Once the system hosting the test runner has been configured to be a gateway for
+the network traffic of thest client being tested, it will add a firewall rule
+to redirect network traffic to a test listener. The test listener checks to see
+whether the client is trying to connect to a predefined host. If the client is
+connecting to the desired host, then the test listener presents a test
+certificate chain to the client. The test runner then determines whether the
+test passes or fails based on whether the client completes the TLS handshake or
+not.
 
-CertMaker provides tools for building and managing certificates, especially
-certificates that vary from each other in only slightly different ways. It is
-currently run through the project's Rakefile:
+The test harness was designed to anticipate working with a client that may
+connect to more than one host. The config.yml file specifies a hostname that
+should be used for the actual test --- all other intercepted SSL connections
+are essentially ignored (although they currently have their certificate
+re-signed by the goodca in order to make interception easier).
 
-    rake certs:generate
+== Requirements
 
-This task uses certificate descriptions in config.yml to generate certificates
-and unencrypted private keys for each described certificate. It can generate
-the entire set of certificates from scratch, or it can use an existing CA
-instead of generating a new _goodca_. Read over the comments in the _certmaker_
-and the _certs_ sections of config.yml.
+* A Unix-like system that uses a supported firewall/routing implementation.
+  TLSPretense (through the included PacketThief gem) currently supports:
+  * Netfilter on Linux
+  * IPFW on MacOSX and *BSD (less well tested)
 
-WARNING: Running this task a second time will regenerate all of the
-certificates in the _certs_ directory! If you are not using an existing CA and
-wish to regenerate the certificates, you will wind up with a new set of
-certificates based around a CA that uses a new public key.
+* Ruby 1.9.x, built against a version of OpenSSL that supports the SNI TLS
+  extension. You can check for this if you run the following Ruby script:
 
-Internally, the CertificateFactory class makes it easier to create X509
-certificates from Hashes (and thus YAML or other config data). It also makes it
-easy to generate several similar certificates that are all based off the same
-basic certificate. Additionally, CertificateGenerator is a class that provides
-the ability to generate a suite of certificates from a Hash configuration, such
-as the one in config.yml.
+      ruby1.9 -ropenssl -e 'puts OpenSSL::SSL::SSLSocket.public_instance_methods.include? :hostname='
 
+  Ruby 1.8.7 will mostly work, but Ruby 1.8's OpenSSL wrapper
+  library does not support the ability for clients to use the SNI TLS
+  extension, which is needed to grab the correct remote certificate for
+  proxying miscellaneous connections. Use Ruby 1.8.x at your own risk.
 
-== SSLTest
+* Bundler. If you need it, you can install it with the Ruby gem command:
+ 
+      $GEM install bundler
 
-SSLTest provides a test harness for testing SSL certificate validation. It runs
-on a system placed between the SSL/TLS client to-be-tested and the local
-network's gateway, much like how Mallory proxy works, which allows it to
-intercept the desired traffic without having to deal with client-side proxy
-settings. It then presents an X509 certificate chain to the client, and it uses
-whether or not the TLS handshake completes to determine whether the client
-accepted or rejected the certificate chain.
-
-The test harness anticipates working with a client that may connect to more
-than one host. The config.yml file specifies a hostname that should be used for
-the actual test where the current test certificate chain is presented to the
-client --- all other intercepted SSL connections are essentially ignored
-(although they currently have their certificate re-signed by the goodca in
-order to make interception easier).
-
-TODO: Usage
-
-=== Requirements
-
-Obviously, this framework requires a certain amount of setup, and it has some
-requirements:
-
-* Ruby 1.9.x is needed for full Server Name Indicatio (SNI) support. It must
-  also be built against a version of OpenSSL that has SNI fully enabled. Ruby
-  1.8.7 supports the SNI callback on the server-side of an SSL connection, but
-  Ruby 1.8.7's version of the OpenSSL extension does not have a way for clients
-  to request an SNI hostname.
-
-* PacketThief, which is used for intercepting packeets, currently requires the
-  NetFilter or IPFW firewalls. In other words Linux, MacOSX 10.6, or BSD with
-  IPFW. (PF support forthcoming)
-
-* The test runner needs to be run as root in order to manipulate the
-  firewall, such as with `sudo`.
-
-* The SSLTest system needs to be able to intercept the client's network
-  traffic. A common setup for doing this when testing mobile code is to plug
-  your laptop into an ethernet connection that has access to the server that
-  the client would normally connect to, and to then bridge or NAT your wifi
-  interface.
+  Where $GEM is the version of the +gem+ command available on your system. This
+  might just be +gem+ if your default +ruby+ is ruby 1.9.x, or something like
+  +gem1.9+.
 
 * You need to make the SSL client trust the _goodca_ CA certificate. You can
   either generate a new goodca and install it in the client's trust store, or
   you can use an existing test CA to generate the test certificates.
 
-=== Limitations
+== Usage
+
+See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPretense.
+
+== Limitations
 
 * The Server Name Indication (SNI) TLS extension does not have full support in
   Ruby 1.8.7.
@@ -104,7 +86,7 @@ requirements:
 * It currently uses the goodca to re-sign certificates from hostnames that do
   not match the configured test hostname.
 
-=== TODO
+== TODO
 
 * Fix the subjectAltName null byte test. It requires manual construction of the
   ASN1 encoding due to the null byte causing a truncation somewhere in OpenSSL
@@ -146,8 +128,7 @@ requirements:
 
 * Configuration option for disabling PacketThief when managing firewall rules
 
-* SSLTest Command-line
-  * Command line option to specify where to write the results to
+* Command line option to specify where to write the results to
 
 
 == Contributing to SSL Client Testing
@@ -159,6 +140,10 @@ requirements:
 * Commit and push until you are happy with your contribution.
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+
+== Authors
+
+* William (B.J.) Snow Orvis (iSEC Partners)
 
 == Copyright
 

@@ -1,0 +1,266 @@
+= TLSPretense Setup
+
+The following sections cover a basic configuration to get TLSPretense up and
+running. It should be straightforward to modify the test setup from there.
+
+== Test Environment
+
+TLSPretense was designed to be run as an intercepting proxy in order to be able
+to test a client that may make multple HTTPS/SSL/TLS requests to multiple
+remote hosts. This means that TLSPretense is expected to run on a different
+system from the client software being tested, although it is possible to run
+TLSPretense within one virtual machine and to have the client software run in
+another.
+
+First, a few definitions:
+
+[client]            A piece of software that makes network requests using
+                    SSL/TLS.
+[client host]       The computer or virtual machine that will run the client
+                    software.
+[TLSPretense host]  A computer or virtual machines running a Unix-like OS that
+                    will act as a network gateway for the client host.
+
+The TLSPretense host needs to have two network interfaces: an external
+interface for connecting to the outer LAN/Internet and to the remote hosts that
+the client will connect to, and an internal interface that the client host will
+use as its gateway.
+
+One common setup is to use a laptop for the TLSPretense host with an ethernet
+connection and wifi. The ethernet can be wired into an actual network, and the
+wifi can be run as a wireless access point that the client host will connect
+to.
+
+This setup has the following network topography:
+
+    +------------------------+  LAN   +------------------+  WAN
+    |      Client Host       |   .    | TLSPretense Host |   .
+    | +--------------------+ |   .    |                  |   .
+    | |       Client       | |   .    |   +----------+   |   .
+    | |                    ==============>| Firewall |   |   .
+    | | +----------------+ | |   .    |   +----------+   |   .
+    | | | CA TrustStore  | | |   .    |        |         |   .    +-------------+
+    | | |                | | |   .    | +------V-------+ |   .    | Original    |
+    | | | TLSPretense CA | | |   .    | | TLSPretense  ==========>| Desitnation |
+    | | +----------------+ | |   .    | | Test Harness | |   .    +-------------+
+    | +--------------------+ |   .    | +--------------+ |   .    
+    +------------------------+   .    +------------------+   .
+
+
+== Installing TLSPretense
+
+Download the latest git repository with:
+
+    git clone https://github.com/iSECPartners/tlspretense
+
+To install Ruby dependencies:
+
+    cd tlspretense
+    bundle install --without=development
+
+This will install any needed Ruby gems.
+
+== Updating TLSPretense
+
+Currently, to update the repository, you need to stash your config if you just
+modified the default config.yml before updating:
+
+    git stash
+
+Then update TLSPretense and its dependencies:
+    git pull origin
+    bundle update
+
+And finally restore your configuration:
+
+    git stash apply
+    # Resolve any conflicts in your config.yml
+
+This process will be simplified if/when TLSPretense becomes an installable package.
+
+
+== Configuration
+
+All configuration of the test suite happens through config.yml. What follows is
+a brief discussion of each section and what you might want to change.
+
+=== top-level settings
+
+[hostname: www.isecpartners.com]
+    This is the most important setting in the configuration file. It specifies
+    the hostname that the client will connect to that you would like to have
+    tested. For connections to this hostname (determined by whether the
+    certificate supplied by the original destination matches the hostname),
+    TLSPretense will present a test certificate chain. For all other hosts, it
+    will take the host certificate used by that host and re-sign it using the
+    "goodca" certificate.
+
+[listener_port: 54321]
+    The port that the proxy will listen on. You probably don't need to change
+    this.
+
+=== packetthief
+
+    packetthief:
+      :protocol: tcp
+      :dest_port: 443
+      :in_interface: eth1
+
+This section describes the firewall rule that will redirect traffic. The most
+relevant subvalue is +:in_interface+, which should contain the name of the
+network interface that the client's network traffic will come in on. Also, if
+you will be testing non-https traffic, change +:dest_port+ to the port that the
+client will connect to.
+
+=== certmaker
+
+    certmaker:
+      defaultsubject: &defaultsubject "C=US, CN=%HOSTNAME%"
+      defaultsubjectwithnull: &defaultsubjectwithnull "C=US, CN=%HOSTNAME%\0.foo.com"
+      defaultparentsubject: &defaultparentsubject "C=US, CN=%PARENTHOSTNAME%"
+      outdir: certs
+      missing_serial_generation: random
+      customgoodca:
+        certfile: ca/goodcacert.pem
+        keyfile:  ca/goodcakey.pem
+        #keypass: changeme
+
+This section deals with configuring the creation of the certificates used by
+the tests.
+
+[+defaultsubject+, +defaultsubjectwithnull+, and +defaultparentsubject+]
+    These keys are just placed here to get them out of the way. They are
+    referenced later in the certificate definitions.
+[outdir]
+    This specifies where to write the generated certificates to. For now, don't
+    modify this option or it may break something.
+[missing_serial_generation]
+    This key specifies how to choose a serial number for each generated
+    certificate. Currently, there are only two options. You can set a number,
+    which will be used as the serial number for all generated certificates
+    (this will break any SSL client that checks for serial number uniqueness).
+    The other option is to set it to "random" which will generate a random
+    serial number --- this is the recommended setting, and there is an
+    incredibly small chance that two certificates might have the same serial
+    number.
+[customgoodca]
+    If this key exists and contains the +certfile+ and +keyfile+ sub-keys, then
+    it specifies a certificate authority to be used as the "goodca" instead of
+    generating a new CA. The third optional value, +keypass+, can specify a
+    password for the private key's file.
+
+=== logger
+
+    logger:
+      level: INFO
+      file: '-'
+
+These options set up the logging facility.
+
+[level]
+    The log severity to report. Log messages that are less severe than this
+    level go unreported.
+[file]
+    Where to write log entries to. The default of '-' refers to STDOUT.
+
+=== certs
+
+This section defines the certificates used by the test cases. It makes heavy
+use of YAML's references and anchors to mutate a particular certificate. The
+only special entry is "goodca". If +customgoodca+ is configured in the
++certmaker+ section, then that certificate will be used in tests in place of
+the goodca defined here.
+
+Make changes to the certificates if you need to customize them for your client.
+
+=== tests
+    tests:
+    - alias: baseline
+      name: Baseline Happy Test
+      certchain:
+      - baseline
+      - goodca
+      expected_result: connected
+    ...
+
+
+This final section defines a list of all of the tests to run.
+
+[alias]
+    The "short" identifier for the test.
+[name]
+    A longer description of the test.
+[certchain]
+    A list of certificates to present to the client in the order they should be
+    presented. SSL/TLS requires the certificate chain to present the
+    certificate representing the server first, followed by the chain of
+    certificate authorities and intermediate CAs, with the final certificate
+    being a CA.
+[expected_result]
+    The expected outcome for the test. "connected" means that we expect the
+    client to finish the TLS handshake, while "rejected" means we expect the
+    TLS handshake to fail before finishing.
+
+
+== Certificate Generation
+
+You need to pre-generate the certificates you'll use for the tests. You can do
+this with:
+
+    rake certs:generate
+
+It can generate an entire ecosystem of certificates from scratch, or it can use
+an existing CA instead of generating a new _goodca_. See the _certmaker_ and
+_certs_ sections of config.yml.
+
+WARNING: Running this task a second time will regenerate all of the
+certificates in the _certs_ directory! If you are not using an existing CA and
+wish to regenerate the certificates, you will wind up with a new set of
+certificates based around a CA that uses a new public key.
+
+== Client Host Setup
+
+The client host must be configured to use the TLSPretense host as its gateway.
+This involves configuring the TLSPretense host to act like a NAT router or
+network bridge, and it requires you to configure the client host. You must also
+install the "goodca" CA used by TLSPretense onto the client host and configure
+the client to trust that CA. You do not need to configure any client-side proxy
+settings (like you would for HTTP-level proxying).
+
+If you are planning to use Linux for the TLSPretense host and you are familiar
+with {Mallory}[http://intrepidusgroup.com/insight/mallory/], then Mallory's
+network configuration tutorials may help you out, although TLSPretense manages
+the firewall rule that redirects network traffic itself.
+
+For a sample Linux-specific configuration, see: {Linux
+Setup}[rdoc-ref:linux_setup].
+
+
+== Running the tests
+
+Currently, TLSPretense should be run from its project directory. If you want to
+run the test runner directly:
+
+    sudo bundle exec ruby1.9 bin/tlspretense.rb
+
+The command probably needs to be run as root in order to add and remove its
+firewall rules, and <tt>bundle exec...<tt> ensures that the gem dependencies
+are added to the Ruby path. To simplify this calling convention, you can
+instead run:
+
+    bin/tlspretense_wrapper.sh
+
+
+If you only want to run certain tests, you can do so by specifying which tests
+you want to run as command line arguments, and it will run just those tests in
+the order specified, instead of in the order they are defined in config.yml:
+
+    bin/tlspretense_wrapper.sh baseline nullincname selfsigned
+
+For information about other command line options, use -h or --help:
+
+    bin/tlspretense_wrapper.sh -h
+
+== Output
+
+At present, TLSPretext prints a summary of the tests run and their results once all tests have run.

@@ -1,0 +1,64 @@
+= Setting Up Linux for Use With TLSPretense
+
+To run TLSPretense on Linux, you need a system that has two network interfaces.
+This Linux system could run from a virtual machine, or it could run on a laptop
+and use the laptop's wifi card as a wireless access point to test.
+
+The following setup will use a Linux host to run TLSPretense, and it will
+configure netfilter to be a NAT with statically managed IP address on its
+internal network.
+
+TODO: How to host a DHCP server on certain systems.
+
+== Configuring Linux to act as a NAT/router/gateway
+
+The first step is to configure the Linux system's routing with IPTables. The
+following script will turn the system into a NAT router. TLSPretense will then
+later add and remove iptables rules as needed in order to intercept network
+traffic during testing.
+
+In this script, we assume +eth0+ is the external interface that can connect to
+the original destination, and +eth1+ is the internal interface that the client
+system will connect to.
+
+    #!/bin/sh
+    external=eth0
+    internal=eth1
+
+    iptables --flush
+    iptables --table nat --flush
+    iptables --delete-chain
+    iptables --table nat --delete-chain
+
+
+    echo "Manually setup the internal network's nic"
+    ifconfig $internal 192.168.42.1 netmask 255.255.255.0 
+
+    echo "Enable packet forwarding"
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+
+    echo "Apply basic iptables rules to create a NAT"
+    iptables -t nat -A POSTROUTING -o $external -j MASQUERADE
+
+    echo "Done! TLSPretense will automatically add and remove the rules for redirecting traffic."
+
+Here we choose 192.168.42.* as the internal network IP address range.
+
+Check to make sure that the TLSPretense host is able to access the internet
+over the external interface, and that it can look up hostnames.
+
+TODO: handling wireless ({although Mallory already has a
+guide}[https://bitbucket.org/IntrepidusGroup/mallory/wiki/Wifi_Hotspot_Setup])
+
+== Configure the Client's Host
+
+Next, the system that will run the client code needs to be configured to use
+the TLSPretense host as its gateway. This usually involves configuring the
+system's network connection with information like the following:
+
+    Address: 192.168.42.100
+    Gateway: 192.168.42.1
+    Subnet mask: 255.255.255.0
+
+You will also need to configure the client's DNS with a known good DNS server.
+
