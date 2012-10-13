@@ -12,6 +12,31 @@ hostname: www.isecpartners.com
 
 # Configuration options to pass to PacketThief to configure your firewall.
 packetthief:
+  # Explicitly declare what firewall implementation to use for intercepting
+  # traffic. It is also needed to discover the original destination of
+  # intercepted network traffic. There are two special implementations: the
+  # 'manual' implementation is meant for when you don't use a firewall at all.
+  # In this case, you must explicitly provide an original destination for the
+  # proxy to forward all intercepted traffic to.
+  #
+  # The second special implementation is 'external'. This means that you are
+  # using a supported firewall, but you want to configure the redirection rule
+  # outside of TLSPretense. In this case, you need to name an actual firewall
+  # implementation so that the socket that receives the intercepted connection
+  # can acquire the original destination (redirected connections provide their
+  # original destination through various standard socket APIs).
+  #
+  # It the implementation is left commented out, then TLSPretense will guess
+  # which implementation to use.
+  #
+  # Options:
+  #
+  # - netfilter                 Linux netfilter
+  #
+  # - ipfw                      MacOSX/BSD ipfw
+  #implementation: manual(www.isecpartners.com)
+
+  # The remaining options are used to construct the firewall rule:
   protocol: tcp
   dest_port: 443
   # Linux-like interface:

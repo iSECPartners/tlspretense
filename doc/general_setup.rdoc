@@ -112,6 +112,16 @@ network interface that the client's network traffic will come in on. Also, if
 you will be testing non-https traffic, change +dest_port+ to the port that the
 client will connect to.
 
+One additional optional parameter exists in this this section:
+
+[implementation]
+    If this optional value is set, then the specified implementation will be
+    used. If implementation is left commented out, then TLSPretense will choose
+    the most appropriate firewall implementation, if possible. Current values:
+
+    * *netfilter* Linux netfilter
+    * *ipfw* MacOSX/BSD ipfw
+
 === certmaker
 
     certmaker:

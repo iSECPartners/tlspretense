@@ -117,19 +117,39 @@ module PacketThief
     attr_accessor :implementation
   end
 
+  def self.implementation=(newimpl)
+    if newimpl == nil
+      @implementation = nil
+    elsif newimpl.kind_of? Module
+      @implementation = newimpl
+    elsif
+      PacketThief::Impl.constants.each do |c|
+        if c.downcase.to_sym == newimpl.downcase.to_sym
+          @implementation = PacketThief::Impl.const_get c
+          return @implementation
+        end
+      end
+      raise AttributeError, "Unknown implementation"
+    end
+  end
+
+  def self.guess_implementation
+    case RUBY_PLATFORM
+    when /linux/
+      Impl::Netfilter
+    when /darwin(10|[0-9]($|[^0]))/ # Mac OS X 10.6 and earlier.
+      Impl::Ipfw
+    else
+      raise "Platform #{RUBY_PLATFORM} not yet supported! If you know your network implementation, call it directly."
+    end
+  end
+
   # Pass the call on to @implementation, or an OS-specific default, if one is known.
   def self.method_missing(m, *args, &block)
-    if implementation == nil
-      case RUBY_PLATFORM
-      when /linux/
-        implementation = Impl::Netfilter
-      when /darwin(10|[0-9]($|[^0]))/ # Mac OS X 10.6 and earlier.
-        implementation = Impl::Ipfw
-      else
-        raise "Platform #{RUBY_PLATFORM} not yet supported! If you know your network implementation, call it directly."
-      end
+    if @implementation == nil
+      @implementation = guess_implementation
     end
-    return implementation.send(m, *args, &block)
+    @implementation.send(m, *args, &block)
   end
 
 end

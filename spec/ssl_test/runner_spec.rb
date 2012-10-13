@@ -25,7 +25,18 @@ module SSLTest
     let(:test_data) { [test_foo, test_bar] }
     let(:test_wrongcname) { double('test wrongcname') }
     let(:conf_certs) { double('conf certs') }
-    let(:config) { double("config", :tests => test_data, 'certs' => conf_certs, 'action' => :runtests, 'pause?' => false, 'loglevel' => Logger::INFO, 'logfile' => nil) }
+    let(:config) do
+      double(
+        "config",
+        :tests => test_data,
+        'certs' => conf_certs,
+        'action' => :runtests,
+        'pause?' => false,
+        'loglevel' => Logger::INFO,
+        'logfile' => nil,
+        'packetthief' => {}
+      )
+    end
     let(:cert_manager) { double("certificate manager") }
     let(:report) { double('report', :print_results => nil) }
     let(:testcaseresult) { double('test case result') }
@@ -37,10 +48,9 @@ module SSLTest
       {
         'certs' => conf_certs,
         'tests' => test_data,
+        'packetthief' => {},
       }
     end
-
-    subject { Runner.new(args, stdin, stdout) }
 
     before(:each) do
       YAML.stub(:load_file).and_return(conf_data)
@@ -49,6 +59,12 @@ module SSLTest
       SSLTestReport.stub(:new).and_return(report)
       AppContext.stub(:new).and_return(appcontext)
     end
+
+    after(:each) do
+      PacketThief.instance_variable_set(:@implementation, nil)
+    end
+
+    subject { Runner.new(args, stdin, stdout) }
 
     describe "#initialize" do
       before(:each) do
@@ -191,6 +207,36 @@ module SSLTest
           @logger = Logger.new(nil)
 
           Logger.should_receive(:new).with('foo.txt').and_return(@logger)
+
+          subject
+        end
+      end
+
+    end
+
+    describe "configuring packetthief" do
+      before(:each) do
+        Config.stub(:new).and_return(config)
+      end
+      context "when the config does not specify an implementation" do
+        before(:each) do
+          config.stub(:packetthief).and_return( {} )
+        end
+
+        it "does not explicitly configure a firewall implementation" do
+          PacketThief.should_not_receive(:implementation=)
+
+          subject
+        end
+      end
+
+      context "when the config specifies netfilter" do
+        before(:each) do
+          config.stub(:packetthief).and_return( {'implementation' => 'netfilter'} )
+        end
+
+        it "sets the firewall to :netfilter" do
+          PacketThief.should_receive(:implementation=).with('netfilter')
 
           subject
         end
