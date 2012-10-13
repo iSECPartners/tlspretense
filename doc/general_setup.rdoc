@@ -102,14 +102,14 @@ a brief discussion of each section and what you might want to change.
 === packetthief
 
     packetthief:
-      :protocol: tcp
-      :dest_port: 443
-      :in_interface: eth1
+      protocol: tcp
+      dest_port: 443
+      in_interface: eth1
 
 This section describes the firewall rule that will redirect traffic. The most
 relevant subvalue is +:in_interface+, which should contain the name of the
 network interface that the client's network traffic will come in on. Also, if
-you will be testing non-https traffic, change +:dest_port+ to the port that the
+you will be testing non-https traffic, change +dest_port+ to the port that the
 client will connect to.
 
 === certmaker

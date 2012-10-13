@@ -32,7 +32,15 @@ module SSLTest
     end
 
     def packetthief
-      @raw['packetthief']
+      pt = @raw['packetthief'].dup
+      newvals = {}
+      pt.each_pair do |k,v|
+        if k.kind_of? String
+          newvals[k.to_sym] = v
+        end
+      end
+      pt.merge! newvals
+      pt
     end
 
     def pause?
