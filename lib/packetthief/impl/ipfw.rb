@@ -1,6 +1,7 @@
 
 
 module PacketThief
+module Impl
   # Use Ipfw to redirect traffic.
   #
   # Needed in at least Mac OS X 10.6 and later[1]?:
@@ -116,4 +117,6 @@ module PacketThief
       Socket::unpack_sockaddr_in(sockname)
     end
   end
+
+end
 end

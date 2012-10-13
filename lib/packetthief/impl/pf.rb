@@ -1,6 +1,7 @@
 
 
 module PacketThief
+module Impl
   # Use PF to redirect traffic.
   #
   # Squid uses ioctl with DIOCNATLOOK to get a pfioc_natlook data structure to
@@ -122,4 +123,6 @@ module PacketThief
       Socket::unpack_sockaddr_in(sockname)
     end
   end
+
+end
 end

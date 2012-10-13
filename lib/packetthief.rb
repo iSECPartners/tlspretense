@@ -107,23 +107,29 @@ require 'eventmachine'
 #
 module PacketThief
   autoload :RedirectRule, 'packetthief/redirect_rule'
-  autoload :Netfilter, 'packetthief/netfilter'
-  autoload :Ipfw, 'packetthief/ipfw'
-  autoload :PF,           'packetthief/pf'
+  autoload :Impl,         'packetthief/impl'
 
   autoload :Handlers, 'packetthief/handlers'
   autoload :Logging,  'packetthief/logging'
   autoload :Util, 'packetthief/util'
 
+  class << self
+    attr_accessor :implementation
+  end
+
+  # Pass the call on to @implementation, or an OS-specific default, if one is known.
   def self.method_missing(m, *args, &block)
-    case RUBY_PLATFORM
-    when /linux/
-      Netfilter.send(m, *args, &block)
-    when /darwin10/ # Mac OS X 10.6 and earlier.
-      Ipfw.send(m, *args, &block)
-    else
-      raise "Platform #{RUBY_PLATFORM} not yet supported! If you know your network implementation, call it directly."
+    if implementation == nil
+      case RUBY_PLATFORM
+      when /linux/
+        implementation = Impl::Netfilter
+      when /darwin(10|[0-9]($|[^0]))/ # Mac OS X 10.6 and earlier.
+        implementation = Impl::Ipfw
+      else
+        raise "Platform #{RUBY_PLATFORM} not yet supported! If you know your network implementation, call it directly."
+      end
     end
+    return implementation.send(m, *args, &block)
   end
 
 end

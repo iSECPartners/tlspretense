@@ -1,6 +1,7 @@
-require File.expand_path(File.join(File.dirname(__FILE__),'..','spec_helper'))
+require File.expand_path(File.join(File.dirname(__FILE__),'..','..','spec_helper'))
 
 module PacketThief
+module Impl
   describe PF do
     subject { PF }
 
@@ -78,4 +79,4 @@ module PacketThief
     end
   end
 end
-
+end

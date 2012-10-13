@@ -1,5 +1,6 @@
 
 module PacketThief
+module Impl
   # PacketThief implemented using the Linux kernel's Netfilter.
   #
   # This is roughly equivalent to:
@@ -104,4 +105,5 @@ module PacketThief
 
   end
 
+end
 end

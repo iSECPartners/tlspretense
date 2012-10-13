@@ -1,6 +1,7 @@
-require File.expand_path(File.join(File.dirname(__FILE__),'..','spec_helper'))
+require File.expand_path(File.join(File.dirname(__FILE__),'..','..','spec_helper'))
 
 module PacketThief
+module Impl
   describe Ipfw do
     before(:each) do
       Ipfw.stub(:system).and_return(:true)
@@ -74,4 +75,4 @@ module PacketThief
     end
   end
 end
-
+end
