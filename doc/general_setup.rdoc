@@ -41,7 +41,7 @@ This setup has the following network topography:
     | | +----------------+ | |   .    |   +----------+   |   .
     | | | CA TrustStore  | | |   .    |        |         |   .    +-------------+
     | | |                | | |   .    | +------V-------+ |   .    | Original    |
-    | | | TLSPretense CA | | |   .    | | TLSPretense  ==========>| Desitnation |
+    | | | TLSPretense CA | | |   .    | | TLSPretense  ==========>| Destination |
     | | +----------------+ | |   .    | | Test Harness | |   .    +-------------+
     | +--------------------+ |   .    | +--------------+ |   .    
     +------------------------+   .    +------------------+   .
