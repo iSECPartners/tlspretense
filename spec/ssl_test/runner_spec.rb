@@ -265,6 +265,23 @@ module SSLTest
         end
       end
 
+      describe "the 'external' pseudo-implementation" do
+        context "when the config specifies external(netfilter)" do
+          before(:each) do
+            config.stub(:packetthief).and_return( {'implementation' => 'external(netfilter)'} )
+            PacketThief.stub(:set_dest)
+          end
+
+          it "it sets the firewall implementation to netfilter" do
+            PacketThief.should_receive(:implementation=).with(/netfilter/i)
+
+            subject
+          end
+
+          # Not enabling packetthief currently needs to happen in the test runner
+        end
+      end
+
     end
 
   end

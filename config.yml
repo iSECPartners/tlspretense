@@ -37,6 +37,10 @@ packetthief:
   #
   # - manual(destination)       If you choose manual, you must also choose a
   #                             default destination address or hostname.
+  #
+  # - external(implementation)  Use firewall rules that are not managed by the
+  #                             test harness, but that might provide us with
+  #                             the original destination.
   #implementation: manual(www.isecpartners.com)
 
   # The remaining options are used to construct the firewall rule:

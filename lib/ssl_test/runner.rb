@@ -71,6 +71,9 @@ module SSLTest
           PacketThief.implementation = :manual
           host = /manual\((.*)\)/i.match(impl)[1]
           PacketThief.set_dest(host, @config.packetthief.fetch('dest_port',443))
+        when /external\(/i
+          real_impl = /external\((.*)\)/i.match(impl)[1]
+          PacketThief.implementation = real_impl.strip.downcase.to_sym
         else
           PacketThief.implementation = impl
         end

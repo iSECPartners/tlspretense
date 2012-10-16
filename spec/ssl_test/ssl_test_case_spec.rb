@@ -75,6 +75,17 @@ module SSLTest
 
             subject.run
           end
+
+          context "when the packetthief implementation is 'external(netfilter)'" do
+            before(:each) do
+              config.stub(:packetthief).and_return( { 'implementation' => 'external(netfilter)' } )
+            end
+            it "does not redirect traffic itself" do
+              PacketThief.should_not_receive(:redirect)
+
+              subject.run
+            end
+          end
         end
 
         it "starts an eventmachine event loop" do
