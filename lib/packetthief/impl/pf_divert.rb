@@ -2,26 +2,60 @@
 
 module PacketThief
 module Impl
-  # Use PF to redirect traffic. This implementation only works with versions of
-  # PF that have the divert-to keyword, which is relatively new (For example,
-  # Mac OS X 10.7 does not support it).
+  # Untested and likely broken PacketThief implementation that uses PF's
+  # divert-to to redirect traffic. It is currently untested, and it requires a
+  # newer version of PF to redirect traffic than is available in Mac OS X 10.7
+  # (and probably 10.8)
   #
-  # Squid uses ioctl with DIOCNATLOOK to get a pfioc_natlook data structure to
-  # get the original destination using rdr-to rules. However, according to [1],
-  # if we use a divert-to rule, we can get the original destination using
-  # getsockname(2).
+  # == Capturing Traffic
+  #
+  # It works by dynamically changing the rules in the "packetthief" anchor. To
+  # use it, you must add the following to your /etc/pf.conf file in the
+  # "Packet Filtering" section::
+  #
+  #     anchor "packetthief"
+  #
+  # Then you must reload your pf config by rebooting or by executing:
+  #
+  #     sudo pfctl -f /etc/pf.conf
+  #
+  # When PacketThief adds a rule, it constructs a new rule set for the
+  # packetthief anchor and replaces the current ruleset in the anchor by
+  # calling:
+  #
+  #     echo "#{our rules}" | pfctl -a packetthief -f -
+  #
+  # Rules look something like:
+  #
+  #     pass in on en1 proto tcp from any to any port 443 divert-to 127.0.0.1 port 54321
+  #
+  # == Acquiring the original destination
+  #
+  # According to [1], if we use a divert-to rule, we can get the original
+  # destination using getsockname(2) instead of having to perform ioctl
+  # operations on the /dev/pf pseudo-device.
   #
   # [1]: http://www.openbsd.org/cgi-bin/man.cgi?query=pf.conf&sektion=5&arch=&apropos=0&manpath=OpenBSD+Current
   #
   #
+  # == Alternative implementations
   #
+  # TODO:
   #
-  # pass in on en1 proto tcp from any to any port 443 divert-to 127.0.0.1 port 54321
+  # divert-to is too new of Mac OS X 10.7 (Lion is using a relatively "old"
+  # implementation of PF).
   #
-  # divert-to is a relatively "new" feature in pf. 9_9
-  #   mac os 10.7 lacks it
+  # A possible alternative is to use rdr rules:
   #
-  # a possible alternative is rdr
+  #     rdr on en1 proto tcp from any to any port 443 -> 127.0.0.1 port 54321
+  #
+  # This also requires:
+  #
+  #     rdr-anchor "packetthief"
+  #
+  # in /etc/pf.conf in the "Translation" section of /etc/pf.conf. We can then
+  # use the ioctl with DIOCNATLOOK approach that Squid uses to get a
+  # pfioc_natlook data structure to get the original destination of the connection.
   class PFDivert
     module PFDivertRuleHandler
       attr_accessor :active_rules
