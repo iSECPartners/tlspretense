@@ -26,7 +26,7 @@ module PacketThief
     end
 
     def logdebug(msg, args={})
-      log(Logger::DEBUG, self.class, msg, args)
+      log(Logger::DEBUG, (([Module, Class].include? self.class) ? self.name : self.class), msg, args)
     end
 
     def loginfo(msg, args={})

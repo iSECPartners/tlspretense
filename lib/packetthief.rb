@@ -114,10 +114,13 @@ module PacketThief
   autoload :Util, 'packetthief/util'
 
   class << self
-    attr_accessor :implementation
+    include Logging
   end
 
+  def self.implementation; @implementation ; end
+
   def self.implementation=(newimpl)
+    logdebug "Set implementation to: #{newimpl}"
     if newimpl == nil
       @implementation = nil
     elsif newimpl.kind_of? Module
@@ -146,6 +149,7 @@ module PacketThief
 
   # Pass the call on to @implementation, or an OS-specific default, if one is known.
   def self.method_missing(m, *args, &block)
+    logdebug "method_missing: #{m}", :args => args, :block => block
     if @implementation == nil
       @implementation = guess_implementation
     end

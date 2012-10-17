@@ -63,6 +63,7 @@ module SSLTest
           "#{datetime}:#{severity}: #{msg}\n"
       end
       @app_context = AppContext.new(@config, @cert_manager, @logger)
+      PacketThief.logger = @logger
 
       if @config.packetthief.has_key? 'implementation'
         impl = @config.packetthief['implementation']
