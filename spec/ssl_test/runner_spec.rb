@@ -184,7 +184,27 @@ module SSLTest
         end
       end
 
+    end
 
+    describe "stopping after a test requests a stop" do
+      let(:baseline) { double('baseline test desc') }
+      let(:another) { double('another test desc') }
+      let(:athird) { double('athird test desc') }
+      before(:each) do
+        Config.any_instance.stub(:tests).with(nil).and_return([baseline, another, athird])
+      end
+      it "stops running tests after the test that asks to stop" do
+        subject.should_receive(:run_test).with(baseline).and_return(:stop)
+        subject.should_not_receive(:run_test).with(another)
+        subject.should_not_receive(:run_test).with(athird)
+
+        subject.run
+      end
+
+      it "still generates a report" do
+        report.should_receive(:print_results)
+        subject.run
+      end
     end
 
     describe "logger options" do

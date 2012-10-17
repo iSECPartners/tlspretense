@@ -57,6 +57,7 @@ module SSLTest
           EM.add_periodic_timer(5) { @appctx.logger.debug "EM connection count: #{EM.connection_count}" }
         end
       end
+      @status
     end
 
     def cleanup
@@ -86,12 +87,13 @@ module SSLTest
       end
 
       cleanup
+      @status = :next
     end
 
     # Callback to cleanup and exit.
     def stop_testing
       cleanup
-      exit
+      @status = :stop
     end
 
   end

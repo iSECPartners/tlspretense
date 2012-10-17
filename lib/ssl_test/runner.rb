@@ -96,7 +96,9 @@ module SSLTest
         first = true
         @config.tests( @test_list.empty? ? nil : @test_list).each do |test|
           pause if @config.pause? and not first
-          run_test test
+          if run_test(test) == :stop
+            break
+          end
           first = false
         end
         @report.print_results(@stdout)
