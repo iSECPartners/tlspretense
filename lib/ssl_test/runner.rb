@@ -92,6 +92,7 @@ module SSLTest
           display_test test
         end
       when :runtests
+        @stdout.puts "Press spacebar to skip a test, or 'q' to stop testing."
         @report = SSLTestReport.new
         first = true
         @config.tests( @test_list.empty? ? nil : @test_list).each do |test|

@@ -4,7 +4,7 @@ module SSLTest
   describe Runner do
     let(:args) { [] }
     let(:stdin) { double("stdin") }
-    let(:stdout) { double("stdout") }
+    let(:stdout) { double("stdout", :puts => nil) }
 
     let(:test_foo) do
       {
