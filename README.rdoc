@@ -135,7 +135,7 @@ See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPre
 * Command line option to specify where to write the results to
 
 
-== Contributing to SSL Client Testing
+== Contributing to TLSPretense
 
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
