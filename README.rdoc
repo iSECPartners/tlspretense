@@ -130,8 +130,6 @@ See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPre
 * Document how to deal with certificate pinning and other things that may make
   testing certificate validation logic difficult.
 
-* Configuration option for disabling PacketThief when managing firewall rules
-
 * Command line option to specify where to write the results to
 
 
