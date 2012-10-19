@@ -35,7 +35,6 @@ module SSLTest
       ptconf = @appctx.config.packetthief
       unless ptconf.has_key? 'implementation' and ptconf['implementation'].match(/external/i)
         PacketThief.redirect(:to_ports => @config.listener_port).where(@config.packetthief).run
-        at_exit { PacketThief.revert }
       end
 
       @started_em = false

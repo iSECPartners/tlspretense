@@ -79,6 +79,7 @@ module SSLTest
           PacketThief.implementation = impl
         end
       end
+      at_exit { PacketThief.revert }
 
       @report = SSLTestReport.new
     end
