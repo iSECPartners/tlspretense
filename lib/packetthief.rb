@@ -125,7 +125,7 @@ module PacketThief
       @implementation = nil
     elsif newimpl.kind_of? Module
       @implementation = newimpl
-    elsif
+    else
       PacketThief::Impl.constants.each do |c|
         if c.downcase.to_sym == newimpl.downcase.to_sym
           @implementation = PacketThief::Impl.const_get c
@@ -150,10 +150,15 @@ module PacketThief
   # Pass the call on to @implementation, or an OS-specific default, if one is known.
   def self.method_missing(m, *args, &block)
     logdebug "method_missing: #{m}", :args => args, :block => block
-    if @implementation == nil
-      @implementation = guess_implementation
+    if self.implementation == nil
+      self.implementation = guess_implementation
     end
-    @implementation.send(m, *args, &block)
+    self.implementation.send(m, *args, &block)
+  end
+
+  # Quietly ignore .revert calls if implementation is nil.
+  def self.revert
+    implementation.revert if implementation
   end
 
 end
