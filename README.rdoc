@@ -5,13 +5,18 @@ A test framework for testing SSL/TLS client certificate validation.
 
 == Description
 
-TLSPretense provides a test framework for testing SSL certificate
-validation. It generates a set of certificates containing specific flaws, and
-it presents the certificates to a client that has been configured to trust a CA
-used by TLSPretense. The test framework then configures its system's firewall
-to redirect and intercept network traffic so that the test runner can present
-its certificate to the client. To speed up testing, the test runner starts the
-next test as soon as the current test finishes.
+Note: TLSPretense is still undergoing a lot of polishing. It is currently
+usable, but features may change and documentation may be missing. As such,
+please bear with us over next few months as we find time to work on the tools,
+and feel free to file a bug with details.
+
+TLSPretense provides a test framework for testing SSL certificate validation.
+It generates a set of certificates containing specific flaws, and it presents
+the certificates to a client that has been configured to trust a CA used by
+TLSPretense. The test framework then configures its system's firewall to
+redirect and intercept network traffic so that the test runner can present its
+certificate to the client. To speed up testing, the test runner starts the next
+test as soon as the current test finishes.
 
 The test framework must be run on a Unix-like OS that contains a supported
 firewall, but the program being tested can run on any device whose network
@@ -92,6 +97,28 @@ See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPre
 
 == TODO
 
+* Convert SSLClient's initial connection to use a non-blocking connect.
+
+* Change the pre-flight in SSLSmartProxy to disable the accepted server socket
+  until the pre-flight finishes. (the SSLClient within SSLTransparentProxy
+  probably also should do this until the client connects)
+
+* Move PacketThief calls and TestListener's intial server into the runner. The
+  TestListener's initial server should then have a way to change what initial
+  arguments it passes on to each TestListener instance in order to present the
+  certificates for the current test. This _might_ help keep some connections
+  from hanging...
+
+* Get a Mac OS X 10.7/10.8 PF implementation working.
+
+* Make how to determine if a client passes configurable. Currently, TLSPretense
+  uses whether the TLS handshake successfully completes to decide if it
+  succeeds. However, there appears to be Java/Android code that finishes the
+  connection before rejecting the certificate. Instead of using the handshake
+  state, we could instead decide based on whether the client sends data over
+  the encrypted session or not. Making it configurable provides more options
+  for how to test.
+
 * Fix the subjectAltName null byte test. It requires manual construction of the
   ASN1 encoding due to the null byte causing a truncation somewhere in OpenSSL
   or Ruby's OpenSSL.
@@ -101,6 +128,11 @@ See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPre
   * bad hostname: \*.other.com
   * tld hostname: \*.%TLDHOSTNAME% (reject)
   * do we want to test more complicated wildcards?
+
+* Add extension criticality tests (need an extension oid that nobody knows how to verify)
+  * If an extension is marked critical and the verifier doesn't know how to
+    verify, then it should fail. If it is not marked critical, then it is
+    allowed to skip the extension.
 
 * Advanced: Add name constraints tests.
   * success: dnsName of leaf matches exactly the dnsName permitted constraint
@@ -117,12 +149,6 @@ See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPre
   * reject: dirname does not match the default subject's DN
   * URI constraints
 
-* truly unique serial numbers for a given CA. Alternatively, we could use the
-  first cert's serial as a starting point and increment from there.
-
-* Build certs and chains of certs for each test so that something like
-  s\_server could use them.
-
 * Document how to run SSLTest from MacOSX
 
 * Document how to run SSLTest from a Linux VM on Windows (eg, with VMWare)
@@ -132,6 +158,30 @@ See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPre
 
 * Command line option to specify where to write the results to
 
+* Wrap certmaker functionality in a command instead of just using rake
+
+* Gemify for easier distribution/installation and eliminate the need for bundle exec
+
+* Add more result output formats
+  * (X)HTML
+  * CSV
+  * LaTeX?
+  * XML?
+  * SQLite?
+
+* truly unique serial numbers for a given CA. Alternatively, we could use the
+  first cert's serial as a starting point and increment from there.
+
+* Build certs and chains of certs for each test so that something like
+  s\_server could use them.
+
+* Config file validator
+
+* Add an API for interacting with an external test controller. This could be a
+  little web service, although that lacks real-time responses. A TCP/unix
+  socket interface that sends/receives JSON messages (or something simpler)
+  might be better. The client would tell TLSPretense which test to start, and
+  then TLSPretense would reply with a result when it completes.
 
 == Contributing to TLSPretense
 
