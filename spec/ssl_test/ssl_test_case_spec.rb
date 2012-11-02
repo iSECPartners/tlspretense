@@ -27,7 +27,8 @@ module SSLTest
                :protocol => 'tcp',
                :dest_port => 443,
                :in_interface => 'en1'
-             }
+             },
+             :testing_method => 'tlshandshake'
             )
     end
     let(:testdesc) do
@@ -224,9 +225,96 @@ module SSLTest
             subject.test_completed(:running)
           end
         end
+        context "when the listener reports connected" do
+          it "creates a result that reports passing" do
+            SSLTestResult.should_receive(:new).with('baseline', true).and_return(result)
 
+            subject.test_completed(:connected)
+          end
+        end
+        context "when the listener reports sentdata" do
+          it "creates a result that reports passing" do
+            SSLTestResult.should_receive(:new).with('baseline', true).and_return(result)
+
+            subject.test_completed(:sentdata)
+          end
+        end
 
       end
+
+      context "when the configuration requires the client to send data for it to consider it to be connected" do
+        before(:each) do
+          config.stub(:testing_method).and_return('senddata')
+        end
+        context "when the expected result is a successful connection" do
+          before(:each) do
+            testdesc['expected_result'] = 'connected'
+          end
+
+          before(:each) do
+            subject.run
+          end
+
+          context "when the listener reports rejected" do
+            it "creates a result that reports not passing" do
+              SSLTestResult.should_receive(:new).with('baseline', false).and_return(result)
+
+              subject.test_completed(:rejected)
+            end
+          end
+
+          context "when the listener reports connected" do
+            it "creates a result that reports not passing" do
+              SSLTestResult.should_receive(:new).with('baseline', false).and_return(result)
+
+              subject.test_completed(:connected)
+            end
+          end
+
+          context "when the listener reports sentdata" do
+            it "creates a result that reports passing" do
+              SSLTestResult.should_receive(:new).with('baseline', true).and_return(result)
+
+              subject.test_completed(:sentdata)
+            end
+          end
+
+        end
+        context "when the expected result is a rejected connection" do
+          before(:each) do
+            testdesc['expected_result'] = 'rejected'
+          end
+
+          before(:each) do
+            subject.run
+          end
+
+          context "when the listener reports rejected" do
+            it "creates a result that reports not passing" do
+              SSLTestResult.should_receive(:new).with('baseline', true).and_return(result)
+
+              subject.test_completed(:rejected)
+            end
+          end
+
+          context "when the listener reports connected" do
+            it "creates a result that reports not passing" do
+              SSLTestResult.should_receive(:new).with('baseline', true).and_return(result)
+
+              subject.test_completed(:connected)
+            end
+          end
+
+          context "when the listener reports sentdata" do
+            it "creates a result that reports passing" do
+              SSLTestResult.should_receive(:new).with('baseline', false).and_return(result)
+
+              subject.test_completed(:sentdata)
+            end
+          end
+        end
+      end
+
     end
   end
 end

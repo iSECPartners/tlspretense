@@ -69,11 +69,33 @@ module SSLTest
 
     # Called when a test completes or is skipped. It adds an SSLTestResult to
     # the report, and it cleans up after itself.
+    #
+    # :connected, :rejected, :sentdata
     def test_completed(actual_result)
       logdebug "test_completed", :actual_result => actual_result, :expected_result => @expected_result
       return if actual_result == :running
 
-      str = SSLTestResult.new(@id, (actual_result.to_s == @expected_result))
+      passed = if @appctx.config.testing_method == 'tlshandshake'
+                 case @expected_result
+                 when 'connected'
+                   %w{connected sentdata}.include? actual_result.to_s
+                 when 'rejected'
+                   actual_result == :rejected
+                 else
+                   raise "Unknown expected_result: #{@expected_result}"
+                 end
+               else # senddata, which requires data to be sent for it to pass.
+                 case @expected_result
+                 when 'connected'
+                   actual_result == :sentdata
+                 when 'rejected'
+                   %w{rejected connected}.include? actual_result.to_s
+                 else
+                   raise "Unknown expected_result: #{@expected_result}"
+                 end
+               end
+
+      str = SSLTestResult.new(@id, passed)
       str.description = @description
       str.expected_result = @expected_result
       str.actual_result = actual_result.to_s

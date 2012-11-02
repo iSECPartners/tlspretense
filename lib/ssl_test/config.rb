@@ -31,6 +31,10 @@ module SSLTest
       @raw['listener_port']
     end
 
+    def testing_method
+      @raw['testing_method']
+    end
+
     def packetthief
       pt = @raw['packetthief'].dup
       newvals = {}

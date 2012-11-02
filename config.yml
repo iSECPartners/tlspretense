@@ -55,6 +55,19 @@ packetthief:
 # SSL interceptor will run on during each test.
 listener_port: 54321
 
+# The testing_method is used to determine whether the client has accepted or
+# rejected a certificate. If you find any of these to be unreliable, then you
+# will need to determine pass/fail yourself.
+#
+# - tlshandshake    We say that the client accepts a test if it completes the
+#                   TLS handshake, and it rejects a request if it does not
+#                   complete the handshake.
+# - senddata        We say that the client accepts a test if it sends data,
+#                   instead of whether it completes the TLS handshake. This may
+#                   be necessary for Android and probably other Java-based SSL
+#                   using code.
+testing_method: senddata
+
 # Meta-configuration for certificate generation. These values affect the
 # default settings for certificate generation.
 certmaker:

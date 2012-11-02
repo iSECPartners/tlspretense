@@ -123,28 +123,41 @@ module SSLTest
             TestListener.stub(:cert_matches_host).and_return(true)
             subject.check_for_hosttotest(OpenSSL::SSL::SSLContext.new)
           end
-          context "when the test succeeds" do
+          context "when the client connects" do
             before(:each) do
               subject.tls_successful_handshake
             end
 
-            it "calls the test_completed callback with a report of success when the connection closes" do
+            it "calls the test_completed callback with :connected when the connection closes" do
               subject.unbind
 
               @result.should == :connected
             end
           end
-          context "when the test fails" do
+          context "when the client rejects" do
             before(:each) do
               subject.tls_failed_handshake(double('error'))
             end
 
-            it "calls the test_completed callback with a report of success when the connection closes" do
+            it "calls the test_completed callback with :rejected when the connection closes" do
               subject.unbind
 
               @result.should == :rejected
             end
           end
+          context "when the client sends data" do
+            before(:each) do
+              subject.stub(:send_to_dest)
+              subject.client_recv(double('data'))
+            end
+
+            it "calls the test_completed callback with :sentdata when the connection closes" do
+              subject.unbind
+
+              @result.should == :sentdata
+            end
+          end
+
         end
       end
     end

@@ -107,5 +107,12 @@ module SSLTest
       end
     end
 
+    def client_recv(data)
+      if @testing_host
+        @test_status = :sentdata
+      end
+      super(data)
+    end
+
   end
 end
