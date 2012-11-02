@@ -26,7 +26,7 @@ module PacketThief
           @ctx.cert = lookup_cert
           @ctx.extra_chain_cert = @ca_chain
           @ctx.key = @key
-        rescue OpenSSL::SSL::SSLError, Errno::ECONNREFUSED
+        rescue OpenSSL::SSL::SSLError, Errno::ECONNREFUSED, Errno::ETIMEDOUT => e
           logerror "initialize: Failed to look up cert", :error => e
           close_connection
         end
@@ -58,7 +58,7 @@ module PacketThief
           pfssl.connect
 #          puts pfssl.peer_cert.subject
           return pfssl.peer_cert
-        rescue OpenSSL::SSL::SSLError, Errno::ECONNREFUSED => e
+        rescue OpenSSL::SSL::SSLError, Errno::ECONNREFUSED, Errno::ETIMEDOUT => e
           logerror "Error during preflight SSL connection: #{e} (#{e.class})"
           raise
         ensure

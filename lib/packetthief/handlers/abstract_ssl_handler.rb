@@ -119,7 +119,7 @@ module PacketThief
           data = @sslsocket.read_nonblock 4096 # much more than a network packet...
           receive_data(data)
           notify_writable = false
-        rescue EOFError
+        rescue EOFError, Errno::ECONNRESET
           # remote closed. time to wrap up
           close_connection
         rescue IO::WaitReadable
@@ -160,7 +160,7 @@ module PacketThief
           notify_writable = true
         rescue IO::WaitReadable
           @state = :write_needs_to_read
-        rescue OpenSSL::SSL::SSLError => e
+        rescue OpenSSL::SSL::SSLError, IOError => e
           logerror "attempt_write: #{e} (#{e.class})"
           close_connection
         else
@@ -191,8 +191,8 @@ module PacketThief
 
       def close_connection
         detach
-        @sslsocket.close if @sslsocket
-        @tcpsocket.close
+        @sslsocket.close if @sslsocket and not @sslsocket.closed?
+        @tcpsocket.close if not @tcpsocket.closed?
 #        unbind
       end
 
