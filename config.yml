@@ -190,10 +190,13 @@ certs:
     addextensions:
     - "subjectAltName=DNS:%PARENTHOSTNAME%"
 
-  notwebserver: &notwebserver
+  # extended key usage specifies code signing instead of serverAuth
+  wrongextendedkeyusage: &wrongextendedkeyusage
     <<: *baseline
     blockextensions:
     - extendedKeyUsage
+    addextensions:
+    - "extendedKeyUsage = codeSigning"
 
 
   selfsigned: &selfsigned
@@ -362,10 +365,10 @@ tests:
   expected_result: rejected
 
 # key usage
-- alias: notwebserver
-  name: Lacking extendedKeyUsage
+- alias: wrongextendedkeyusage
+  name: extendedKeyUsage lacks serverAuth
   certchain:
-  - notwebserver
+  - wrongextendedkeyusage
   - goodca
   expected_result: rejected
 
