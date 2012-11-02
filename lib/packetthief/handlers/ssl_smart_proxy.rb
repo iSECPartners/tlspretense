@@ -12,8 +12,14 @@ module PacketThief
     # generated certificates.
     class SSLSmartProxy < SSLTransparentProxy
 
+      # How long to wait before giving up on a preflight request. Defaults to 5
+      # seconds.
+      attr_accessor :preflight_timeout
+
       def initialize(tcpsocket, ca_chain, key)
         super(tcpsocket)
+
+        @preflight_timeout = 5
         if ca_chain.kind_of? Array
           @ca_chain = ca_chain
         else
@@ -52,11 +58,23 @@ module PacketThief
         begin
           pfctx = OpenSSL::SSL::SSLContext.new
           pfctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
-          pfs = TCPSocket.new(dest_host, dest_port)
+          # Try to use a non-blocking Socket to create a short timeout.
+          pfs = Socket.new(:AF_INET, :SOCK_STREAM)
+          begin
+            pfs.connect_nonblock(Socket.sockaddr_in(dest_port, dest_host))
+          rescue Errno::EINPROGRESS
+            IO.select(nil, [pfs], nil, preflight_timeout) or raise Errno::ETIMEDOUT, "Connection to #{dest_host}:#{dest_port} timed out after #{preflight_timeout} seconds"
+          end
+          logdebug "preflight tcp socket connected"
           pfssl = OpenSSL::SSL::SSLSocket.new(pfs, pfctx)
           pfssl.hostname = hostname if hostname and pfssl.respond_to? :hostname
-          pfssl.connect
-#          puts pfssl.peer_cert.subject
+          begin
+            pfssl.connect_nonblock
+          rescue IO::WaitReadable, IO::WaitWritable
+            IO.select([pfssl],[pfssl],nil,preflight_timeout) or raise Errno::ETIMEDOUT, "SSL handshake to #{dest_host}:#{dest_port} timed out #{preflight_timeout} seconds"
+            retry
+          end
+          logdebug "preflight complete"
           return pfssl.peer_cert
         rescue OpenSSL::SSL::SSLError, Errno::ECONNREFUSED, Errno::ETIMEDOUT => e
           logerror "Error during preflight SSL connection: #{e} (#{e.class})"
