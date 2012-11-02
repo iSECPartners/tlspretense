@@ -119,14 +119,6 @@ See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPre
   certificates for the current test. This _might_ help keep some connections
   from hanging...
 
-* Make how to determine if a client passes configurable. Currently, TLSPretense
-  uses whether the TLS handshake successfully completes to decide if it
-  succeeds. However, there appears to be Java/Android code that finishes the
-  connection before rejecting the certificate. Instead of using the handshake
-  state, we could instead decide based on whether the client sends data over
-  the encrypted session or not. Making it configurable provides more options
-  for how to test.
-
 * Fix the subjectAltName null byte test. It requires manual construction of the
   ASN1 encoding due to the null byte causing a truncation somewhere in OpenSSL
   or Ruby's OpenSSL.
