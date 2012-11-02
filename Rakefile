@@ -49,6 +49,15 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
   rdoc.rdoc_files.include('doc/**/*.rdoc')
+
+  rdoc.before_running_rdoc do
+    unless File.exist? 'rdoc'
+      begin
+        sh 'git clone --branch gh-pages --single-branch git@github.com:iSECPartners/tlspretense.git rdoc'
+      rescue
+      end
+    end
+  end
 end
 
 $: << "lib"

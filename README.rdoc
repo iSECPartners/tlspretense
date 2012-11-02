@@ -2,7 +2,6 @@
 
 A test framework for testing SSL/TLS client certificate validation.
 
-
 == Description
 
 Note: TLSPretense is still undergoing a lot of polishing. It is currently
@@ -23,6 +22,12 @@ firewall, but the program being tested can run on any device whose network
 traffic can be routed through the system hosting the test framework. Currently,
 it supports netfilter and ipfw, which limits the test runner to Linux, MacOSX
 (10.6), and *BSD.
+
+
+== Links
+
+* {Generated Documentation}[http://isecpartners.github.com/tlspretense/]
+
 
 == How It Works
 
