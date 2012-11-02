@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class SSLTest::CertificateManager - TLSPretense </title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/ssl_test/certificate_manager.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-get_cert">#get_cert</a>
+    
+    <li><a href="#method-i-get_chain">#get_chain</a>
+    
+    <li><a href="#method-i-get_key">#get_key</a>
+    
+    <li><a href="#method-i-get_keychain">#get_keychain</a>
+    
+    <li><a href="#method-i-get_raw_cert">#get_raw_cert</a>
+    
+    <li><a href="#method-i-get_raw_key">#get_raw_key</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+    <li class="file"><a href="../doc/general_setup_rdoc.html">general_setup</a>
+  
+    <li class="file"><a href="../doc/linux_setup_rdoc.html">linux_setup</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../PacketThief.html">PacketThief</a>
+  
+    <li><a href="../PacketThief/Handlers.html">PacketThief::Handlers</a>
+  
+    <li><a href="../PacketThief/Handlers/AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li><a href="../PacketThief/Handlers/ProxyRedirector.html">PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLClient.html">PacketThief::Handlers::SSLClient</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLServer.html">PacketThief::Handlers::SSLServer</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLServer/InitialServer.html">PacketThief::Handlers::SSLServer::InitialServer</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLSmartProxy.html">PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLTransparentProxy.html">PacketThief::Handlers::SSLTransparentProxy</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html">PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
+  
+    <li><a href="../PacketThief/Handlers/TransparentProxy.html">PacketThief::Handlers::TransparentProxy</a>
+  
+    <li><a href="../PacketThief/Handlers/TransparentProxy/ProxyConnection.html">PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+  
+    <li><a href="../PacketThief/Impl.html">PacketThief::Impl</a>
+  
+    <li><a href="../PacketThief/Impl/Ipfw.html">PacketThief::Impl::Ipfw</a>
+  
+    <li><a href="../PacketThief/Impl/Ipfw/IpfwRule.html">PacketThief::Impl::Ipfw::IpfwRule</a>
+  
+    <li><a href="../PacketThief/Impl/Ipfw/IpfwRuleHandler.html">PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/Manual.html">PacketThief::Impl::Manual</a>
+  
+    <li><a href="../PacketThief/Impl/Manual/NullRule.html">PacketThief::Impl::Manual::NullRule</a>
+  
+    <li><a href="../PacketThief/Impl/Manual/NullRuleHandler.html">PacketThief::Impl::Manual::NullRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/Netfilter.html">PacketThief::Impl::Netfilter</a>
+  
+    <li><a href="../PacketThief/Impl/Netfilter/IPTablesRule.html">PacketThief::Impl::Netfilter::IPTablesRule</a>
+  
+    <li><a href="../PacketThief/Impl/Netfilter/IPTablesRuleHandler.html">PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/PFDivert.html">PacketThief::Impl::PFDivert</a>
+  
+    <li><a href="../PacketThief/Impl/PFDivert/PFDivertRule.html">PacketThief::Impl::PFDivert::PFDivertRule</a>
+  
+    <li><a href="../PacketThief/Impl/PFDivert/PFDivertRuleHandler.html">PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/PFRdr.html">PacketThief::Impl::PFRdr</a>
+  
+    <li><a href="../PacketThief/Impl/PFRdr/PFRdrRule.html">PacketThief::Impl::PFRdr::PFRdrRule</a>
+  
+    <li><a href="../PacketThief/Impl/PFRdr/PFRdrRuleHandler.html">PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
+  
+    <li><a href="../PacketThief/Logging.html">PacketThief::Logging</a>
+  
+    <li><a href="../PacketThief/RedirectRule.html">PacketThief::RedirectRule</a>
+  
+    <li><a href="../PacketThief/Util.html">PacketThief::Util</a>
+  
+    <li><a href="../SSLTest.html">SSLTest</a>
+  
+    <li><a href="../SSLTest/AppContext.html">SSLTest::AppContext</a>
+  
+    <li><a href="../SSLTest/CertificateManager.html">SSLTest::CertificateManager</a>
+  
+    <li><a href="../SSLTest/Config.html">SSLTest::Config</a>
+  
+    <li><a href="../SSLTest/InputHandler.html">SSLTest::InputHandler</a>
+  
+    <li><a href="../SSLTest/Runner.html">SSLTest::Runner</a>
+  
+    <li><a href="../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
+  
+    <li><a href="../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
+  
+    <li><a href="../SSLTest/SSLTestResult.html">SSLTest::SSLTestResult</a>
+  
+    <li><a href="../SSLTest/TestListener.html">SSLTest::TestListener</a>
+  
+    <li><a href="../CertMaker.html">CertMaker</a>
+  
+    <li><a href="../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
+  
+    <li><a href="../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../Hash.html">Hash</a>
+  
+    <li><a href="../IO.html">IO</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class SSLTest::CertificateManager</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(certinfo)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/certificate_manager.rb, line 4</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">certinfo</span>)
+  <span class="ruby-ivar">@certinfo</span> = <span class="ruby-identifier">certinfo</span>
+  <span class="ruby-identifier">@@certcache</span> = {}
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-get_cert" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_cert</span><span
+            class="method-args">(name)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_cert-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/certificate_manager.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_cert</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">X509</span><span class="ruby-operator">::</span><span class="ruby-constant">Certificate</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">get_raw_cert</span>(<span class="ruby-identifier">name</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_cert-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_cert-method -->
+
+    
+      <div id="method-i-get_chain" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_chain</span><span
+            class="method-args">(list)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_chain-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/certificate_manager.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_chain</span>(<span class="ruby-identifier">list</span>)
+  <span class="ruby-identifier">list</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-identifier">get_cert</span>(<span class="ruby-identifier">name</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_chain-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_chain-method -->
+
+    
+      <div id="method-i-get_key" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_key</span><span
+            class="method-args">(name)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_key-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/certificate_manager.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_key</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">PKey</span>.<span class="ruby-identifier">read</span>(<span class="ruby-identifier">get_raw_key</span>(<span class="ruby-identifier">name</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_key-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_key-method -->
+
+    
+      <div id="method-i-get_keychain" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_keychain</span><span
+            class="method-args">(list)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_keychain-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/certificate_manager.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_keychain</span>(<span class="ruby-identifier">list</span>)
+  <span class="ruby-identifier">list</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-identifier">get_key</span>(<span class="ruby-identifier">name</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_keychain-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_keychain-method -->
+
+    
+      <div id="method-i-get_raw_cert" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_raw_cert</span><span
+            class="method-args">(name)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_raw_cert-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/certificate_manager.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_raw_cert</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">'certs'</span>,<span class="ruby-identifier">name</span><span class="ruby-operator">+</span><span class="ruby-string">&quot;cert.pem&quot;</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_raw_cert-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_raw_cert-method -->
+
+    
+      <div id="method-i-get_raw_key" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_raw_key</span><span
+            class="method-args">(name)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_raw_key-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/certificate_manager.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_raw_key</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">'certs'</span>,<span class="ruby-identifier">name</span><span class="ruby-operator">+</span><span class="ruby-string">&quot;key.pem&quot;</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_raw_key-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_raw_key-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

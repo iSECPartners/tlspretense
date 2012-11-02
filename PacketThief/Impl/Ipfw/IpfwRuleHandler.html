@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>module PacketThief::Impl::Ipfw::IpfwRuleHandler - TLSPretense </title>
+
+<link type="text/css" media="screen" href="../../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../../js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../../index.html">Home</a>
+    <a href="../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/packetthief/impl/ipfw.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../../Logging.html">PacketThief::Logging</a>
+  
+  
+  </ul>
+</nav>
+
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-revert">#revert</a>
+    
+    <li><a href="#method-i-run">#run</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../../README_rdoc.html">README</a>
+  
+    <li class="file"><a href="../../../doc/general_setup_rdoc.html">general_setup</a>
+  
+    <li class="file"><a href="../../../doc/linux_setup_rdoc.html">linux_setup</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../../PacketThief.html">PacketThief</a>
+  
+    <li><a href="../../../PacketThief/Handlers.html">PacketThief::Handlers</a>
+  
+    <li><a href="../../../PacketThief/Handlers/AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li><a href="../../../PacketThief/Handlers/ProxyRedirector.html">PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li><a href="../../../PacketThief/Handlers/SSLClient.html">PacketThief::Handlers::SSLClient</a>
+  
+    <li><a href="../../../PacketThief/Handlers/SSLServer.html">PacketThief::Handlers::SSLServer</a>
+  
+    <li><a href="../../../PacketThief/Handlers/SSLServer/InitialServer.html">PacketThief::Handlers::SSLServer::InitialServer</a>
+  
+    <li><a href="../../../PacketThief/Handlers/SSLSmartProxy.html">PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li><a href="../../../PacketThief/Handlers/SSLTransparentProxy.html">PacketThief::Handlers::SSLTransparentProxy</a>
+  
+    <li><a href="../../../PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html">PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
+  
+    <li><a href="../../../PacketThief/Handlers/TransparentProxy.html">PacketThief::Handlers::TransparentProxy</a>
+  
+    <li><a href="../../../PacketThief/Handlers/TransparentProxy/ProxyConnection.html">PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+  
+    <li><a href="../../../PacketThief/Impl.html">PacketThief::Impl</a>
+  
+    <li><a href="../../../PacketThief/Impl/Ipfw.html">PacketThief::Impl::Ipfw</a>
+  
+    <li><a href="../../../PacketThief/Impl/Ipfw/IpfwRule.html">PacketThief::Impl::Ipfw::IpfwRule</a>
+  
+    <li><a href="../../../PacketThief/Impl/Ipfw/IpfwRuleHandler.html">PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+  
+    <li><a href="../../../PacketThief/Impl/Manual.html">PacketThief::Impl::Manual</a>
+  
+    <li><a href="../../../PacketThief/Impl/Manual/NullRule.html">PacketThief::Impl::Manual::NullRule</a>
+  
+    <li><a href="../../../PacketThief/Impl/Manual/NullRuleHandler.html">PacketThief::Impl::Manual::NullRuleHandler</a>
+  
+    <li><a href="../../../PacketThief/Impl/Netfilter.html">PacketThief::Impl::Netfilter</a>
+  
+    <li><a href="../../../PacketThief/Impl/Netfilter/IPTablesRule.html">PacketThief::Impl::Netfilter::IPTablesRule</a>
+  
+    <li><a href="../../../PacketThief/Impl/Netfilter/IPTablesRuleHandler.html">PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+  
+    <li><a href="../../../PacketThief/Impl/PFDivert.html">PacketThief::Impl::PFDivert</a>
+  
+    <li><a href="../../../PacketThief/Impl/PFDivert/PFDivertRule.html">PacketThief::Impl::PFDivert::PFDivertRule</a>
+  
+    <li><a href="../../../PacketThief/Impl/PFDivert/PFDivertRuleHandler.html">PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
+  
+    <li><a href="../../../PacketThief/Impl/PFRdr.html">PacketThief::Impl::PFRdr</a>
+  
+    <li><a href="../../../PacketThief/Impl/PFRdr/PFRdrRule.html">PacketThief::Impl::PFRdr::PFRdrRule</a>
+  
+    <li><a href="../../../PacketThief/Impl/PFRdr/PFRdrRuleHandler.html">PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
+  
+    <li><a href="../../../PacketThief/Logging.html">PacketThief::Logging</a>
+  
+    <li><a href="../../../PacketThief/RedirectRule.html">PacketThief::RedirectRule</a>
+  
+    <li><a href="../../../PacketThief/Util.html">PacketThief::Util</a>
+  
+    <li><a href="../../../SSLTest.html">SSLTest</a>
+  
+    <li><a href="../../../SSLTest/AppContext.html">SSLTest::AppContext</a>
+  
+    <li><a href="../../../SSLTest/CertificateManager.html">SSLTest::CertificateManager</a>
+  
+    <li><a href="../../../SSLTest/Config.html">SSLTest::Config</a>
+  
+    <li><a href="../../../SSLTest/InputHandler.html">SSLTest::InputHandler</a>
+  
+    <li><a href="../../../SSLTest/Runner.html">SSLTest::Runner</a>
+  
+    <li><a href="../../../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
+  
+    <li><a href="../../../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
+  
+    <li><a href="../../../SSLTest/SSLTestResult.html">SSLTest::SSLTestResult</a>
+  
+    <li><a href="../../../SSLTest/TestListener.html">SSLTest::TestListener</a>
+  
+    <li><a href="../../../CertMaker.html">CertMaker</a>
+  
+    <li><a href="../../../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
+  
+    <li><a href="../../../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../../../Hash.html">Hash</a>
+  
+    <li><a href="../../../IO.html">IO</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module PacketThief::Impl::Ipfw::IpfwRuleHandler</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-active_rules" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">active_rules</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-revert" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">revert</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Reverts all executed rules that this handler knows about.</p>
+          
+
+          
+          <div class="method-source-code" id="revert-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/impl/ipfw.rb, line 58</span>
+      <span class="ruby-keyword">def</span> <span class="ruby-identifier">revert</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@active_rules</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">or</span> <span class="ruby-ivar">@active_rules</span>.<span class="ruby-identifier">empty?</span>
+
+<span class="ruby-comment">#        @active_rules.each do |rule|</span>
+          <span class="ruby-identifier">args</span> = [<span class="ruby-string">'/sbin/ipfw'</span>, <span class="ruby-string">'del'</span>, <span class="ruby-string">'set'</span>, <span class="ruby-string">'30'</span>]
+<span class="ruby-comment">#          args.concat rule.to_ipfw_command</span>
+          <span class="ruby-keyword">unless</span> <span class="ruby-identifier">system</span>(*<span class="ruby-identifier">args</span>)
+            <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Command #{args.inspect} exited with error code #{$?.inspect}&quot;</span>
+          <span class="ruby-keyword">end</span>
+<span class="ruby-comment">#        end</span>
+
+        <span class="ruby-ivar">@active_rules</span> = []
+      <span class="ruby-keyword">end</span></pre>
+          </div><!-- revert-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- revert-method -->
+
+    
+      <div id="method-i-run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">run</span><span
+            class="method-args">(rule)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Executes a rule and holds onto it for later removal.</p>
+          
+
+          
+          <div class="method-source-code" id="run-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/impl/ipfw.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>(<span class="ruby-identifier">rule</span>)
+  <span class="ruby-ivar">@active_rules</span> <span class="ruby-operator">||=</span> []
+
+  <span class="ruby-identifier">args</span> = [<span class="ruby-string">'/sbin/ipfw'</span>, <span class="ruby-string">'add'</span>, <span class="ruby-string">'set'</span>, <span class="ruby-string">'30'</span>] <span class="ruby-comment"># TODO: make the rule number customizable</span>
+
+  <span class="ruby-identifier">args</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">rule</span>.<span class="ruby-identifier">to_ipfw_command</span>
+
+  <span class="ruby-comment"># Lion claims net.inet.ip.scopedroute is read only. According to: http://pastebin.com/NzAARKVG it is possible to set it at boot time:</span>
+  <span class="ruby-comment"># /Library/Preferences/SystemConfiguration/com.apple.Boot.plist:</span>
+  <span class="ruby-comment"># &lt;dict&gt;</span>
+  <span class="ruby-comment">#     &lt;key&gt;Kernel Flags&lt;/key&gt;</span>
+  <span class="ruby-comment">#     &lt;string&gt;net.inet.ip.scopedroute=0&lt;/string&gt;</span>
+  <span class="ruby-comment"># &lt;/dict&gt;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-regexp">%rdarwin/</span> <span class="ruby-operator">===</span> <span class="ruby-constant">RUBY_PLATFORM</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">system</span>(*<span class="ruby-node">%W{/usr/sbin/sysctl -w net.inet.ip.scopedroute=0}</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-regexp">%rdarwin1[1-9]/</span> <span class="ruby-operator">===</span> <span class="ruby-constant">RUBY_PLATFORM</span>
+        <span class="ruby-identifier">logerror</span> <span class="ruby-string">&quot;Failed to set net.inet.ip.scopedroute=0. As of Lion, this is marked read-only after boot. However, you might be able to get IPFW working by setting the sysctl in /Library/Preferences/SystemConfiguration/com.apple.Boot.plist&quot;</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Command /usr/sbin/sysctl -w net.inet.ip.scopedroute=0 exited with error code #{$?.inspect}.&quot;</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># run the command</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">system</span>(*<span class="ruby-identifier">args</span>)
+    <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Command #{args.inspect} exited with error code #{$?.inspect}&quot;</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@active_rules</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">rule</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- run-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- run-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

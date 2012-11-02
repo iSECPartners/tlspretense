@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class PacketThief::Impl::Netfilter - TLSPretense </title>
+
+<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../index.html">Home</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/packetthief/impl/netfilter.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-original_dest">::original_dest</a>
+    
+    <li><a href="#method-c-redirect">::redirect</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../README_rdoc.html">README</a>
+  
+    <li class="file"><a href="../../doc/general_setup_rdoc.html">general_setup</a>
+  
+    <li class="file"><a href="../../doc/linux_setup_rdoc.html">linux_setup</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../PacketThief.html">PacketThief</a>
+  
+    <li><a href="../../PacketThief/Handlers.html">PacketThief::Handlers</a>
+  
+    <li><a href="../../PacketThief/Handlers/AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li><a href="../../PacketThief/Handlers/ProxyRedirector.html">PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLClient.html">PacketThief::Handlers::SSLClient</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLServer.html">PacketThief::Handlers::SSLServer</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLServer/InitialServer.html">PacketThief::Handlers::SSLServer::InitialServer</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLSmartProxy.html">PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLTransparentProxy.html">PacketThief::Handlers::SSLTransparentProxy</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html">PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
+  
+    <li><a href="../../PacketThief/Handlers/TransparentProxy.html">PacketThief::Handlers::TransparentProxy</a>
+  
+    <li><a href="../../PacketThief/Handlers/TransparentProxy/ProxyConnection.html">PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+  
+    <li><a href="../../PacketThief/Impl.html">PacketThief::Impl</a>
+  
+    <li><a href="../../PacketThief/Impl/Ipfw.html">PacketThief::Impl::Ipfw</a>
+  
+    <li><a href="../../PacketThief/Impl/Ipfw/IpfwRule.html">PacketThief::Impl::Ipfw::IpfwRule</a>
+  
+    <li><a href="../../PacketThief/Impl/Ipfw/IpfwRuleHandler.html">PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Impl/Manual.html">PacketThief::Impl::Manual</a>
+  
+    <li><a href="../../PacketThief/Impl/Manual/NullRule.html">PacketThief::Impl::Manual::NullRule</a>
+  
+    <li><a href="../../PacketThief/Impl/Manual/NullRuleHandler.html">PacketThief::Impl::Manual::NullRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Impl/Netfilter.html">PacketThief::Impl::Netfilter</a>
+  
+    <li><a href="../../PacketThief/Impl/Netfilter/IPTablesRule.html">PacketThief::Impl::Netfilter::IPTablesRule</a>
+  
+    <li><a href="../../PacketThief/Impl/Netfilter/IPTablesRuleHandler.html">PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Impl/PFDivert.html">PacketThief::Impl::PFDivert</a>
+  
+    <li><a href="../../PacketThief/Impl/PFDivert/PFDivertRule.html">PacketThief::Impl::PFDivert::PFDivertRule</a>
+  
+    <li><a href="../../PacketThief/Impl/PFDivert/PFDivertRuleHandler.html">PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Impl/PFRdr.html">PacketThief::Impl::PFRdr</a>
+  
+    <li><a href="../../PacketThief/Impl/PFRdr/PFRdrRule.html">PacketThief::Impl::PFRdr::PFRdrRule</a>
+  
+    <li><a href="../../PacketThief/Impl/PFRdr/PFRdrRuleHandler.html">PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Logging.html">PacketThief::Logging</a>
+  
+    <li><a href="../../PacketThief/RedirectRule.html">PacketThief::RedirectRule</a>
+  
+    <li><a href="../../PacketThief/Util.html">PacketThief::Util</a>
+  
+    <li><a href="../../SSLTest.html">SSLTest</a>
+  
+    <li><a href="../../SSLTest/AppContext.html">SSLTest::AppContext</a>
+  
+    <li><a href="../../SSLTest/CertificateManager.html">SSLTest::CertificateManager</a>
+  
+    <li><a href="../../SSLTest/Config.html">SSLTest::Config</a>
+  
+    <li><a href="../../SSLTest/InputHandler.html">SSLTest::InputHandler</a>
+  
+    <li><a href="../../SSLTest/Runner.html">SSLTest::Runner</a>
+  
+    <li><a href="../../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
+  
+    <li><a href="../../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
+  
+    <li><a href="../../SSLTest/SSLTestResult.html">SSLTest::SSLTestResult</a>
+  
+    <li><a href="../../SSLTest/TestListener.html">SSLTest::TestListener</a>
+  
+    <li><a href="../../CertMaker.html">CertMaker</a>
+  
+    <li><a href="../../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
+  
+    <li><a href="../../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../../Hash.html">Hash</a>
+  
+    <li><a href="../../IO.html">IO</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class PacketThief::Impl::Netfilter</h1>
+
+  <div id="description" class="description">
+    
+<p><a href="../../PacketThief.html">PacketThief</a> implemented using the
+Linux kernel's <a href="Netfilter.html">Netfilter</a>.</p>
+
+<p>This is roughly equivalent to:</p>
+
+<p>echo 1 &gt; /proc/sys/net/ipv4/ip_forward iptables -t nat -A PREROUTING -p
+tcp –destination-port &lt;DEST&gt; -j REDIRECT –to-ports &lt;LISTENER&gt;</p>
+
+<p>Currently only implements IPv4.</p>
+
+<p>Note that the listening socket must have a blank hostname. If it is set to
+127.0.0.1, then the socket will only run on the loopback device, and
+traffic that gets redirected from another device won’t reach it.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="SO_ORIGINAL_DST">SO_ORIGINAL_DST
+        
+        <dd class="description"><p>/usr/include/linux/netfilter_ipv4.h:define <a
+href="Netfilter.html#SO_ORIGINAL_DST">SO_ORIGINAL_DST</a> 80</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-original_dest" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">original_dest</span><span
+            class="method-args">(socket)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the [port, host] for a socket or EM::Connection that whose
+connection was redirected by netfilter</p>
+          
+
+          
+          <div class="method-source-code" id="original_dest-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/impl/netfilter.rb, line 97</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">original_dest</span>(<span class="ruby-identifier">socket</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">socket</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:getsockopt</span>
+    <span class="ruby-identifier">sockname</span> = <span class="ruby-identifier">socket</span>.<span class="ruby-identifier">getsockopt</span>(<span class="ruby-constant">Socket</span><span class="ruby-operator">::</span><span class="ruby-constant">IPPROTO_IP</span>, <span class="ruby-constant">SO_ORIGINAL_DST</span>)
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">socket</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:get_sock_opt</span>
+    <span class="ruby-identifier">sockname</span> = <span class="ruby-identifier">socket</span>.<span class="ruby-identifier">get_sock_opt</span>(<span class="ruby-constant">Socket</span><span class="ruby-operator">::</span><span class="ruby-constant">IPPROTO_IP</span>, <span class="ruby-constant">SO_ORIGINAL_DST</span>)
+  <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">Socket</span><span class="ruby-operator">::</span><span class="ruby-identifier">unpack_sockaddr_in</span>(<span class="ruby-identifier">sockname</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- original_dest-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- original_dest-method -->
+
+    
+      <div id="method-c-redirect" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">redirect</span><span
+            class="method-args">(args={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="redirect-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/impl/netfilter.rb, line 87</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">redirect</span>(<span class="ruby-identifier">args</span>={})
+  <span class="ruby-identifier">rule</span> = <span class="ruby-constant">IPTablesRule</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>,<span class="ruby-string">'nat'</span>,<span class="ruby-string">'PREROUTING'</span>)
+  <span class="ruby-identifier">rule</span>.<span class="ruby-identifier">redirect</span>(<span class="ruby-identifier">args</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- redirect-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- redirect-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

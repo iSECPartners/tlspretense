@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>linux_setup - TLSPretense </title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body class="file">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+    <li class="file"><a href="../doc/general_setup_rdoc.html">general_setup</a>
+  
+    <li class="file"><a href="../doc/linux_setup_rdoc.html">linux_setup</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../PacketThief.html">PacketThief</a>
+  
+    <li><a href="../PacketThief/Handlers.html">PacketThief::Handlers</a>
+  
+    <li><a href="../PacketThief/Handlers/AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li><a href="../PacketThief/Handlers/ProxyRedirector.html">PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLClient.html">PacketThief::Handlers::SSLClient</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLServer.html">PacketThief::Handlers::SSLServer</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLServer/InitialServer.html">PacketThief::Handlers::SSLServer::InitialServer</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLSmartProxy.html">PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLTransparentProxy.html">PacketThief::Handlers::SSLTransparentProxy</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html">PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
+  
+    <li><a href="../PacketThief/Handlers/TransparentProxy.html">PacketThief::Handlers::TransparentProxy</a>
+  
+    <li><a href="../PacketThief/Handlers/TransparentProxy/ProxyConnection.html">PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+  
+    <li><a href="../PacketThief/Impl.html">PacketThief::Impl</a>
+  
+    <li><a href="../PacketThief/Impl/Ipfw.html">PacketThief::Impl::Ipfw</a>
+  
+    <li><a href="../PacketThief/Impl/Ipfw/IpfwRule.html">PacketThief::Impl::Ipfw::IpfwRule</a>
+  
+    <li><a href="../PacketThief/Impl/Ipfw/IpfwRuleHandler.html">PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/Manual.html">PacketThief::Impl::Manual</a>
+  
+    <li><a href="../PacketThief/Impl/Manual/NullRule.html">PacketThief::Impl::Manual::NullRule</a>
+  
+    <li><a href="../PacketThief/Impl/Manual/NullRuleHandler.html">PacketThief::Impl::Manual::NullRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/Netfilter.html">PacketThief::Impl::Netfilter</a>
+  
+    <li><a href="../PacketThief/Impl/Netfilter/IPTablesRule.html">PacketThief::Impl::Netfilter::IPTablesRule</a>
+  
+    <li><a href="../PacketThief/Impl/Netfilter/IPTablesRuleHandler.html">PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/PFDivert.html">PacketThief::Impl::PFDivert</a>
+  
+    <li><a href="../PacketThief/Impl/PFDivert/PFDivertRule.html">PacketThief::Impl::PFDivert::PFDivertRule</a>
+  
+    <li><a href="../PacketThief/Impl/PFDivert/PFDivertRuleHandler.html">PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/PFRdr.html">PacketThief::Impl::PFRdr</a>
+  
+    <li><a href="../PacketThief/Impl/PFRdr/PFRdrRule.html">PacketThief::Impl::PFRdr::PFRdrRule</a>
+  
+    <li><a href="../PacketThief/Impl/PFRdr/PFRdrRuleHandler.html">PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
+  
+    <li><a href="../PacketThief/Logging.html">PacketThief::Logging</a>
+  
+    <li><a href="../PacketThief/RedirectRule.html">PacketThief::RedirectRule</a>
+  
+    <li><a href="../PacketThief/Util.html">PacketThief::Util</a>
+  
+    <li><a href="../SSLTest.html">SSLTest</a>
+  
+    <li><a href="../SSLTest/AppContext.html">SSLTest::AppContext</a>
+  
+    <li><a href="../SSLTest/CertificateManager.html">SSLTest::CertificateManager</a>
+  
+    <li><a href="../SSLTest/Config.html">SSLTest::Config</a>
+  
+    <li><a href="../SSLTest/InputHandler.html">SSLTest::InputHandler</a>
+  
+    <li><a href="../SSLTest/Runner.html">SSLTest::Runner</a>
+  
+    <li><a href="../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
+  
+    <li><a href="../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
+  
+    <li><a href="../SSLTest/SSLTestResult.html">SSLTest::SSLTestResult</a>
+  
+    <li><a href="../SSLTest/TestListener.html">SSLTest::TestListener</a>
+  
+    <li><a href="../CertMaker.html">CertMaker</a>
+  
+    <li><a href="../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
+  
+    <li><a href="../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../Hash.html">Hash</a>
+  
+    <li><a href="../IO.html">IO</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation" class="description">
+  
+<h1 id="label-Setting+Up+Linux+for+Use+With+TLSPretense">Setting Up Linux for Use With TLSPretense</h1>
+
+<p>To run TLSPretense on Linux, you need a system that has two network
+interfaces. This Linux system could run from a virtual machine, or it could
+run on a laptop and use the laptop’s wifi card as a wireless access point
+to test.</p>
+
+<p>The following setup will use a Linux host to run TLSPretense, and it will
+configure netfilter to be a NAT with statically managed IP address on its
+internal network.</p>
+
+<p>TODO: How to host a DHCP server on certain systems.</p>
+
+<h2 id="label-Configuring+Linux+to+act+as+a+NAT%2Frouter%2Fgateway">Configuring Linux to act as a NAT/router/gateway</h2>
+
+<p>The first step is to configure the Linux system’s routing with IPTables.
+The following script will turn the system into a NAT router. TLSPretense
+will then later add and remove iptables rules as needed in order to
+intercept network traffic during testing.</p>
+
+<p>In this script, we assume <code>eth0</code> is the external interface that
+can connect to the original destination, and <code>eth1</code> is the
+internal interface that the client system will connect to.</p>
+
+<pre>#!/bin/sh
+external=eth0
+internal=eth1
+
+iptables --flush
+iptables --table nat --flush
+iptables --delete-chain
+iptables --table nat --delete-chain
+
+echo &quot;Manually setup the internal network's nic&quot;
+ifconfig $internal 192.168.42.1 netmask 255.255.255.0 
+
+echo &quot;Enable packet forwarding&quot;
+echo 1 &gt; /proc/sys/net/ipv4/ip_forward
+
+echo &quot;Apply basic iptables rules to create a NAT&quot;
+iptables -t nat -A POSTROUTING -o $external -j MASQUERADE
+
+echo &quot;Done! TLSPretense will automatically add and remove the rules for redirecting traffic.&quot;</pre>
+
+<p>Here we choose 192.168.42.* as the internal network IP address range.</p>
+
+<p>Check to make sure that the TLSPretense host is able to access the internet
+over the external interface, and that it can look up hostnames.</p>
+
+<p>TODO: handling wireless (<a
+href="https://bitbucket.org/IntrepidusGroup/mallory/wiki/Wifi_Hotspot_Setup">although
+Mallory already has a guide</a>)</p>
+
+<h2 id="label-Configure+the+Client%27s+Host">Configure the Client’s Host</h2>
+
+<p>Next, the system that will run the client code needs to be configured to
+use the TLSPretense host as its gateway. This usually involves configuring
+the system’s network connection with information like the following:</p>
+
+<pre>Address: 192.168.42.100
+Gateway: 192.168.42.1
+Subnet mask: 255.255.255.0</pre>
+
+<p>You will also need to configure the client’s DNS with a known good DNS
+server.</p>
+
+</div>
+
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

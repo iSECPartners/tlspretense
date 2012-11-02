@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>module CertMaker - TLSPretense </title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/certmaker/certificate_factory.rb
+    <li>lib/certmaker/certificate_suite_generator.rb
+    <li>lib/certmaker.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-make_ca">::make_ca</a>
+    
+    <li><a href="#method-c-make_certs">::make_certs</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+    <li class="file"><a href="./doc/general_setup_rdoc.html">general_setup</a>
+  
+    <li class="file"><a href="./doc/linux_setup_rdoc.html">linux_setup</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./PacketThief.html">PacketThief</a>
+  
+    <li><a href="./PacketThief/Handlers.html">PacketThief::Handlers</a>
+  
+    <li><a href="./PacketThief/Handlers/AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li><a href="./PacketThief/Handlers/ProxyRedirector.html">PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLClient.html">PacketThief::Handlers::SSLClient</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLServer.html">PacketThief::Handlers::SSLServer</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLServer/InitialServer.html">PacketThief::Handlers::SSLServer::InitialServer</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLSmartProxy.html">PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLTransparentProxy.html">PacketThief::Handlers::SSLTransparentProxy</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html">PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
+  
+    <li><a href="./PacketThief/Handlers/TransparentProxy.html">PacketThief::Handlers::TransparentProxy</a>
+  
+    <li><a href="./PacketThief/Handlers/TransparentProxy/ProxyConnection.html">PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+  
+    <li><a href="./PacketThief/Impl.html">PacketThief::Impl</a>
+  
+    <li><a href="./PacketThief/Impl/Ipfw.html">PacketThief::Impl::Ipfw</a>
+  
+    <li><a href="./PacketThief/Impl/Ipfw/IpfwRule.html">PacketThief::Impl::Ipfw::IpfwRule</a>
+  
+    <li><a href="./PacketThief/Impl/Ipfw/IpfwRuleHandler.html">PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+  
+    <li><a href="./PacketThief/Impl/Manual.html">PacketThief::Impl::Manual</a>
+  
+    <li><a href="./PacketThief/Impl/Manual/NullRule.html">PacketThief::Impl::Manual::NullRule</a>
+  
+    <li><a href="./PacketThief/Impl/Manual/NullRuleHandler.html">PacketThief::Impl::Manual::NullRuleHandler</a>
+  
+    <li><a href="./PacketThief/Impl/Netfilter.html">PacketThief::Impl::Netfilter</a>
+  
+    <li><a href="./PacketThief/Impl/Netfilter/IPTablesRule.html">PacketThief::Impl::Netfilter::IPTablesRule</a>
+  
+    <li><a href="./PacketThief/Impl/Netfilter/IPTablesRuleHandler.html">PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+  
+    <li><a href="./PacketThief/Impl/PFDivert.html">PacketThief::Impl::PFDivert</a>
+  
+    <li><a href="./PacketThief/Impl/PFDivert/PFDivertRule.html">PacketThief::Impl::PFDivert::PFDivertRule</a>
+  
+    <li><a href="./PacketThief/Impl/PFDivert/PFDivertRuleHandler.html">PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
+  
+    <li><a href="./PacketThief/Impl/PFRdr.html">PacketThief::Impl::PFRdr</a>
+  
+    <li><a href="./PacketThief/Impl/PFRdr/PFRdrRule.html">PacketThief::Impl::PFRdr::PFRdrRule</a>
+  
+    <li><a href="./PacketThief/Impl/PFRdr/PFRdrRuleHandler.html">PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
+  
+    <li><a href="./PacketThief/Logging.html">PacketThief::Logging</a>
+  
+    <li><a href="./PacketThief/RedirectRule.html">PacketThief::RedirectRule</a>
+  
+    <li><a href="./PacketThief/Util.html">PacketThief::Util</a>
+  
+    <li><a href="./SSLTest.html">SSLTest</a>
+  
+    <li><a href="./SSLTest/AppContext.html">SSLTest::AppContext</a>
+  
+    <li><a href="./SSLTest/CertificateManager.html">SSLTest::CertificateManager</a>
+  
+    <li><a href="./SSLTest/Config.html">SSLTest::Config</a>
+  
+    <li><a href="./SSLTest/InputHandler.html">SSLTest::InputHandler</a>
+  
+    <li><a href="./SSLTest/Runner.html">SSLTest::Runner</a>
+  
+    <li><a href="./SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
+  
+    <li><a href="./SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
+  
+    <li><a href="./SSLTest/SSLTestResult.html">SSLTest::SSLTestResult</a>
+  
+    <li><a href="./SSLTest/TestListener.html">SSLTest::TestListener</a>
+  
+    <li><a href="./CertMaker.html">CertMaker</a>
+  
+    <li><a href="./CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
+  
+    <li><a href="./CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="./Hash.html">Hash</a>
+  
+    <li><a href="./IO.html">IO</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module CertMaker</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-make_ca" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">make_ca</span><span
+            class="method-args">(config, verbose=false)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Ensure that the custom ca exists.</p>
+          
+
+          
+          <div class="method-source-code" id="make_ca-source">
+            <pre><span class="ruby-comment"># File lib/certmaker.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">make_ca</span>(<span class="ruby-identifier">config</span>, <span class="ruby-identifier">verbose</span>=<span class="ruby-keyword">false</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">config</span>[<span class="ruby-string">'certmaker'</span>].<span class="ruby-identifier">has_key?</span> <span class="ruby-string">'customgoodca'</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;certmaker does not have a 'customgoodca' entry, so a CA will be regenerated every time.&quot;</span>
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">cacert</span> = <span class="ruby-identifier">config</span>[<span class="ruby-string">'certmaker'</span>][<span class="ruby-string">'customgoodca'</span>][<span class="ruby-string">'certfile'</span>]
+  <span class="ruby-identifier">cakey</span> = <span class="ruby-identifier">config</span>[<span class="ruby-string">'certmaker'</span>][<span class="ruby-string">'customgoodca'</span>][<span class="ruby-string">'keyfile'</span>]
+
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span> <span class="ruby-identifier">cacert</span> <span class="ruby-keyword">and</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span> <span class="ruby-identifier">cakey</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;CA and CA's key exist.&quot;</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span> <span class="ruby-identifier">cacert</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span> <span class="ruby-identifier">cakey</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;CA certificate exists, but the key file does not exist?!&quot;</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">not</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span> <span class="ruby-identifier">cacert</span> <span class="ruby-keyword">and</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span> <span class="ruby-identifier">cakey</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;CA certificate does not exist, but the key file exists?!&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Generating a new CA&quot;</span>
+    <span class="ruby-identifier">cacertdir</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">config</span>[<span class="ruby-string">'certmaker'</span>][<span class="ruby-string">'customgoodca'</span>][<span class="ruby-string">'certfile'</span>])
+    <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-identifier">cacertdir</span>, <span class="ruby-value">:verbose</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">verbose</span>
+    <span class="ruby-identifier">cakeydir</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">config</span>[<span class="ruby-string">'certmaker'</span>][<span class="ruby-string">'customgoodca'</span>][<span class="ruby-string">'keyfile'</span>])
+    <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-identifier">cakeydir</span>, <span class="ruby-value">:verbose</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">verbose</span>
+    <span class="ruby-identifier">csg</span> = <span class="ruby-constant">CertificateSuiteGenerator</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">config</span>[<span class="ruby-string">'certs'</span>], <span class="ruby-identifier">config</span>[<span class="ruby-string">'hostname'</span>], <span class="ruby-identifier">config</span>[<span class="ruby-string">'certmaker'</span>])
+    <span class="ruby-identifier">csg</span>.<span class="ruby-identifier">generate_certificate</span>(<span class="ruby-string">'goodca'</span>,<span class="ruby-identifier">config</span>[<span class="ruby-string">'certs'</span>][<span class="ruby-string">'goodca'</span>])
+    <span class="ruby-identifier">cadata</span> = <span class="ruby-identifier">csg</span>.<span class="ruby-identifier">certificates</span>[<span class="ruby-string">'goodca'</span>]
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">cacert</span>,<span class="ruby-string">&quot;wb&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span> <span class="ruby-identifier">cadata</span>[<span class="ruby-value">:cert</span>] }
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">cakey</span>,<span class="ruby-string">&quot;wb&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span> <span class="ruby-identifier">cadata</span>[<span class="ruby-value">:key</span>] }
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;New CA generated.&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Make sure you remove or comment out the passphrase in config.yml if you had one previously set!&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- make_ca-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- make_ca-method -->
+
+    
+      <div id="method-c-make_certs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">make_certs</span><span
+            class="method-args">(config, verbose=false)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Generate certificates and keys using <code>config</code>.</p>
+
+<p>Config is usually a data structure derived from parsing a YAML file.</p>
+          
+
+          
+          <div class="method-source-code" id="make_certs-source">
+            <pre><span class="ruby-comment"># File lib/certmaker.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">make_certs</span>(<span class="ruby-identifier">config</span>, <span class="ruby-identifier">verbose</span>=<span class="ruby-keyword">false</span>)
+  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-identifier">config</span>[<span class="ruby-string">'certmaker'</span>][<span class="ruby-string">'outdir'</span>], <span class="ruby-value">:verbose</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">verbose</span>
+
+  <span class="ruby-identifier">certs</span> = <span class="ruby-constant">CertificateSuiteGenerator</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">config</span>[<span class="ruby-string">'certs'</span>], <span class="ruby-identifier">config</span>[<span class="ruby-string">'hostname'</span>], <span class="ruby-identifier">config</span>[<span class="ruby-string">'certmaker'</span>]).<span class="ruby-identifier">certificates</span>
+
+  <span class="ruby-identifier">certs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">calias</span>, <span class="ruby-identifier">ck</span><span class="ruby-operator">|</span>
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">config</span>[<span class="ruby-string">'certmaker'</span>][<span class="ruby-string">'outdir'</span>],<span class="ruby-identifier">calias</span><span class="ruby-operator">+</span><span class="ruby-string">&quot;cert.pem&quot;</span>),<span class="ruby-string">&quot;wb&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span> <span class="ruby-identifier">ck</span>[<span class="ruby-value">:cert</span>] }
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">config</span>[<span class="ruby-string">'certmaker'</span>][<span class="ruby-string">'outdir'</span>],<span class="ruby-identifier">calias</span><span class="ruby-operator">+</span><span class="ruby-string">&quot;key.pem&quot;</span>),<span class="ruby-string">&quot;wb&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span> <span class="ruby-identifier">ck</span>[<span class="ruby-value">:key</span>] }
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- make_certs-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- make_certs-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

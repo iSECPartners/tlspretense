@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>general_setup - TLSPretense </title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body class="file">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+    <li class="file"><a href="../doc/general_setup_rdoc.html">general_setup</a>
+  
+    <li class="file"><a href="../doc/linux_setup_rdoc.html">linux_setup</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../PacketThief.html">PacketThief</a>
+  
+    <li><a href="../PacketThief/Handlers.html">PacketThief::Handlers</a>
+  
+    <li><a href="../PacketThief/Handlers/AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li><a href="../PacketThief/Handlers/ProxyRedirector.html">PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLClient.html">PacketThief::Handlers::SSLClient</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLServer.html">PacketThief::Handlers::SSLServer</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLServer/InitialServer.html">PacketThief::Handlers::SSLServer::InitialServer</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLSmartProxy.html">PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLTransparentProxy.html">PacketThief::Handlers::SSLTransparentProxy</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html">PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
+  
+    <li><a href="../PacketThief/Handlers/TransparentProxy.html">PacketThief::Handlers::TransparentProxy</a>
+  
+    <li><a href="../PacketThief/Handlers/TransparentProxy/ProxyConnection.html">PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+  
+    <li><a href="../PacketThief/Impl.html">PacketThief::Impl</a>
+  
+    <li><a href="../PacketThief/Impl/Ipfw.html">PacketThief::Impl::Ipfw</a>
+  
+    <li><a href="../PacketThief/Impl/Ipfw/IpfwRule.html">PacketThief::Impl::Ipfw::IpfwRule</a>
+  
+    <li><a href="../PacketThief/Impl/Ipfw/IpfwRuleHandler.html">PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/Manual.html">PacketThief::Impl::Manual</a>
+  
+    <li><a href="../PacketThief/Impl/Manual/NullRule.html">PacketThief::Impl::Manual::NullRule</a>
+  
+    <li><a href="../PacketThief/Impl/Manual/NullRuleHandler.html">PacketThief::Impl::Manual::NullRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/Netfilter.html">PacketThief::Impl::Netfilter</a>
+  
+    <li><a href="../PacketThief/Impl/Netfilter/IPTablesRule.html">PacketThief::Impl::Netfilter::IPTablesRule</a>
+  
+    <li><a href="../PacketThief/Impl/Netfilter/IPTablesRuleHandler.html">PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/PFDivert.html">PacketThief::Impl::PFDivert</a>
+  
+    <li><a href="../PacketThief/Impl/PFDivert/PFDivertRule.html">PacketThief::Impl::PFDivert::PFDivertRule</a>
+  
+    <li><a href="../PacketThief/Impl/PFDivert/PFDivertRuleHandler.html">PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/PFRdr.html">PacketThief::Impl::PFRdr</a>
+  
+    <li><a href="../PacketThief/Impl/PFRdr/PFRdrRule.html">PacketThief::Impl::PFRdr::PFRdrRule</a>
+  
+    <li><a href="../PacketThief/Impl/PFRdr/PFRdrRuleHandler.html">PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
+  
+    <li><a href="../PacketThief/Logging.html">PacketThief::Logging</a>
+  
+    <li><a href="../PacketThief/RedirectRule.html">PacketThief::RedirectRule</a>
+  
+    <li><a href="../PacketThief/Util.html">PacketThief::Util</a>
+  
+    <li><a href="../SSLTest.html">SSLTest</a>
+  
+    <li><a href="../SSLTest/AppContext.html">SSLTest::AppContext</a>
+  
+    <li><a href="../SSLTest/CertificateManager.html">SSLTest::CertificateManager</a>
+  
+    <li><a href="../SSLTest/Config.html">SSLTest::Config</a>
+  
+    <li><a href="../SSLTest/InputHandler.html">SSLTest::InputHandler</a>
+  
+    <li><a href="../SSLTest/Runner.html">SSLTest::Runner</a>
+  
+    <li><a href="../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
+  
+    <li><a href="../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
+  
+    <li><a href="../SSLTest/SSLTestResult.html">SSLTest::SSLTestResult</a>
+  
+    <li><a href="../SSLTest/TestListener.html">SSLTest::TestListener</a>
+  
+    <li><a href="../CertMaker.html">CertMaker</a>
+  
+    <li><a href="../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
+  
+    <li><a href="../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../Hash.html">Hash</a>
+  
+    <li><a href="../IO.html">IO</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation" class="description">
+  
+<h1 id="label-TLSPretense+Setup">TLSPretense Setup</h1>
+
+<p>The following sections cover a basic configuration to get TLSPretense up
+and running. It should be straightforward to modify the test setup from
+there.</p>
+
+<h2 id="label-Test+Environment">Test Environment</h2>
+
+<p>TLSPretense was designed to be run as an intercepting proxy in order to be
+able to test a client that may make multple HTTPS/SSL/TLS requests to
+multiple remote hosts. This means that TLSPretense is expected to run on a
+different system from the client software being tested, although it is
+possible to run TLSPretense within one virtual machine and to have the
+client software run in another.</p>
+
+<p>First, a few definitions:</p>
+<dl class="rdoc-list label-list"><dt>client
+<dd>
+<p>A piece of software that makes network requests using SSL/TLS.</p>
+</dd><dt>client host
+<dd>
+<p>The computer or virtual machine that will run the client software.</p>
+</dd><dt>TLSPretense host
+<dd>
+<p>A computer or virtual machines running a Unix-like OS that will act as a
+network gateway for the client host.</p>
+</dd></dl>
+
+<p>The TLSPretense host needs to have two network interfaces: an external
+interface for connecting to the outer LAN/Internet and to the remote hosts
+that the client will connect to, and an internal interface that the client
+host will use as its gateway.</p>
+
+<p>One common setup is to use a laptop for the TLSPretense host with an
+ethernet connection and wifi. The ethernet can be wired into an actual
+network, and the wifi can be run as a wireless access point that the client
+host will connect to.</p>
+
+<p>This setup has the following network topography:</p>
+
+<pre class="ruby"><span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span>  <span class="ruby-constant">LAN</span>   <span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span>  <span class="ruby-constant">WAN</span>
+<span class="ruby-operator">|</span>      <span class="ruby-constant">Client</span> <span class="ruby-constant">Host</span>       <span class="ruby-operator">|</span>   .    <span class="ruby-operator">|</span> <span class="ruby-constant">TLSPretense</span> <span class="ruby-constant">Host</span> <span class="ruby-operator">|</span>   .
+<span class="ruby-operator">|</span> <span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span> <span class="ruby-operator">|</span>   .    <span class="ruby-operator">|</span>                  <span class="ruby-operator">|</span>   .
+<span class="ruby-operator">|</span> <span class="ruby-operator">|</span>       <span class="ruby-constant">Client</span>       <span class="ruby-operator">|</span> <span class="ruby-operator">|</span>   .    <span class="ruby-operator">|</span>   <span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span>   <span class="ruby-operator">|</span>   .
+<span class="ruby-operator">|</span> <span class="ruby-operator">|</span>                    <span class="ruby-operator">===</span><span class="ruby-operator">===</span><span class="ruby-operator">===</span><span class="ruby-operator">===</span><span class="ruby-operator">==</span><span class="ruby-operator">&gt;</span><span class="ruby-operator">|</span> <span class="ruby-constant">Firewall</span> <span class="ruby-operator">|</span>   <span class="ruby-operator">|</span>   .
+<span class="ruby-operator">|</span> <span class="ruby-operator">|</span> <span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span> <span class="ruby-operator">|</span> <span class="ruby-operator">|</span>   .    <span class="ruby-operator">|</span>   <span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span>   <span class="ruby-operator">|</span>   .
+<span class="ruby-operator">|</span> <span class="ruby-operator">|</span> <span class="ruby-operator">|</span> <span class="ruby-constant">CA</span> <span class="ruby-constant">TrustStore</span>  <span class="ruby-operator">|</span> <span class="ruby-operator">|</span> <span class="ruby-operator">|</span>   .    <span class="ruby-operator">|</span>        <span class="ruby-operator">|</span>         <span class="ruby-operator">|</span>   .    <span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span>
+<span class="ruby-operator">|</span> <span class="ruby-operator">|</span> <span class="ruby-operator">|</span>                <span class="ruby-operator">|</span> <span class="ruby-operator">|</span> <span class="ruby-operator">|</span>   .    <span class="ruby-operator">|</span> <span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-constant">V</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span> <span class="ruby-operator">|</span>   .    <span class="ruby-operator">|</span> <span class="ruby-constant">Original</span>    <span class="ruby-operator">|</span>
+<span class="ruby-operator">|</span> <span class="ruby-operator">|</span> <span class="ruby-operator">|</span> <span class="ruby-constant">TLSPretense</span> <span class="ruby-constant">CA</span> <span class="ruby-operator">|</span> <span class="ruby-operator">|</span> <span class="ruby-operator">|</span>   .    <span class="ruby-operator">|</span> <span class="ruby-operator">|</span> <span class="ruby-constant">TLSPretense</span>  <span class="ruby-operator">===</span><span class="ruby-operator">===</span><span class="ruby-operator">===</span>=<span class="ruby-operator">&gt;</span><span class="ruby-operator">|</span> <span class="ruby-constant">Destination</span> <span class="ruby-operator">|</span>
+<span class="ruby-operator">|</span> <span class="ruby-operator">|</span> <span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span> <span class="ruby-operator">|</span> <span class="ruby-operator">|</span>   .    <span class="ruby-operator">|</span> <span class="ruby-operator">|</span> <span class="ruby-constant">Test</span> <span class="ruby-constant">Harness</span> <span class="ruby-operator">|</span> <span class="ruby-operator">|</span>   .    <span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span>
+<span class="ruby-operator">|</span> <span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span> <span class="ruby-operator">|</span>   .    <span class="ruby-operator">|</span> <span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span> <span class="ruby-operator">|</span>   .    
+<span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span>   .    <span class="ruby-operator">+</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">+</span>   .
+</pre>
+
+<h2 id="label-Installing+TLSPretense">Installing TLSPretense</h2>
+
+<p>Download the latest git repository with:</p>
+
+<pre>git clone https://github.com/iSECPartners/tlspretense</pre>
+
+<p>To install Ruby dependencies:</p>
+
+<pre>cd tlspretense
+bundle install --without=development</pre>
+
+<p>This will install any needed Ruby gems.</p>
+
+<h2 id="label-Updating+TLSPretense">Updating TLSPretense</h2>
+
+<p>Currently, to update the repository, you need to stash your config if you
+just modified the default config.yml before updating:</p>
+
+<pre>git stash</pre>
+
+<p>Then update TLSPretense and its dependencies:</p>
+
+<pre>git pull origin
+bundle update</pre>
+
+<p>And finally restore your configuration:</p>
+
+<pre>git stash apply
+# Resolve any conflicts in your config.yml</pre>
+
+<p>This process will be simplified if/when TLSPretense becomes an installable
+package.</p>
+
+<h2 id="label-Configuration">Configuration</h2>
+
+<p>All configuration of the test suite happens through config.yml. What
+follows is a brief discussion of each section and what you might want to
+change.</p>
+
+<h3 id="label-top-level+settings">top-level settings</h3>
+<dl class="rdoc-list label-list"><dt>hostname: <a href="http://www.isecpartners.com">www.isecpartners.com</a>
+<dd>
+<p>This is the most important setting in the configuration file. It specifies
+the hostname that the client will connect to that you would like to have
+tested. For connections to this hostname (determined by whether the
+certificate supplied by the original destination matches the hostname),
+TLSPretense will present a test certificate chain. For all other hosts, it
+will take the host certificate used by that host and re-sign it using the
+“goodca” certificate.</p>
+</dd><dt>listener_port: 54321
+<dd>
+<p>The port that the proxy will listen on. You probably don’t need to change
+this.</p>
+</dd></dl>
+
+<h3 id="label-packetthief">packetthief</h3>
+
+<pre>packetthief:
+  protocol: tcp
+  dest_port: 443
+  in_interface: eth1</pre>
+
+<p>This section describes the firewall rule that will redirect traffic. The
+most relevant subvalue is <code>:in_interface</code>, which should contain
+the name of the network interface that the client’s network traffic will
+come in on. Also, if you will be testing non-https traffic, change
+<code>dest_port</code> to the port that the client will connect to.</p>
+
+<p>One additional optional parameter exists in this this section:</p>
+<dl class="rdoc-list label-list"><dt>implementation
+<dd>
+<p>If this optional value is set, then the specified implementation will be
+used. If implementation is left commented out, then TLSPretense will choose
+the most appropriate firewall implementation, if possible. Current values:</p>
+<ul><li>
+<p><strong>netfilter</strong> Linux netfilter</p>
+</li><li>
+<p><strong>ipfw</strong> MacOSX/BSD ipfw</p>
+</li></ul>
+</dd></dl>
+
+<h3 id="label-certmaker">certmaker</h3>
+
+<pre>certmaker:
+  defaultsubject: &amp;defaultsubject &quot;C=US, CN=%HOSTNAME%&quot;
+  defaultsubjectwithnull: &amp;defaultsubjectwithnull &quot;C=US, CN=%HOSTNAME%\0.foo.com&quot;
+  defaultparentsubject: &amp;defaultparentsubject &quot;C=US, CN=%PARENTHOSTNAME%&quot;
+  outdir: certs
+  missing_serial_generation: random
+  customgoodca:
+    certfile: ca/goodcacert.pem
+    keyfile:  ca/goodcakey.pem
+    #keypass: changeme</pre>
+
+<p>This section deals with configuring the creation of the certificates used
+by the tests.</p>
+<dl class="rdoc-list label-list"><dt><code>defaultsubject</code>, <code>defaultsubjectwithnull</code>, and <code>defaultparentsubject</code>
+<dd>
+<p>These keys are just placed here to get them out of the way. They are
+referenced later in the certificate definitions.</p>
+</dd><dt>outdir
+<dd>
+<p>This specifies where to write the generated certificates to. For now, don’t
+modify this option or it may break something.</p>
+</dd><dt>missing_serial_generation
+<dd>
+<p>This key specifies how to choose a serial number for each generated
+certificate. Currently, there are only two options. You can set a number,
+which will be used as the serial number for all generated certificates
+(this will break any SSL client that checks for serial number uniqueness).
+The other option is to set it to “random” which will generate a random
+serial number — this is the recommended setting, and there is an incredibly
+small chance that two certificates might have the same serial number.</p>
+</dd><dt>customgoodca
+<dd>
+<p>If this key exists and contains the <code>certfile</code> and
+<code>keyfile</code> sub-keys, then it specifies a certificate authority to
+be used as the “goodca” instead of generating a new CA. The third optional
+value, <code>keypass</code>, can specify a password for the private key’s
+file.</p>
+</dd></dl>
+
+<h3 id="label-logger">logger</h3>
+
+<pre>logger:
+  level: INFO
+  file: '-'</pre>
+
+<p>These options set up the logging facility.</p>
+<dl class="rdoc-list label-list"><dt>level
+<dd>
+<p>The log severity to report. Log messages that are less severe than this
+level go unreported.</p>
+</dd><dt>file
+<dd>
+<p>Where to write log entries to. The default of ‘-’ refers to STDOUT.</p>
+</dd></dl>
+
+<h3 id="label-certs">certs</h3>
+
+<p>This section defines the certificates used by the test cases. It makes
+heavy use of YAML’s references and anchors to mutate a particular
+certificate. The only special entry is “goodca”. If
+<code>customgoodca</code> is configured in the <code>certmaker</code>
+section, then that certificate will be used in tests in place of the goodca
+defined here.</p>
+
+<p>Make changes to the certificates if you need to customize them for your
+client.</p>
+
+<h3 id="label-tests">tests</h3>
+
+<pre>tests:
+- alias: baseline
+  name: Baseline Happy Test
+  certchain:
+  - baseline
+  - goodca
+  expected_result: connected
+...</pre>
+
+<p>This final section defines a list of all of the tests to run.</p>
+<dl class="rdoc-list label-list"><dt>alias
+<dd>
+<p>The “short” identifier for the test.</p>
+</dd><dt>name
+<dd>
+<p>A longer description of the test.</p>
+</dd><dt>certchain
+<dd>
+<p>A list of certificates to present to the client in the order they should be
+presented. SSL/TLS requires the certificate chain to present the
+certificate representing the server first, followed by the chain of
+certificate authorities and intermediate CAs, with the final certificate
+being a CA.</p>
+</dd><dt>expected_result
+<dd>
+<p>The expected outcome for the test. “connected” means that we expect the
+client to finish the TLS handshake, while “rejected” means we expect the
+TLS handshake to fail before finishing.</p>
+</dd></dl>
+
+<h2 id="label-Certificate+Generation">Certificate Generation</h2>
+
+<p>You need to pre-generate the certificates you’ll use for the tests. You can
+do this with:</p>
+
+<pre>rake certs:generate</pre>
+
+<p>It can generate an entire ecosystem of certificates from scratch, or it can
+use an existing CA instead of generating a new <em>goodca</em>. See the
+<em>certmaker</em> and <em>certs</em> sections of config.yml.</p>
+
+<p>WARNING: Running this task a second time will regenerate all of the
+certificates in the <em>certs</em> directory! If you are not using an
+existing CA and wish to regenerate the certificates, you will wind up with
+a new set of certificates based around a CA that uses a new public key.</p>
+
+<h2 id="label-Client+Host+Setup">Client Host Setup</h2>
+
+<p>The client host must be configured to use the TLSPretense host as its
+gateway. This involves configuring the TLSPretense host to act like a NAT
+router or network bridge, and it requires you to configure the client host.
+You must also install the “goodca” CA used by TLSPretense onto the client
+host and configure the client to trust that CA. You do not need to
+configure any client-side proxy settings (like you would for HTTP-level
+proxying).</p>
+
+<p>If you are planning to use Linux for the TLSPretense host and you are
+familiar with <a
+href="http://intrepidusgroup.com/insight/mallory/">Mallory</a>, then
+Mallory’s network configuration tutorials may help you out, although
+TLSPretense manages the firewall rule that redirects network traffic
+itself.</p>
+
+<p>For a sample Linux-specific configuration, see: <a
+href="linux_setup_rdoc.html">Linux Setup</a></p>
+
+<h2 id="label-Running+the+tests">Running the tests</h2>
+
+<p>Currently, TLSPretense should be run from its project directory. If you
+want to run the test runner directly:</p>
+
+<pre>sudo bundle exec ruby1.9 bin/tlspretense.rb</pre>
+
+<p>The command probably needs to be run as root in order to add and remove its
+firewall rules, and &lt;tt&gt;bundle exec…&lt;tt&gt; ensures that the gem
+dependencies are added to the Ruby path. To simplify this calling
+convention, you can instead run:</p>
+
+<pre>bin/tlspretense_wrapper.sh</pre>
+
+<p>If you only want to run certain tests, you can do so by specifying which
+tests you want to run as command line arguments, and it will run just those
+tests in the order specified, instead of in the order they are defined in
+config.yml:</p>
+
+<pre>bin/tlspretense_wrapper.sh baseline nullincname selfsigned</pre>
+
+<p>For information about other command line options, use -h or –help:</p>
+
+<pre>bin/tlspretense_wrapper.sh -h</pre>
+
+<h2 id="label-Output">Output</h2>
+
+<p>At present, TLSPretext prints a summary of the tests run and their results
+once all tests have run.</p>
+
+</div>
+
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>README - TLSPretense </title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body class="file">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+    <li class="file"><a href="./doc/general_setup_rdoc.html">general_setup</a>
+  
+    <li class="file"><a href="./doc/linux_setup_rdoc.html">linux_setup</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./PacketThief.html">PacketThief</a>
+  
+    <li><a href="./PacketThief/Handlers.html">PacketThief::Handlers</a>
+  
+    <li><a href="./PacketThief/Handlers/AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li><a href="./PacketThief/Handlers/ProxyRedirector.html">PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLClient.html">PacketThief::Handlers::SSLClient</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLServer.html">PacketThief::Handlers::SSLServer</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLServer/InitialServer.html">PacketThief::Handlers::SSLServer::InitialServer</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLSmartProxy.html">PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLTransparentProxy.html">PacketThief::Handlers::SSLTransparentProxy</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html">PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
+  
+    <li><a href="./PacketThief/Handlers/TransparentProxy.html">PacketThief::Handlers::TransparentProxy</a>
+  
+    <li><a href="./PacketThief/Handlers/TransparentProxy/ProxyConnection.html">PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+  
+    <li><a href="./PacketThief/Impl.html">PacketThief::Impl</a>
+  
+    <li><a href="./PacketThief/Impl/Ipfw.html">PacketThief::Impl::Ipfw</a>
+  
+    <li><a href="./PacketThief/Impl/Ipfw/IpfwRule.html">PacketThief::Impl::Ipfw::IpfwRule</a>
+  
+    <li><a href="./PacketThief/Impl/Ipfw/IpfwRuleHandler.html">PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+  
+    <li><a href="./PacketThief/Impl/Manual.html">PacketThief::Impl::Manual</a>
+  
+    <li><a href="./PacketThief/Impl/Manual/NullRule.html">PacketThief::Impl::Manual::NullRule</a>
+  
+    <li><a href="./PacketThief/Impl/Manual/NullRuleHandler.html">PacketThief::Impl::Manual::NullRuleHandler</a>
+  
+    <li><a href="./PacketThief/Impl/Netfilter.html">PacketThief::Impl::Netfilter</a>
+  
+    <li><a href="./PacketThief/Impl/Netfilter/IPTablesRule.html">PacketThief::Impl::Netfilter::IPTablesRule</a>
+  
+    <li><a href="./PacketThief/Impl/Netfilter/IPTablesRuleHandler.html">PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+  
+    <li><a href="./PacketThief/Impl/PFDivert.html">PacketThief::Impl::PFDivert</a>
+  
+    <li><a href="./PacketThief/Impl/PFDivert/PFDivertRule.html">PacketThief::Impl::PFDivert::PFDivertRule</a>
+  
+    <li><a href="./PacketThief/Impl/PFDivert/PFDivertRuleHandler.html">PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
+  
+    <li><a href="./PacketThief/Impl/PFRdr.html">PacketThief::Impl::PFRdr</a>
+  
+    <li><a href="./PacketThief/Impl/PFRdr/PFRdrRule.html">PacketThief::Impl::PFRdr::PFRdrRule</a>
+  
+    <li><a href="./PacketThief/Impl/PFRdr/PFRdrRuleHandler.html">PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
+  
+    <li><a href="./PacketThief/Logging.html">PacketThief::Logging</a>
+  
+    <li><a href="./PacketThief/RedirectRule.html">PacketThief::RedirectRule</a>
+  
+    <li><a href="./PacketThief/Util.html">PacketThief::Util</a>
+  
+    <li><a href="./SSLTest.html">SSLTest</a>
+  
+    <li><a href="./SSLTest/AppContext.html">SSLTest::AppContext</a>
+  
+    <li><a href="./SSLTest/CertificateManager.html">SSLTest::CertificateManager</a>
+  
+    <li><a href="./SSLTest/Config.html">SSLTest::Config</a>
+  
+    <li><a href="./SSLTest/InputHandler.html">SSLTest::InputHandler</a>
+  
+    <li><a href="./SSLTest/Runner.html">SSLTest::Runner</a>
+  
+    <li><a href="./SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
+  
+    <li><a href="./SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
+  
+    <li><a href="./SSLTest/SSLTestResult.html">SSLTest::SSLTestResult</a>
+  
+    <li><a href="./SSLTest/TestListener.html">SSLTest::TestListener</a>
+  
+    <li><a href="./CertMaker.html">CertMaker</a>
+  
+    <li><a href="./CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
+  
+    <li><a href="./CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="./Hash.html">Hash</a>
+  
+    <li><a href="./IO.html">IO</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation" class="description">
+  
+<h1 id="label-TLSPretense+---+SSL%2FTLS+Client+Testing+Framework">TLSPretense — SSL/TLS Client Testing Framework</h1>
+
+<p>A test framework for testing SSL/TLS client certificate validation.</p>
+
+<h2 id="label-Description">Description</h2>
+
+<p>Note: TLSPretense is still undergoing a lot of polishing. It is currently
+usable, but features may change and documentation may be missing. As such,
+please bear with us over next few months as we find time to work on the
+tools, and feel free to file a bug with details.</p>
+
+<p>TLSPretense provides a test framework for testing SSL certificate
+validation. It generates a set of certificates containing specific flaws,
+and it presents the certificates to a client that has been configured to
+trust a CA used by TLSPretense. The test framework then configures its
+system’s firewall to redirect and intercept network traffic so that the
+test runner can present its certificate to the client. To speed up testing,
+the test runner starts the next test as soon as the current test finishes.</p>
+
+<p>The test framework must be run on a Unix-like OS that contains a supported
+firewall, but the program being tested can run on any device whose network
+traffic can be routed through the system hosting the test framework.
+Currently, it supports netfilter and ipfw, which limits the test runner to
+Linux, MacOSX (10.6), and *BSD.</p>
+
+<h2 id="label-How+It+Works">How It Works</h2>
+
+<p>TLSPretense requires the TLS client software to be configured to trust a CA
+that TLPretense controls. That way “good” certificates created by
+TLSPretense will be accepted by the client.</p>
+
+<p>Once the system hosting the test runner has been configured to be a gateway
+for the network traffic of thest client being tested, it will add a
+firewall rule to redirect network traffic to a test listener. The test
+listener checks to see whether the client is trying to connect to a
+predefined host. If the client is connecting to the desired host, then the
+test listener presents a test certificate chain to the client. The test
+runner then determines whether the test passes or fails based on whether
+the client completes the TLS handshake or not.</p>
+
+<p>The test harness was designed to anticipate working with a client that may
+connect to more than one host. The config.yml file specifies a hostname
+that should be used for the actual test — all other intercepted SSL
+connections are essentially ignored (although they currently have their
+certificate re-signed by the goodca in order to make interception easier).</p>
+
+<h2 id="label-Requirements">Requirements</h2>
+<ul><li>
+<p>A Unix-like system that uses a supported firewall/routing implementation.
+TLSPretense currently supports:</p>
+<ul><li>
+<p>Netfilter on Linux</p>
+</li><li>
+<p>IPFW on MacOSX 10.6 and earlier, and *BSD</p>
+</li></ul>
+</li><li>
+<p>Ruby 1.9.x, built against a version of OpenSSL that supports the SNI TLS
+extension. You can check for this if you run the following Ruby script:</p>
+
+<pre>ruby1.9 -ropenssl -e 'puts OpenSSL::SSL::SSLSocket.public_instance_methods.include? :hostname='</pre>
+
+<p>Ruby 1.8.7 will mostly work, but Ruby 1.8’s OpenSSL wrapper library does
+not support the ability for clients to use the SNI TLS extension, which is
+needed to grab the correct remote certificate for proxying miscellaneous
+connections. Use Ruby 1.8.x at your own risk.</p>
+</li><li>
+<p>Bundler. If you need it, you can install it with the Ruby gem command:</p>
+
+<pre>$GEM install bundler</pre>
+
+<p>Where $GEM is the version of the <code>gem</code> command available on your
+system. This might just be <code>gem</code> if your default
+<code>ruby</code> is ruby 1.9.x, or something like <code>gem1.9</code>.</p>
+</li><li>
+<p>You need to make the SSL client trust the <em>goodca</em> CA certificate.
+You can either generate a new goodca and install it in the client’s trust
+store, or you can use an existing test CA to generate the test
+certificates.</p>
+</li></ul>
+
+<h2 id="label-Usage">Usage</h2>
+
+<p>See <a href="doc/general_setup_rdoc.html">TLSPretense Setup</a> for details
+on setting up TLSPretense.</p>
+
+<h2 id="label-Limitations">Limitations</h2>
+<ul><li>
+<p>The Server Name Indication (SNI) TLS extension does not have full support
+in Ruby 1.8.7.</p>
+</li><li>
+<p>Protocols that explicitly call STARTTLS to enable SSL/TLS (eg, SMTP and
+IMAP) are not yet supported. They would require protocol-specific support.
+The version of these protocols where they are wrapped in SSL should be
+testable though.</p>
+</li><li>
+<p>It currently uses the goodca to re-sign certificates from hostnames that do
+not match the configured test hostname.</p>
+</li><li>
+<p>The existing PFDivert rule implementation does not work on Mac OS X 10.7
+(and probably not on 10.8 either). OpenBSD 5.0(?) and FreeBSD 9 can make
+use of this functionality though.</p>
+</li></ul>
+
+<h2 id="label-TODO">TODO</h2>
+<ul><li>
+<p>Convert SSLClient’s initial connection to use a non-blocking connect.</p>
+</li><li>
+<p>Change the pre-flight in SSLSmartProxy to disable the accepted server
+socket until the pre-flight finishes. (the SSLClient within
+SSLTransparentProxy probably also should do this until the client connects)</p>
+</li><li>
+<p>Move <a href="PacketThief.html">PacketThief</a> calls and TestListener’s
+intial server into the runner. The TestListener’s initial server should
+then have a way to change what initial arguments it passes on to each
+TestListener instance in order to present the certificates for the current
+test. This <em>might</em> help keep some connections from hanging…</p>
+</li><li>
+<p>Get a Mac OS X 10.7/10.8 PF implementation working.</p>
+</li><li>
+<p>Make how to determine if a client passes configurable. Currently,
+TLSPretense uses whether the TLS handshake successfully completes to decide
+if it succeeds. However, there appears to be Java/Android code that
+finishes the connection before rejecting the certificate. Instead of using
+the handshake state, we could instead decide based on whether the client
+sends data over the encrypted session or not. Making it configurable
+provides more options for how to test.</p>
+</li><li>
+<p>Fix the subjectAltName null byte test. It requires manual construction of
+the ASN1 encoding due to the null byte causing a truncation somewhere in
+OpenSSL or Ruby’s OpenSSL.</p>
+</li><li>
+<p>Add wildcard tests</p>
+<ul><li>
+<p>cert hostname: *.%PARENTHOSTNAME%</p>
+</li><li>
+<p>bad hostname: *.other.com</p>
+</li><li>
+<p>tld hostname: *.%TLDHOSTNAME% (reject)</p>
+</li><li>
+<p>do we want to test more complicated wildcards?</p>
+</li></ul>
+</li><li>
+<p>Add extension criticality tests (need an extension oid that nobody knows
+how to verify)</p>
+<ul><li>
+<p>If an extension is marked critical and the verifier doesn’t know how to
+verify, then it should fail. If it is not marked critical, then it is
+allowed to skip the extension.</p>
+</li></ul>
+</li><li>
+<p>Advanced: Add name constraints tests.</p>
+<ul><li>
+<p>success: dnsName of leaf matches exactly the dnsName permitted constraint
+nameConstraints=permitted;dnsName:%HOSTNAME%</p>
+</li><li>
+<p>reject: constraint is a different hostname
+nameConstraints=permitted;dnsName:some.other.com</p>
+</li><li>
+<p>success: dnsName of leaf is a subdomain in addition to dnsName constraint
+constraint = parent domain of hostname (need to ensure hostname has enough
+labels) nameConstraints=permitted;dnsName:%PARENTHOSTNAME% do it this way
+vs trying a subdomain of the original hostname to</p>
+</li><li>
+<p>reject: constraint is a slightly different hostname
+nameConstraints=permitted;dnsName:a%HOSTNAME%</p>
+</li><li>
+<p>success: dirname matches the default subject’s DN</p>
+</li><li>
+<p>reject: dirname does not match the default subject’s DN</p>
+</li><li>
+<p>URI constraints</p>
+</li></ul>
+</li><li>
+<p>Document how to run <a href="SSLTest.html">SSLTest</a> from MacOSX</p>
+</li><li>
+<p>Document how to run <a href="SSLTest.html">SSLTest</a> from a Linux VM on
+Windows (eg, with VMWare)</p>
+</li><li>
+<p>Document how to deal with certificate pinning and other things that may
+make testing certificate validation logic difficult.</p>
+</li><li>
+<p>Command line option to specify where to write the results to</p>
+</li><li>
+<p>Wrap certmaker functionality in a command instead of just using rake</p>
+</li><li>
+<p>Gemify for easier distribution/installation and eliminate the need for
+bundle exec</p>
+</li><li>
+<p>Add more result output formats</p>
+<ul><li>
+<p>(X)HTML</p>
+</li><li>
+<p>CSV</p>
+</li><li>
+<p>LaTeX?</p>
+</li><li>
+<p>XML?</p>
+</li><li>
+<p>SQLite?</p>
+</li></ul>
+</li><li>
+<p>truly unique serial numbers for a given CA. Alternatively, we could use the
+first cert’s serial as a starting point and increment from there.</p>
+</li><li>
+<p>Build certs and chains of certs for each test so that something like
+s_server could use them.</p>
+</li><li>
+<p>Config file validator</p>
+</li><li>
+<p>Add an API for interacting with an external test controller. This could be
+a little web service, although that lacks real-time responses. A TCP/unix
+socket interface that sends/receives JSON messages (or something simpler)
+might be better. The client would tell TLSPretense which test to start, and
+then TLSPretense would reply with a result when it completes.</p>
+</li></ul>
+
+<h2 id="label-Contributing+to+TLSPretense">Contributing to TLSPretense</h2>
+<ul><li>
+<p>Check out the latest master to make sure the feature hasn’t been
+implemented or the bug hasn’t been fixed yet.</p>
+</li><li>
+<p>Check out the issue tracker to make sure someone already hasn’t requested
+it and/or contributed it.</p>
+</li><li>
+<p>Fork the project.</p>
+</li><li>
+<p>Start a feature/bugfix branch.</p>
+</li><li>
+<p>Commit and push until you are happy with your contribution.</p>
+</li><li>
+<p>Make sure to add tests for it. This is important so I don’t break it in a
+future version unintentionally.</p>
+</li><li>
+<p>Please try not to mess with the Rakefile, version, or history. If you want
+to have your own version, or is otherwise necessary, that is fine, but
+please isolate to its own commit so I can cherry-pick around it.</p>
+</li></ul>
+
+<h2 id="label-Authors">Authors</h2>
+<ul><li>
+<p>William (B.J.) Snow Orvis (iSEC Partners)</p>
+</li></ul>
+
+<h2 id="label-Copyright">Copyright</h2>
+
+<p>Copyright © 2012 iSEC Partners</p>
+
+<p>See LICENSE.txt for further details.</p>
+
+</div>
+
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

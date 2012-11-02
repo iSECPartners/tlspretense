@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class PacketThief::Handlers::SSLServer - TLSPretense </title>
+
+<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../index.html">Home</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/packetthief/handlers/ssl_server.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-c-start">::start</a>
+    
+    <li><a href="#method-i-servername_cb">#servername_cb</a>
+    
+    <li><a href="#method-i-stop_server">#stop_server</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../README_rdoc.html">README</a>
+  
+    <li class="file"><a href="../../doc/general_setup_rdoc.html">general_setup</a>
+  
+    <li class="file"><a href="../../doc/linux_setup_rdoc.html">linux_setup</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../PacketThief.html">PacketThief</a>
+  
+    <li><a href="../../PacketThief/Handlers.html">PacketThief::Handlers</a>
+  
+    <li><a href="../../PacketThief/Handlers/AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li><a href="../../PacketThief/Handlers/ProxyRedirector.html">PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLClient.html">PacketThief::Handlers::SSLClient</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLServer.html">PacketThief::Handlers::SSLServer</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLServer/InitialServer.html">PacketThief::Handlers::SSLServer::InitialServer</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLSmartProxy.html">PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLTransparentProxy.html">PacketThief::Handlers::SSLTransparentProxy</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html">PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
+  
+    <li><a href="../../PacketThief/Handlers/TransparentProxy.html">PacketThief::Handlers::TransparentProxy</a>
+  
+    <li><a href="../../PacketThief/Handlers/TransparentProxy/ProxyConnection.html">PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+  
+    <li><a href="../../PacketThief/Impl.html">PacketThief::Impl</a>
+  
+    <li><a href="../../PacketThief/Impl/Ipfw.html">PacketThief::Impl::Ipfw</a>
+  
+    <li><a href="../../PacketThief/Impl/Ipfw/IpfwRule.html">PacketThief::Impl::Ipfw::IpfwRule</a>
+  
+    <li><a href="../../PacketThief/Impl/Ipfw/IpfwRuleHandler.html">PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Impl/Manual.html">PacketThief::Impl::Manual</a>
+  
+    <li><a href="../../PacketThief/Impl/Manual/NullRule.html">PacketThief::Impl::Manual::NullRule</a>
+  
+    <li><a href="../../PacketThief/Impl/Manual/NullRuleHandler.html">PacketThief::Impl::Manual::NullRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Impl/Netfilter.html">PacketThief::Impl::Netfilter</a>
+  
+    <li><a href="../../PacketThief/Impl/Netfilter/IPTablesRule.html">PacketThief::Impl::Netfilter::IPTablesRule</a>
+  
+    <li><a href="../../PacketThief/Impl/Netfilter/IPTablesRuleHandler.html">PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Impl/PFDivert.html">PacketThief::Impl::PFDivert</a>
+  
+    <li><a href="../../PacketThief/Impl/PFDivert/PFDivertRule.html">PacketThief::Impl::PFDivert::PFDivertRule</a>
+  
+    <li><a href="../../PacketThief/Impl/PFDivert/PFDivertRuleHandler.html">PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Impl/PFRdr.html">PacketThief::Impl::PFRdr</a>
+  
+    <li><a href="../../PacketThief/Impl/PFRdr/PFRdrRule.html">PacketThief::Impl::PFRdr::PFRdrRule</a>
+  
+    <li><a href="../../PacketThief/Impl/PFRdr/PFRdrRuleHandler.html">PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Logging.html">PacketThief::Logging</a>
+  
+    <li><a href="../../PacketThief/RedirectRule.html">PacketThief::RedirectRule</a>
+  
+    <li><a href="../../PacketThief/Util.html">PacketThief::Util</a>
+  
+    <li><a href="../../SSLTest.html">SSLTest</a>
+  
+    <li><a href="../../SSLTest/AppContext.html">SSLTest::AppContext</a>
+  
+    <li><a href="../../SSLTest/CertificateManager.html">SSLTest::CertificateManager</a>
+  
+    <li><a href="../../SSLTest/Config.html">SSLTest::Config</a>
+  
+    <li><a href="../../SSLTest/InputHandler.html">SSLTest::InputHandler</a>
+  
+    <li><a href="../../SSLTest/Runner.html">SSLTest::Runner</a>
+  
+    <li><a href="../../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
+  
+    <li><a href="../../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
+  
+    <li><a href="../../SSLTest/SSLTestResult.html">SSLTest::SSLTestResult</a>
+  
+    <li><a href="../../SSLTest/TestListener.html">SSLTest::TestListener</a>
+  
+    <li><a href="../../CertMaker.html">CertMaker</a>
+  
+    <li><a href="../../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
+  
+    <li><a href="../../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../../Hash.html">Hash</a>
+  
+    <li><a href="../../IO.html">IO</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class PacketThief::Handlers::SSLServer</h1>
+
+  <div id="description" class="description">
+    
+<p>Basic SSL/TLS Server built on Ruby’s OpenSSL objects instead of on
+EventMachine’s start_tls. This allows you to manipulate the SSLContext and
+other details of the connection that EM normally doesn’t let you touch.</p>
+
+<p>Subclass it and override any of the methods in the following example to use
+the the functionality.</p>
+
+<p>You can <a href="AbstractSSLHandler.html#method-i-send_data">send_data</a>
+to send encrypted data to the other side, and <a
+href="AbstractSSLHandler.html#method-i-receive_data">receive_data</a> will
+be called when there is data for the handler.</p>
+
+<pre class="ruby"><span class="ruby-constant">EM</span>.<span class="ruby-identifier">run</span> {
+  <span class="ruby-comment"># Leave the hostname blank for Linux's netfilter.</span>
+  <span class="ruby-constant">SSLServer</span>.<span class="ruby-identifier">start</span> <span class="ruby-string">''</span>, <span class="ruby-value">54321</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
+
+    <span class="ruby-comment"># Note: this code block is actually too late to set up a new</span>
+    <span class="ruby-comment"># #post_init since it runs just after post_init. Instead, you would</span>
+    <span class="ruby-comment"># use post_init in a subclass.</span>
+    <span class="ruby-keyword">def</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">post_init</span>
+      <span class="ruby-comment"># modify p.ctx to configure your certificates, key, etc.</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># In this example, the following would work in this initialization</span>
+    <span class="ruby-comment"># block:</span>
+    <span class="ruby-identifier">h</span>.<span class="ruby-identifier">ctx</span>.<span class="ruby-identifier">cert</span> = <span class="ruby-identifier">cert</span>
+    <span class="ruby-identifier">h</span>.<span class="ruby-identifier">ctx</span>.<span class="ruby-identifier">extra_chain_cert</span> = <span class="ruby-identifier">chain</span>
+    <span class="ruby-identifier">h</span>.<span class="ruby-identifier">ctx</span>.<span class="ruby-identifier">key</span> = <span class="ruby-identifier">key</span>
+
+    <span class="ruby-keyword">def</span> <span class="ruby-identifier">servername_cb</span>(<span class="ruby-identifier">sock</span>, <span class="ruby-identifier">hostname</span>)
+      <span class="ruby-comment"># implement your own SNI handling callback. The default will</span>
+      <span class="ruby-comment"># return the originally configured context.</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">def</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">tls_successful_handshake</span>
+      <span class="ruby-comment"># the handshake succeeded</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">def</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">tls_failed_handshake</span>(<span class="ruby-identifier">e</span>)
+      <span class="ruby-comment"># the ssl handshake failed, probably due to the client rejecting</span>
+      <span class="ruby-comment"># your certificate. =)</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">def</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">unbind</span>
+      <span class="ruby-comment"># unbind handler, called regardless of handshake success</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">def</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">receive_data</span>(<span class="ruby-identifier">data</span>)
+      <span class="ruby-comment"># do something with the unencrypted stream</span>
+      <span class="ruby-identifier">p</span>.<span class="ruby-identifier">send_data</span>(<span class="ruby-string">&quot;some message&quot;</span>) <span class="ruby-comment"># data to be encrypted then sent to the client</span>
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">end</span>
+}
+</pre>
+
+<p>Note: During initialize and <a
+href="AbstractSSLHandler.html#method-i-post_init">post_init</a>, this class
+does not have access to its socket yet. Instead, use tls_pre_start or the
+code block you pass to .start to initialize the SSLContext, and use
+tls_post_accept to do anything once the SSL handshake has completed. You
+can also override <a
+href="SSLServer.html#method-i-servername_cb">servername_cb</a> to perform
+the SNI callback.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-server_handler" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">server_handler</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>reference to the <a href="SSLServer/InitialServer.html">InitialServer</a>
+that created the current handler. exists so you can call <a
+href="SSLServer.html#method-i-stop_server">stop_server</a> or do something
+else to it directly.</p>
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(tcpsocket)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/ssl_server.rb, line 148</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">tcpsocket</span>)
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">tcpsocket</span>)
+  <span class="ruby-ivar">@ctx</span>.<span class="ruby-identifier">servername_cb</span> = <span class="ruby-identifier">proc</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">sslsocket</span>, <span class="ruby-identifier">hostname</span><span class="ruby-operator">|</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">servername_cb</span>(<span class="ruby-identifier">sslsocket</span>, <span class="ruby-identifier">hostname</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+      <div id="method-c-start" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">start</span><span
+            class="method-args">(host, port, *args, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="start-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/ssl_server.rb, line 69</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">host</span>, <span class="ruby-identifier">port</span>, *<span class="ruby-identifier">args</span>, &amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">ssl_class</span> = <span class="ruby-keyword">self</span>
+
+  <span class="ruby-identifier">serv</span> = <span class="ruby-constant">TCPServer</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">host</span>, <span class="ruby-identifier">port</span>
+
+  <span class="ruby-comment"># We use InitialServer to listen for incoming connections. It will then</span>
+  <span class="ruby-comment"># create the actual SSLServer.</span>
+  <span class="ruby-identifier">initialserver</span> = <span class="ruby-operator">::</span><span class="ruby-constant">EM</span>.<span class="ruby-identifier">watch</span> <span class="ruby-identifier">serv</span>, <span class="ruby-constant">InitialServer</span>, <span class="ruby-identifier">serv</span>, <span class="ruby-identifier">ssl_class</span>, <span class="ruby-identifier">args</span>, <span class="ruby-identifier">block</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">h</span>.<span class="ruby-identifier">notify_readable</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">initialserver</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- start-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- start-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-servername_cb" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">servername_cb</span><span
+            class="method-args">(sslsock, hostname)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Called when the client sends a hostname using the SNI TLS extension.</p>
+
+<p>This method should return an OpenSSL::SSL::SSLContext. It gives you an
+opportunity to pick or generate a different server certificate or
+certificate chain based on the hostname requested by the client.</p>
+
+<p>The default implementation does nothing by just returning the original
+SSLContext.</p>
+          
+
+          
+          <div class="method-source-code" id="servername_cb-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/ssl_server.rb, line 162</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">servername_cb</span>(<span class="ruby-identifier">sslsock</span>, <span class="ruby-identifier">hostname</span>)
+  <span class="ruby-identifier">sslsock</span>.<span class="ruby-identifier">context</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- servername_cb-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- servername_cb-method -->
+
+    
+      <div id="method-i-stop_server" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">stop_server</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Stops the InitialListener sever handler that spawned this handler. Due to
+our use of EM.watch, we can’t rely on EM to close the socket.</p>
+          
+
+          
+          <div class="method-source-code" id="stop_server-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/ssl_server.rb, line 168</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">stop_server</span>
+  <span class="ruby-ivar">@server_handler</span>.<span class="ruby-identifier">stop_server</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- stop_server-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- stop_server-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

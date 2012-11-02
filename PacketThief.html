@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>module PacketThief - TLSPretense </title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/packetthief/handlers/abstract_ssl_handler.rb
+    <li>lib/packetthief/handlers/proxy_redirector.rb
+    <li>lib/packetthief/handlers/ssl_client.rb
+    <li>lib/packetthief/handlers/ssl_server.rb
+    <li>lib/packetthief/handlers/ssl_smart_proxy.rb
+    <li>lib/packetthief/handlers/ssl_transparent_proxy.rb
+    <li>lib/packetthief/handlers/transparent_proxy.rb
+    <li>lib/packetthief/handlers.rb
+    <li>lib/packetthief/impl/ipfw.rb
+    <li>lib/packetthief/impl/manual.rb
+    <li>lib/packetthief/impl/netfilter.rb
+    <li>lib/packetthief/impl/pf_divert.rb
+    <li>lib/packetthief/impl/pf_rdr.rb
+    <li>lib/packetthief/impl.rb
+    <li>lib/packetthief/logging.rb
+    <li>lib/packetthief/redirect_rule.rb
+    <li>lib/packetthief/util.rb
+    <li>lib/packetthief.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="PacketThief/Logging.html">PacketThief::Logging</a>
+  
+  
+  </ul>
+</nav>
+
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-guess_implementation">::guess_implementation</a>
+    
+    <li><a href="#method-c-implementation">::implementation</a>
+    
+    <li><a href="#method-c-implementation-3D">::implementation=</a>
+    
+    <li><a href="#method-c-method_missing">::method_missing</a>
+    
+    <li><a href="#method-c-revert">::revert</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+    <li class="file"><a href="./doc/general_setup_rdoc.html">general_setup</a>
+  
+    <li class="file"><a href="./doc/linux_setup_rdoc.html">linux_setup</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./PacketThief.html">PacketThief</a>
+  
+    <li><a href="./PacketThief/Handlers.html">PacketThief::Handlers</a>
+  
+    <li><a href="./PacketThief/Handlers/AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li><a href="./PacketThief/Handlers/ProxyRedirector.html">PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLClient.html">PacketThief::Handlers::SSLClient</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLServer.html">PacketThief::Handlers::SSLServer</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLServer/InitialServer.html">PacketThief::Handlers::SSLServer::InitialServer</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLSmartProxy.html">PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLTransparentProxy.html">PacketThief::Handlers::SSLTransparentProxy</a>
+  
+    <li><a href="./PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html">PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
+  
+    <li><a href="./PacketThief/Handlers/TransparentProxy.html">PacketThief::Handlers::TransparentProxy</a>
+  
+    <li><a href="./PacketThief/Handlers/TransparentProxy/ProxyConnection.html">PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+  
+    <li><a href="./PacketThief/Impl.html">PacketThief::Impl</a>
+  
+    <li><a href="./PacketThief/Impl/Ipfw.html">PacketThief::Impl::Ipfw</a>
+  
+    <li><a href="./PacketThief/Impl/Ipfw/IpfwRule.html">PacketThief::Impl::Ipfw::IpfwRule</a>
+  
+    <li><a href="./PacketThief/Impl/Ipfw/IpfwRuleHandler.html">PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+  
+    <li><a href="./PacketThief/Impl/Manual.html">PacketThief::Impl::Manual</a>
+  
+    <li><a href="./PacketThief/Impl/Manual/NullRule.html">PacketThief::Impl::Manual::NullRule</a>
+  
+    <li><a href="./PacketThief/Impl/Manual/NullRuleHandler.html">PacketThief::Impl::Manual::NullRuleHandler</a>
+  
+    <li><a href="./PacketThief/Impl/Netfilter.html">PacketThief::Impl::Netfilter</a>
+  
+    <li><a href="./PacketThief/Impl/Netfilter/IPTablesRule.html">PacketThief::Impl::Netfilter::IPTablesRule</a>
+  
+    <li><a href="./PacketThief/Impl/Netfilter/IPTablesRuleHandler.html">PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+  
+    <li><a href="./PacketThief/Impl/PFDivert.html">PacketThief::Impl::PFDivert</a>
+  
+    <li><a href="./PacketThief/Impl/PFDivert/PFDivertRule.html">PacketThief::Impl::PFDivert::PFDivertRule</a>
+  
+    <li><a href="./PacketThief/Impl/PFDivert/PFDivertRuleHandler.html">PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
+  
+    <li><a href="./PacketThief/Impl/PFRdr.html">PacketThief::Impl::PFRdr</a>
+  
+    <li><a href="./PacketThief/Impl/PFRdr/PFRdrRule.html">PacketThief::Impl::PFRdr::PFRdrRule</a>
+  
+    <li><a href="./PacketThief/Impl/PFRdr/PFRdrRuleHandler.html">PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
+  
+    <li><a href="./PacketThief/Logging.html">PacketThief::Logging</a>
+  
+    <li><a href="./PacketThief/RedirectRule.html">PacketThief::RedirectRule</a>
+  
+    <li><a href="./PacketThief/Util.html">PacketThief::Util</a>
+  
+    <li><a href="./SSLTest.html">SSLTest</a>
+  
+    <li><a href="./SSLTest/AppContext.html">SSLTest::AppContext</a>
+  
+    <li><a href="./SSLTest/CertificateManager.html">SSLTest::CertificateManager</a>
+  
+    <li><a href="./SSLTest/Config.html">SSLTest::Config</a>
+  
+    <li><a href="./SSLTest/InputHandler.html">SSLTest::InputHandler</a>
+  
+    <li><a href="./SSLTest/Runner.html">SSLTest::Runner</a>
+  
+    <li><a href="./SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
+  
+    <li><a href="./SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
+  
+    <li><a href="./SSLTest/SSLTestResult.html">SSLTest::SSLTestResult</a>
+  
+    <li><a href="./SSLTest/TestListener.html">SSLTest::TestListener</a>
+  
+    <li><a href="./CertMaker.html">CertMaker</a>
+  
+    <li><a href="./CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
+  
+    <li><a href="./CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="./Hash.html">Hash</a>
+  
+    <li><a href="./IO.html">IO</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module PacketThief</h1>
+
+  <div id="description" class="description">
+    
+<p>Framework for intercepting packets, redirecting them to a handler, and
+doing something with the “stolen” connection.</p>
+
+<h2 id="label-Description">Description</h2>
+
+<p><a href="PacketThief.html">PacketThief</a> is a little Ruby framework for
+programatically intercepting network traffic. It provides an abstraction
+around configuring various OS firewalls and for gathering information about
+the original connection, and it offers several sample handler classes (for
+use with EventMachine) for intercepting and forwarding traffic. If you want
+a full fledged security tool for intercepting and analyzing network
+traffic, check out <a
+href="http://intrepidusgroup.com/insight/mallory/">Mallory</a> instead.</p>
+
+<p><a href="PacketThief.html">PacketThief</a> is currently intended to be run
+on a computer that should be configured as the gateway for whatever network
+traffic you wish to intercept. You then use <a
+href="PacketThief.html">PacketThief</a> to configure your OS firewall and
+network routing to send specified network traffic to a socket. The socket
+handling code can then read the data, modify it, send it on to the original
+destination (although the new connection will originate from the gateway),
+etc.</p>
+
+<p>Currently, <a href="PacketThief.html">PacketThief</a> supports basic
+redirection using Ipfw (Mac OS X, BSD) and Netfilter (Linux). It also more
+than likely requires your PacketThief-based script to be run as root in
+order to modify your system’s firewall.</p>
+
+<h2 id="label-Usage">Usage</h2>
+
+<p>First, you must configure the system that will run <a
+href="PacketThief.html">PacketThief</a> to be able to intercept network
+traffic. If that host system has two network interfaces (such as a laptop
+with ethernet and wifi), then you can turn the system into a router by
+configure one interface to be an external interface that can communicate
+with your main network and the Internet, and the other interface can be
+configured as the gateway for one or more devices/client systems that you
+would like to test.</p>
+
+<p>NATing multiple network interfaces can be easily done in Mac OS X by
+enabling Internet Sharing in the Sharing System Preference pane, which will
+also let you configure your wifi to be a wireless access point. For Linux,
+take a look at the <code>examples/setup_iptables.sh</code> script, or <a
+href="https://bitbucket.org/IntrepidusGroup/mallory/wiki/Home">search the
+Internet for tutorials on various ways to set up Mallory</a>.</p>
+
+<p>Basic use:</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">'packetthief'</span>
+<span class="ruby-comment"># redirect tcp traffic destined for port 443 to localhost port 65432:</span>
+<span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">redirect</span>(:<span class="ruby-identifier">to_ports</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">65432</span>).<span class="ruby-identifier">where</span>(:<span class="ruby-identifier">protocol</span> =<span class="ruby-operator">&gt;</span> :<span class="ruby-identifier">tcp</span>, :<span class="ruby-identifier">dest_port</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">443</span>).<span class="ruby-identifier">run</span>
+<span class="ruby-identifier">at_exit</span> { <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">revert</span> } <span class="ruby-comment"># Remove our firewall rules when we exit</span>
+</pre>
+
+<p>This will set up Firewall/routing rules to redirect packets matching the
+.where clause to the localhost port specified by the redirect() clause. The
+Kernel#at_exit handler calls the .revert method which will remove the
+firewall rules added by <a href="PacketThief.html">PacketThief</a>.</p>
+
+<p>You can then capture network traffic in your script by opening a listening
+socket your <code>:to_ports</code> destination. When you create the socket,
+set the hostname to a blank string to have it listen on all interfaces –
+this winds up being more compatible with different firewalls.</p>
+
+<p>Using a TCPServer:</p>
+
+<pre>TCPServer.new('', 65432)</pre>
+
+<p>or (untested):</p>
+
+<pre>TCPServer.new(65432)</pre>
+
+<p>Using EventMachine:</p>
+
+<pre>EM.run {
+    start_server '', 65432, MyHandler
+}</pre>
+
+<p>In your listener code you can recover the original destination by passing
+in an accepted socket or an EventMachine::Connection-based handler.</p>
+
+<pre>PacketThief.original_dest(socket_or_em_connection)</pre>
+
+<p><a href="PacketThief.html">PacketThief</a> also provides several
+EventMachine handlers to help build interceptors. For example, <a
+href="PacketThief/Handlers/TransparentProxy.html">PacketThief::Handlers::TransparentProxy</a>
+provides a class that allows you to view or mangle arbitrary TCP traffic
+before passing it on to the original destination. The package also includes
+several handlers for dealing with SSL-based traffic. Unlike EventMachine's
+built-in SSL support (start_tls), <a
+href="PacketThief/Handlers/SSLClient.html">PacketThief::Handlers::SSLClient</a>
+and <a
+href="PacketThief/Handlers/SSLServer.html">PacketThief::Handlers::SSLServer</a>
+give you direct access to the OpenSSL::SSL::SSLContext to configure
+certificates and callbacks, and <a
+href="PacketThief/Handlers/SSLSmartProxy.html">PacketThief::Handlers::SSLSmartProxy</a>
+will connect to the original destination in order to acquire its host
+certificate, which it then modifies for use with a configured CA. See the
+documentation and the example directory for more information.</p>
+
+<h2 id="label-Mac+OS+X+Setup+example">Mac OS X Setup example</h2>
+<ul><li>
+<p>Share your wifi over your ethernet. Mac OS X will run natd with your wifi
+as the lan.</p>
+</li><li>
+<p>Connect a mobile or wifi device to this wifi.</p>
+</li><li>
+<p>Run your <a href="PacketThief.html">PacketThief</a> code, and specify
+`:in_interface =&gt; ‘en1’` (assuming your Airport/wifi is on en1) in the
+.where clause. The specified :to_ports port should start receiving incoming
+TCP connections.</p>
+</li></ul>
+
+<p>Note that connections initiated both on the Mac and on any device from the
+network will hit your socket. In the future, you will be able to narrow
+down what traffic is caught.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-guess_implementation" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">guess_implementation</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="guess_implementation-source">
+            <pre><span class="ruby-comment"># File lib/packetthief.rb, line 139</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">guess_implementation</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-constant">RUBY_PLATFORM</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-regexp">%rlinux/</span>
+    <span class="ruby-constant">Impl</span><span class="ruby-operator">::</span><span class="ruby-constant">Netfilter</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-regexp">%rdarwin(10|[0-9]($|[^0]))/</span> <span class="ruby-comment"># Mac OS X 10.6 and earlier.</span>
+    <span class="ruby-constant">Impl</span><span class="ruby-operator">::</span><span class="ruby-constant">Ipfw</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Platform #{RUBY_PLATFORM} not yet supported! If you know your network implementation, call it directly.&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- guess_implementation-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- guess_implementation-method -->
+
+    
+      <div id="method-c-implementation" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">implementation</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="implementation-source">
+            <pre><span class="ruby-comment"># File lib/packetthief.rb, line 120</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">implementation</span>; <span class="ruby-ivar">@implementation</span> ; <span class="ruby-keyword">end</span></pre>
+          </div><!-- implementation-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- implementation-method -->
+
+    
+      <div id="method-c-implementation-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">implementation=</span><span
+            class="method-args">(newimpl)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="implementation-3D-source">
+            <pre><span class="ruby-comment"># File lib/packetthief.rb, line 122</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">implementation=</span>(<span class="ruby-identifier">newimpl</span>)
+  <span class="ruby-identifier">logdebug</span> <span class="ruby-node">&quot;Set implementation to: #{newimpl}&quot;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">newimpl</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-ivar">@implementation</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">newimpl</span>.<span class="ruby-identifier">kind_of?</span> <span class="ruby-constant">Module</span>
+    <span class="ruby-ivar">@implementation</span> = <span class="ruby-identifier">newimpl</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">PacketThief</span><span class="ruby-operator">::</span><span class="ruby-constant">Impl</span>.<span class="ruby-identifier">constants</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_sym</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">newimpl</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_sym</span>
+        <span class="ruby-ivar">@implementation</span> = <span class="ruby-constant">PacketThief</span><span class="ruby-operator">::</span><span class="ruby-constant">Impl</span>.<span class="ruby-identifier">const_get</span> <span class="ruby-identifier">c</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@implementation</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">AttributeError</span>, <span class="ruby-string">&quot;Unknown implementation&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- implementation-3D-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- implementation-3D-method -->
+
+    
+      <div id="method-c-method_missing" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">method_missing</span><span
+            class="method-args">(m, *args, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Pass the call on to @implementation, or an OS-specific default, if one is
+known.</p>
+          
+
+          
+          <div class="method-source-code" id="method_missing-source">
+            <pre><span class="ruby-comment"># File lib/packetthief.rb, line 151</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">method_missing</span>(<span class="ruby-identifier">m</span>, *<span class="ruby-identifier">args</span>, &amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">logdebug</span> <span class="ruby-node">&quot;method_missing: #{m}&quot;</span>, <span class="ruby-value">:args</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">args</span>, <span class="ruby-value">:block</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">block</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">implementation</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">implementation</span> = <span class="ruby-identifier">guess_implementation</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">implementation</span>.<span class="ruby-identifier">logger</span> = <span class="ruby-ivar">@logger</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">implementation</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:logger=</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">implementation</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">m</span>, *<span class="ruby-identifier">args</span>, &amp;<span class="ruby-identifier">block</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- method_missing-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- method_missing-method -->
+
+    
+      <div id="method-c-revert" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">revert</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Quietly ignore .revert calls if implementation is nil.</p>
+          
+
+          
+          <div class="method-source-code" id="revert-source">
+            <pre><span class="ruby-comment"># File lib/packetthief.rb, line 161</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">revert</span>
+  <span class="ruby-identifier">implementation</span>.<span class="ruby-identifier">revert</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">implementation</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- revert-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- revert-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

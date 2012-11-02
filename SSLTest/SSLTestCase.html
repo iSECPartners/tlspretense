@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class SSLTest::SSLTestCase - TLSPretense </title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/ssl_test/ssl_test_case.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../PacketThief/Logging.html">PacketThief::Logging</a>
+  
+  
+  </ul>
+</nav>
+
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-cleanup">#cleanup</a>
+    
+    <li><a href="#method-i-run">#run</a>
+    
+    <li><a href="#method-i-stop_testing">#stop_testing</a>
+    
+    <li><a href="#method-i-test_completed">#test_completed</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+    <li class="file"><a href="../doc/general_setup_rdoc.html">general_setup</a>
+  
+    <li class="file"><a href="../doc/linux_setup_rdoc.html">linux_setup</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../PacketThief.html">PacketThief</a>
+  
+    <li><a href="../PacketThief/Handlers.html">PacketThief::Handlers</a>
+  
+    <li><a href="../PacketThief/Handlers/AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li><a href="../PacketThief/Handlers/ProxyRedirector.html">PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLClient.html">PacketThief::Handlers::SSLClient</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLServer.html">PacketThief::Handlers::SSLServer</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLServer/InitialServer.html">PacketThief::Handlers::SSLServer::InitialServer</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLSmartProxy.html">PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLTransparentProxy.html">PacketThief::Handlers::SSLTransparentProxy</a>
+  
+    <li><a href="../PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html">PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
+  
+    <li><a href="../PacketThief/Handlers/TransparentProxy.html">PacketThief::Handlers::TransparentProxy</a>
+  
+    <li><a href="../PacketThief/Handlers/TransparentProxy/ProxyConnection.html">PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+  
+    <li><a href="../PacketThief/Impl.html">PacketThief::Impl</a>
+  
+    <li><a href="../PacketThief/Impl/Ipfw.html">PacketThief::Impl::Ipfw</a>
+  
+    <li><a href="../PacketThief/Impl/Ipfw/IpfwRule.html">PacketThief::Impl::Ipfw::IpfwRule</a>
+  
+    <li><a href="../PacketThief/Impl/Ipfw/IpfwRuleHandler.html">PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/Manual.html">PacketThief::Impl::Manual</a>
+  
+    <li><a href="../PacketThief/Impl/Manual/NullRule.html">PacketThief::Impl::Manual::NullRule</a>
+  
+    <li><a href="../PacketThief/Impl/Manual/NullRuleHandler.html">PacketThief::Impl::Manual::NullRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/Netfilter.html">PacketThief::Impl::Netfilter</a>
+  
+    <li><a href="../PacketThief/Impl/Netfilter/IPTablesRule.html">PacketThief::Impl::Netfilter::IPTablesRule</a>
+  
+    <li><a href="../PacketThief/Impl/Netfilter/IPTablesRuleHandler.html">PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/PFDivert.html">PacketThief::Impl::PFDivert</a>
+  
+    <li><a href="../PacketThief/Impl/PFDivert/PFDivertRule.html">PacketThief::Impl::PFDivert::PFDivertRule</a>
+  
+    <li><a href="../PacketThief/Impl/PFDivert/PFDivertRuleHandler.html">PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
+  
+    <li><a href="../PacketThief/Impl/PFRdr.html">PacketThief::Impl::PFRdr</a>
+  
+    <li><a href="../PacketThief/Impl/PFRdr/PFRdrRule.html">PacketThief::Impl::PFRdr::PFRdrRule</a>
+  
+    <li><a href="../PacketThief/Impl/PFRdr/PFRdrRuleHandler.html">PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
+  
+    <li><a href="../PacketThief/Logging.html">PacketThief::Logging</a>
+  
+    <li><a href="../PacketThief/RedirectRule.html">PacketThief::RedirectRule</a>
+  
+    <li><a href="../PacketThief/Util.html">PacketThief::Util</a>
+  
+    <li><a href="../SSLTest.html">SSLTest</a>
+  
+    <li><a href="../SSLTest/AppContext.html">SSLTest::AppContext</a>
+  
+    <li><a href="../SSLTest/CertificateManager.html">SSLTest::CertificateManager</a>
+  
+    <li><a href="../SSLTest/Config.html">SSLTest::Config</a>
+  
+    <li><a href="../SSLTest/InputHandler.html">SSLTest::InputHandler</a>
+  
+    <li><a href="../SSLTest/Runner.html">SSLTest::Runner</a>
+  
+    <li><a href="../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
+  
+    <li><a href="../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
+  
+    <li><a href="../SSLTest/SSLTestResult.html">SSLTest::SSLTestResult</a>
+  
+    <li><a href="../SSLTest/TestListener.html">SSLTest::TestListener</a>
+  
+    <li><a href="../CertMaker.html">CertMaker</a>
+  
+    <li><a href="../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
+  
+    <li><a href="../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../Hash.html">Hash</a>
+  
+    <li><a href="../IO.html">IO</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class SSLTest::SSLTestCase</h1>
+
+  <div id="description" class="description">
+    
+<p>Represents a single test case. It performs the test it represents and adds
+its result to a report.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-description" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">description</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-id" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">id</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(appctx, report, testdesc)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/ssl_test_case.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">appctx</span>, <span class="ruby-identifier">report</span>, <span class="ruby-identifier">testdesc</span>)
+  <span class="ruby-ivar">@appctx</span> = <span class="ruby-identifier">appctx</span>
+  <span class="ruby-ivar">@config</span> = <span class="ruby-ivar">@appctx</span>.<span class="ruby-identifier">config</span>
+  <span class="ruby-ivar">@certmanager</span> = <span class="ruby-ivar">@appctx</span>.<span class="ruby-identifier">cert_manager</span>
+  <span class="ruby-ivar">@report</span> = <span class="ruby-identifier">report</span>
+  <span class="ruby-ivar">@raw</span> = <span class="ruby-identifier">testdesc</span>.<span class="ruby-identifier">dup</span>
+  <span class="ruby-ivar">@id</span> = <span class="ruby-ivar">@raw</span>[<span class="ruby-string">'alias'</span>]
+  <span class="ruby-ivar">@description</span> = <span class="ruby-ivar">@raw</span>[<span class="ruby-string">'name'</span>]
+  <span class="ruby-ivar">@certchainalias</span> = <span class="ruby-ivar">@raw</span>[<span class="ruby-string">'certchain'</span>]
+  <span class="ruby-ivar">@expected_result</span> = <span class="ruby-ivar">@raw</span>[<span class="ruby-string">'expected_result'</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-cleanup" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cleanup</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="cleanup-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/ssl_test_case.rb, line 64</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">cleanup</span>
+  <span class="ruby-ivar">@listener</span>.<span class="ruby-identifier">stop_server</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@listener</span>
+  <span class="ruby-constant">EM</span>.<span class="ruby-identifier">stop_event_loop</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@started_em</span>
+  <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">revert</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- cleanup-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- cleanup-method -->
+
+    
+      <div id="method-i-run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">run</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Sets up and launches the current test. It gathers the certificates and keys
+needed to launch a <a href="TestListener.html">TestListener</a>, sets up <a
+href="../PacketThief.html">PacketThief</a>, and (currently) also sets up
+the keyboard user interface.</p>
+          
+
+          
+          <div class="method-source-code" id="run-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/ssl_test_case.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>
+  <span class="ruby-ivar">@logger</span> = <span class="ruby-ivar">@appctx</span>.<span class="ruby-identifier">logger</span>
+  <span class="ruby-identifier">loginfo</span> <span class="ruby-node">&quot;#{@id}: Starting test&quot;</span>
+  <span class="ruby-ivar">@certchain</span> = <span class="ruby-ivar">@certmanager</span>.<span class="ruby-identifier">get_chain</span>(<span class="ruby-ivar">@certchainalias</span>)
+  <span class="ruby-ivar">@keychain</span> = <span class="ruby-ivar">@certmanager</span>.<span class="ruby-identifier">get_keychain</span>(<span class="ruby-ivar">@certchainalias</span>)
+  <span class="ruby-ivar">@hosttotest</span> = <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">hosttotest</span>
+
+  <span class="ruby-ivar">@goodcacert</span> = <span class="ruby-ivar">@certmanager</span>.<span class="ruby-identifier">get_cert</span>(<span class="ruby-string">&quot;goodca&quot;</span>)
+  <span class="ruby-ivar">@goodcakey</span> = <span class="ruby-ivar">@certmanager</span>.<span class="ruby-identifier">get_key</span>(<span class="ruby-string">&quot;goodca&quot;</span>)
+
+  <span class="ruby-ivar">@start_time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+
+  <span class="ruby-identifier">ptconf</span> = <span class="ruby-ivar">@appctx</span>.<span class="ruby-identifier">config</span>.<span class="ruby-identifier">packetthief</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">ptconf</span>.<span class="ruby-identifier">has_key?</span> <span class="ruby-string">'implementation'</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">ptconf</span>[<span class="ruby-string">'implementation'</span>].<span class="ruby-identifier">match</span>(<span class="ruby-regexp">%rexternal/</span>)
+    <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">redirect</span>(<span class="ruby-value">:to_ports</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">listener_port</span>).<span class="ruby-identifier">where</span>(<span class="ruby-ivar">@config</span>.<span class="ruby-identifier">packetthief</span>).<span class="ruby-identifier">run</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@started_em</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">EM</span>.<span class="ruby-identifier">reactor_running?</span>
+    <span class="ruby-constant">TestListener</span>.<span class="ruby-identifier">start</span>(<span class="ruby-string">''</span>,<span class="ruby-ivar">@config</span>.<span class="ruby-identifier">listener_port</span>, <span class="ruby-keyword">self</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@started_em</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-constant">EM</span>.<span class="ruby-identifier">run</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-comment"># @listener handles the initial server socket, not the accepted connections.</span>
+      <span class="ruby-comment"># h in the code block is for each accepted connection.</span>
+      <span class="ruby-ivar">@listener</span> = <span class="ruby-constant">TestListener</span>.<span class="ruby-identifier">start</span>(<span class="ruby-string">''</span>,<span class="ruby-ivar">@config</span>.<span class="ruby-identifier">listener_port</span>, <span class="ruby-ivar">@goodcacert</span>, <span class="ruby-ivar">@goodcakey</span>, <span class="ruby-ivar">@hosttotest</span>, <span class="ruby-ivar">@certchain</span>, <span class="ruby-ivar">@keychain</span>[<span class="ruby-value">0</span>]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">h</span>.<span class="ruby-identifier">on_test_completed</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">result</span><span class="ruby-operator">|</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">test_completed</span> <span class="ruby-identifier">result</span> }
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-ivar">@listener</span>.<span class="ruby-identifier">logger</span> = <span class="ruby-ivar">@appctx</span>.<span class="ruby-identifier">logger</span>
+      <span class="ruby-constant">EM</span>.<span class="ruby-identifier">open_keyboard</span> <span class="ruby-constant">InputHandler</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">h</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">' '</span>) { <span class="ruby-keyword">self</span>.<span class="ruby-identifier">test_completed</span> <span class="ruby-value">:skipped</span> }
+        <span class="ruby-identifier">h</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">'q'</span>) { <span class="ruby-keyword">self</span>.<span class="ruby-identifier">stop_testing</span> }
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-constant">EM</span>.<span class="ruby-identifier">add_periodic_timer</span>(<span class="ruby-value">5</span>) { <span class="ruby-ivar">@appctx</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-node">&quot;EM connection count: #{EM.connection_count}&quot;</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@status</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- run-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- run-method -->
+
+    
+      <div id="method-i-stop_testing" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">stop_testing</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Callback to cleanup and exit.</p>
+          
+
+          
+          <div class="method-source-code" id="stop_testing-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/ssl_test_case.rb, line 118</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">stop_testing</span>
+  <span class="ruby-identifier">cleanup</span>
+  <span class="ruby-ivar">@status</span> = <span class="ruby-value">:stop</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- stop_testing-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- stop_testing-method -->
+
+    
+      <div id="method-i-test_completed" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_completed</span><span
+            class="method-args">(actual_result)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Called when a test completes or is skipped. It adds an <a
+href="SSLTestResult.html">SSLTestResult</a> to the report, and it cleans up
+after itself.</p>
+
+<p>:connected, :rejected, :sentdata</p>
+          
+
+          
+          <div class="method-source-code" id="test_completed-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/ssl_test_case.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_completed</span>(<span class="ruby-identifier">actual_result</span>)
+  <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;test_completed&quot;</span>, <span class="ruby-value">:actual_result</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">actual_result</span>, <span class="ruby-value">:expected_result</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@expected_result</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">actual_result</span> <span class="ruby-operator">==</span> <span class="ruby-value">:running</span>
+
+  <span class="ruby-identifier">passed</span> = <span class="ruby-keyword">if</span> <span class="ruby-ivar">@appctx</span>.<span class="ruby-identifier">config</span>.<span class="ruby-identifier">testing_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'tlshandshake'</span>
+             <span class="ruby-keyword">case</span> <span class="ruby-ivar">@expected_result</span>
+             <span class="ruby-keyword">when</span> <span class="ruby-string">'connected'</span>
+               <span class="ruby-node">%w{connected sentdata}</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">actual_result</span>.<span class="ruby-identifier">to_s</span>
+             <span class="ruby-keyword">when</span> <span class="ruby-string">'rejected'</span>
+               <span class="ruby-identifier">actual_result</span> <span class="ruby-operator">==</span> <span class="ruby-value">:rejected</span>
+             <span class="ruby-keyword">else</span>
+               <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Unknown expected_result: #{@expected_result}&quot;</span>
+             <span class="ruby-keyword">end</span>
+           <span class="ruby-keyword">else</span> <span class="ruby-comment"># senddata, which requires data to be sent for it to pass.</span>
+             <span class="ruby-keyword">case</span> <span class="ruby-ivar">@expected_result</span>
+             <span class="ruby-keyword">when</span> <span class="ruby-string">'connected'</span>
+               <span class="ruby-identifier">actual_result</span> <span class="ruby-operator">==</span> <span class="ruby-value">:sentdata</span>
+             <span class="ruby-keyword">when</span> <span class="ruby-string">'rejected'</span>
+               <span class="ruby-node">%w{rejected connected}</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">actual_result</span>.<span class="ruby-identifier">to_s</span>
+             <span class="ruby-keyword">else</span>
+               <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Unknown expected_result: #{@expected_result}&quot;</span>
+             <span class="ruby-keyword">end</span>
+           <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">str</span> = <span class="ruby-constant">SSLTestResult</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@id</span>, <span class="ruby-identifier">passed</span>)
+  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">description</span> = <span class="ruby-ivar">@description</span>
+  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">expected_result</span> = <span class="ruby-ivar">@expected_result</span>
+  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">actual_result</span> = <span class="ruby-identifier">actual_result</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">start_time</span> = <span class="ruby-ivar">@start_time</span>
+  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">stop_time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+
+  <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">add_result</span>(<span class="ruby-identifier">str</span>)
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">actual_result</span> <span class="ruby-operator">==</span> <span class="ruby-value">:skipped</span>
+    <span class="ruby-ivar">@appctx</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;#{@id}: Skipping test&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@appctx</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;#{@id}: Finished test&quot;</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">cleanup</span>
+  <span class="ruby-ivar">@status</span> = <span class="ruby-value">:next</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- test_completed-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- test_completed-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

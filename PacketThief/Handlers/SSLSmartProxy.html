@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class PacketThief::Handlers::SSLSmartProxy - TLSPretense </title>
+
+<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../index.html">Home</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/packetthief/handlers/ssl_smart_proxy.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">SSLTransparentProxy
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-doctor_cert">#doctor_cert</a>
+    
+    <li><a href="#method-i-lookup_cert">#lookup_cert</a>
+    
+    <li><a href="#method-i-preflight_for_cert">#preflight_for_cert</a>
+    
+    <li><a href="#method-i-servername_cb">#servername_cb</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../README_rdoc.html">README</a>
+  
+    <li class="file"><a href="../../doc/general_setup_rdoc.html">general_setup</a>
+  
+    <li class="file"><a href="../../doc/linux_setup_rdoc.html">linux_setup</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../PacketThief.html">PacketThief</a>
+  
+    <li><a href="../../PacketThief/Handlers.html">PacketThief::Handlers</a>
+  
+    <li><a href="../../PacketThief/Handlers/AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li><a href="../../PacketThief/Handlers/ProxyRedirector.html">PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLClient.html">PacketThief::Handlers::SSLClient</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLServer.html">PacketThief::Handlers::SSLServer</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLServer/InitialServer.html">PacketThief::Handlers::SSLServer::InitialServer</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLSmartProxy.html">PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLTransparentProxy.html">PacketThief::Handlers::SSLTransparentProxy</a>
+  
+    <li><a href="../../PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html">PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
+  
+    <li><a href="../../PacketThief/Handlers/TransparentProxy.html">PacketThief::Handlers::TransparentProxy</a>
+  
+    <li><a href="../../PacketThief/Handlers/TransparentProxy/ProxyConnection.html">PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+  
+    <li><a href="../../PacketThief/Impl.html">PacketThief::Impl</a>
+  
+    <li><a href="../../PacketThief/Impl/Ipfw.html">PacketThief::Impl::Ipfw</a>
+  
+    <li><a href="../../PacketThief/Impl/Ipfw/IpfwRule.html">PacketThief::Impl::Ipfw::IpfwRule</a>
+  
+    <li><a href="../../PacketThief/Impl/Ipfw/IpfwRuleHandler.html">PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Impl/Manual.html">PacketThief::Impl::Manual</a>
+  
+    <li><a href="../../PacketThief/Impl/Manual/NullRule.html">PacketThief::Impl::Manual::NullRule</a>
+  
+    <li><a href="../../PacketThief/Impl/Manual/NullRuleHandler.html">PacketThief::Impl::Manual::NullRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Impl/Netfilter.html">PacketThief::Impl::Netfilter</a>
+  
+    <li><a href="../../PacketThief/Impl/Netfilter/IPTablesRule.html">PacketThief::Impl::Netfilter::IPTablesRule</a>
+  
+    <li><a href="../../PacketThief/Impl/Netfilter/IPTablesRuleHandler.html">PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Impl/PFDivert.html">PacketThief::Impl::PFDivert</a>
+  
+    <li><a href="../../PacketThief/Impl/PFDivert/PFDivertRule.html">PacketThief::Impl::PFDivert::PFDivertRule</a>
+  
+    <li><a href="../../PacketThief/Impl/PFDivert/PFDivertRuleHandler.html">PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Impl/PFRdr.html">PacketThief::Impl::PFRdr</a>
+  
+    <li><a href="../../PacketThief/Impl/PFRdr/PFRdrRule.html">PacketThief::Impl::PFRdr::PFRdrRule</a>
+  
+    <li><a href="../../PacketThief/Impl/PFRdr/PFRdrRuleHandler.html">PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
+  
+    <li><a href="../../PacketThief/Logging.html">PacketThief::Logging</a>
+  
+    <li><a href="../../PacketThief/RedirectRule.html">PacketThief::RedirectRule</a>
+  
+    <li><a href="../../PacketThief/Util.html">PacketThief::Util</a>
+  
+    <li><a href="../../SSLTest.html">SSLTest</a>
+  
+    <li><a href="../../SSLTest/AppContext.html">SSLTest::AppContext</a>
+  
+    <li><a href="../../SSLTest/CertificateManager.html">SSLTest::CertificateManager</a>
+  
+    <li><a href="../../SSLTest/Config.html">SSLTest::Config</a>
+  
+    <li><a href="../../SSLTest/InputHandler.html">SSLTest::InputHandler</a>
+  
+    <li><a href="../../SSLTest/Runner.html">SSLTest::Runner</a>
+  
+    <li><a href="../../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
+  
+    <li><a href="../../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
+  
+    <li><a href="../../SSLTest/SSLTestResult.html">SSLTest::SSLTestResult</a>
+  
+    <li><a href="../../SSLTest/TestListener.html">SSLTest::TestListener</a>
+  
+    <li><a href="../../CertMaker.html">CertMaker</a>
+  
+    <li><a href="../../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
+  
+    <li><a href="../../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../../Hash.html">Hash</a>
+  
+    <li><a href="../../IO.html">IO</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class PacketThief::Handlers::SSLSmartProxy</h1>
+
+  <div id="description" class="description">
+    
+<p>This SSL proxy needs a CA certificate (or chain) and private key. It then
+uses that information to automatically generate host certificates. It
+creates a host certificate by performing a pre-flight request to the
+original destination to get its certificate. It then doctors that
+certificate so that it’s keypair is the supplied keypair, and so that it
+appears to be issued by the CA or last CA in the chain. Note that the
+supplied key must correspond to the last signing certificate, and that the
+key will be used as the doctored certificate’s new key.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-preflight_timeout" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">preflight_timeout</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>How long to wait before giving up on a preflight request. Defaults to 5
+seconds.</p>
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(tcpsocket, ca_chain, key)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/ssl_smart_proxy.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">tcpsocket</span>, <span class="ruby-identifier">ca_chain</span>, <span class="ruby-identifier">key</span>)
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">tcpsocket</span>)
+
+  <span class="ruby-ivar">@preflight_timeout</span> = <span class="ruby-value">5</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">ca_chain</span>.<span class="ruby-identifier">kind_of?</span> <span class="ruby-constant">Array</span>
+    <span class="ruby-ivar">@ca_chain</span> = <span class="ruby-identifier">ca_chain</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@ca_chain</span> = [<span class="ruby-identifier">ca_chain</span>]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@key</span> = <span class="ruby-identifier">key</span>
+
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-comment"># preflight the original destination.</span>
+    <span class="ruby-ivar">@ctx</span>.<span class="ruby-identifier">cert</span> = <span class="ruby-identifier">lookup_cert</span>
+    <span class="ruby-ivar">@ctx</span>.<span class="ruby-identifier">extra_chain_cert</span> = <span class="ruby-ivar">@ca_chain</span>
+    <span class="ruby-ivar">@ctx</span>.<span class="ruby-identifier">key</span> = <span class="ruby-ivar">@key</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSLError</span>, <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">ECONNREFUSED</span>, <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">ETIMEDOUT</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">logerror</span> <span class="ruby-string">&quot;initialize: Failed to look up cert&quot;</span>, <span class="ruby-value">:error</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">close_connection</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-doctor_cert" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">doctor_cert</span><span
+            class="method-args">(oldcert, cacert, key)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Replace the issuer, the public key, and the signature.</p>
+          
+
+          
+          <div class="method-source-code" id="doctor_cert-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/ssl_smart_proxy.rb, line 88</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">doctor_cert</span>(<span class="ruby-identifier">oldcert</span>, <span class="ruby-identifier">cacert</span>, <span class="ruby-identifier">key</span>)
+  <span class="ruby-identifier">newcert</span> = <span class="ruby-identifier">oldcert</span>.<span class="ruby-identifier">dup</span>
+  <span class="ruby-identifier">newcert</span>.<span class="ruby-identifier">issuer</span> = <span class="ruby-identifier">cacert</span>.<span class="ruby-identifier">subject</span>
+  <span class="ruby-identifier">newcert</span>.<span class="ruby-identifier">public_key</span> = <span class="ruby-identifier">key</span>.<span class="ruby-identifier">public_key</span>
+
+  <span class="ruby-identifier">exts</span> = <span class="ruby-identifier">newcert</span>.<span class="ruby-identifier">extensions</span>.<span class="ruby-identifier">dup</span>
+  <span class="ruby-identifier">exts</span>.<span class="ruby-identifier">each_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">exts</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">oid</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;authorityKeyIdentifier&quot;</span>
+      <span class="ruby-identifier">ef</span> = <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">X509</span><span class="ruby-operator">::</span><span class="ruby-constant">ExtensionFactory</span>.<span class="ruby-identifier">new</span>
+      <span class="ruby-identifier">ef</span>.<span class="ruby-identifier">subject_certificate</span> = <span class="ruby-identifier">newcert</span>
+      <span class="ruby-identifier">ef</span>.<span class="ruby-identifier">issuer_certificate</span> = <span class="ruby-identifier">cacert</span>
+      <span class="ruby-identifier">newe</span> = <span class="ruby-identifier">ef</span>.<span class="ruby-identifier">create_ext_from_string</span>(<span class="ruby-string">&quot;authorityKeyIdentifier=keyid:always&quot;</span>)
+      <span class="ruby-identifier">exts</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-identifier">newe</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">newcert</span>.<span class="ruby-identifier">extensions</span> = <span class="ruby-identifier">exts</span>
+
+  <span class="ruby-identifier">sigalg</span> = <span class="ruby-keyword">case</span> <span class="ruby-identifier">newcert</span>.<span class="ruby-identifier">signature_algorithm</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-regexp">%rMD5/</span>
+    <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">Digest</span><span class="ruby-operator">::</span><span class="ruby-constant">MD5</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-regexp">%rSHA1/</span>
+    <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">Digest</span><span class="ruby-operator">::</span><span class="ruby-constant">SHA1</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-regexp">%rSHA256/</span>
+    <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">Digest</span><span class="ruby-operator">::</span><span class="ruby-constant">SHA256</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Unsupported signing algorithm: #{@ctx.cert.signing_algorithm}&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">newcert</span>.<span class="ruby-identifier">sign</span>(<span class="ruby-identifier">key</span>, <span class="ruby-identifier">sigalg</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">newcert</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- doctor_cert-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- doctor_cert-method -->
+
+    
+      <div id="method-i-lookup_cert" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">lookup_cert</span><span
+            class="method-args">(hostname=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Check a class-level cache for an existing doctored certificate that
+corresponds to the requested hostname (IP address for non-SNI or pre-SNI
+lookup, and hostnames from SNI lookup).</p>
+          
+
+          
+          <div class="method-source-code" id="lookup_cert-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/ssl_smart_proxy.rb, line 122</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">lookup_cert</span>(<span class="ruby-identifier">hostname</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">@@certcache</span> <span class="ruby-operator">||=</span> {}
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">hostname</span>
+    <span class="ruby-identifier">cachekey</span> = <span class="ruby-node">&quot;#{hostname}:#{dest_port}&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">cachekey</span> = <span class="ruby-node">&quot;#{dest_host}:#{dest_port}&quot;</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">@@certcache</span>.<span class="ruby-identifier">has_key?</span> <span class="ruby-identifier">cachekey</span>
+    <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;lookup_cert: cache miss, looking up and doctoring actual cert&quot;</span>, <span class="ruby-value">:dest</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">cachekey</span>
+    <span class="ruby-identifier">@@certcache</span>[<span class="ruby-identifier">cachekey</span>] = <span class="ruby-identifier">doctor_cert</span>(<span class="ruby-identifier">preflight_for_cert</span>(<span class="ruby-identifier">hostname</span>), <span class="ruby-ivar">@ca_chain</span>[<span class="ruby-value">0</span>], <span class="ruby-ivar">@key</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;lookup_cert: cache hit&quot;</span>, <span class="ruby-value">:dest</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">cachekey</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;lookup_cert: returning&quot;</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">@@certcache</span>[<span class="ruby-identifier">cachekey</span>].<span class="ruby-identifier">subject</span>
+  <span class="ruby-identifier">@@certcache</span>[<span class="ruby-identifier">cachekey</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- lookup_cert-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- lookup_cert-method -->
+
+    
+      <div id="method-i-preflight_for_cert" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">preflight_for_cert</span><span
+            class="method-args">(hostname=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Requests a certificate from the original destination.</p>
+          
+
+          
+          <div class="method-source-code" id="preflight_for_cert-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/ssl_smart_proxy.rb, line 55</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">preflight_for_cert</span>(<span class="ruby-identifier">hostname</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">logdebug</span> <span class="ruby-node">&quot;prefilight for: #{hostname}&quot;</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-identifier">pfctx</span> = <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSLContext</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">pfctx</span>.<span class="ruby-identifier">verify_mode</span> = <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSL</span><span class="ruby-operator">::</span><span class="ruby-constant">VERIFY_NONE</span>
+    <span class="ruby-comment"># Try to use a non-blocking Socket to create a short timeout.</span>
+    <span class="ruby-identifier">pfs</span> = <span class="ruby-constant">Socket</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:AF_INET</span>, <span class="ruby-value">:SOCK_STREAM</span>)
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-identifier">pfs</span>.<span class="ruby-identifier">connect_nonblock</span>(<span class="ruby-constant">Socket</span>.<span class="ruby-identifier">sockaddr_in</span>(<span class="ruby-identifier">dest_port</span>, <span class="ruby-identifier">dest_host</span>))
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">EINPROGRESS</span>
+      <span class="ruby-constant">IO</span>.<span class="ruby-identifier">select</span>(<span class="ruby-keyword">nil</span>, [<span class="ruby-identifier">pfs</span>], <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">preflight_timeout</span>) <span class="ruby-keyword">or</span> <span class="ruby-identifier">raise</span> <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">ETIMEDOUT</span>, <span class="ruby-node">&quot;Connection to #{dest_host}:#{dest_port} timed out after #{preflight_timeout} seconds&quot;</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;preflight tcp socket connected&quot;</span>
+    <span class="ruby-identifier">pfssl</span> = <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSLSocket</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">pfs</span>, <span class="ruby-identifier">pfctx</span>)
+    <span class="ruby-identifier">pfssl</span>.<span class="ruby-identifier">hostname</span> = <span class="ruby-identifier">hostname</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">hostname</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">pfssl</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:hostname</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-identifier">pfssl</span>.<span class="ruby-identifier">connect_nonblock</span>
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">IO</span><span class="ruby-operator">::</span><span class="ruby-constant">WaitReadable</span>, <span class="ruby-constant">IO</span><span class="ruby-operator">::</span><span class="ruby-constant">WaitWritable</span>
+      <span class="ruby-constant">IO</span>.<span class="ruby-identifier">select</span>([<span class="ruby-identifier">pfssl</span>],[<span class="ruby-identifier">pfssl</span>],<span class="ruby-keyword">nil</span>,<span class="ruby-identifier">preflight_timeout</span>) <span class="ruby-keyword">or</span> <span class="ruby-identifier">raise</span> <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">ETIMEDOUT</span>, <span class="ruby-node">&quot;SSL handshake to #{dest_host}:#{dest_port} timed out #{preflight_timeout} seconds&quot;</span>
+      <span class="ruby-keyword">retry</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;preflight complete&quot;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">pfssl</span>.<span class="ruby-identifier">peer_cert</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSLError</span>, <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">ECONNREFUSED</span>, <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">ETIMEDOUT</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">logerror</span> <span class="ruby-node">&quot;Error during preflight SSL connection: #{e} (#{e.class})&quot;</span>
+    <span class="ruby-identifier">raise</span>
+  <span class="ruby-keyword">ensure</span>
+    <span class="ruby-identifier">pfssl</span>.<span class="ruby-identifier">close</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">pfssl</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- preflight_for_cert-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- preflight_for_cert-method -->
+
+    
+      <div id="method-i-servername_cb" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">servername_cb</span><span
+            class="method-args">(sslsock, hostname)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>def client_connected</p>
+
+<pre># don't try to connect to dest here.</pre>
+
+<p>end</p>
+          
+
+          
+          <div class="method-source-code" id="servername_cb-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/ssl_smart_proxy.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">servername_cb</span>(<span class="ruby-identifier">sslsock</span>, <span class="ruby-identifier">hostname</span>)
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-identifier">newctx</span> = <span class="ruby-identifier">sslsock</span>.<span class="ruby-identifier">context</span>.<span class="ruby-identifier">dup</span>
+  <span class="ruby-identifier">newctx</span>.<span class="ruby-identifier">cert</span> = <span class="ruby-identifier">lookup_cert</span>(<span class="ruby-identifier">hostname</span>)
+  <span class="ruby-identifier">newctx</span>.<span class="ruby-identifier">extra_chain_cert</span> = <span class="ruby-ivar">@ca_chain</span>
+  <span class="ruby-identifier">newctx</span>.<span class="ruby-identifier">key</span> = <span class="ruby-ivar">@key</span>
+  <span class="ruby-identifier">newctx</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- servername_cb-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- servername_cb-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
