@@ -19,7 +19,7 @@ module PacketThief
           it "calls pfctl with a rule that performs the diversion" do
             @pfctlio = double('pfctl io')
             IO.should_receive(:popen) do |args, &block|
-              args.should == %W{pfctl -a packetthief -f -}
+              args.should == %W{pfctl -q -a packetthief -f -}
               block.call(@pfctlio)
               `true`
               $?.exitstatus.should == 0
@@ -34,7 +34,7 @@ module PacketThief
           it "calls pf with a rule that performs the diversion" do
             @pfctlio = double('pfctl io')
             IO.should_receive(:popen) do |args, &block|
-              args.should == %W{pfctl -a packetthief -f -}
+              args.should == %W{pfctl -q -a packetthief -f -}
               block.call(@pfctlio)
               `true`
               $?.exitstatus.should == 0
@@ -50,14 +50,14 @@ module PacketThief
             @pfctlio = double('pfctl io')
             @pfctlio2 = double('pfctl io')
             IO.should_receive(:popen).ordered do |args, &block|
-              args.should == %W{pfctl -a packetthief -f -}
+              args.should == %W{pfctl -q -a packetthief -f -}
               block.call(@pfctlio)
               `true`
               $?.exitstatus.should == 0
             end
             @pfctlio.should_receive(:puts).with("rdr proto tcp from any to any port 80 -> 127.0.0.1 port 65432")
             IO.should_receive(:popen).ordered do |args, &block|
-              args.should == %W{pfctl -a packetthief -f -}
+              args.should == %W{pfctl -q -a packetthief -f -}
               block.call(@pfctlio2)
               `true`
               $?.exitstatus.should == 0
@@ -78,7 +78,7 @@ module PacketThief
             subject.redirect(:to_ports => 3234).where(:protocol => :tcp, :dest_port => 80).run
           end
           it "removes the packetthief anchor" do
-            subject.should_receive(:system).with(*%W{pfctl -a packetthief -F rules}).and_return true
+            subject.should_receive(:system).with(*%W{pfctl -q -a packetthief -F all}).and_return true
 
             subject.revert
           end
@@ -116,7 +116,7 @@ module PacketThief
             end
 
             before(:each) do
-              subject.stub(:`).with(/pfctl -s state/).and_return(statetable)
+              subject.stub(:`).with(/pfctl -q -s state/).and_return(statetable)
             end
 
             it "returns the original destination" do
@@ -125,17 +125,6 @@ module PacketThief
 
           end
 
-#          it "calls pf_get_orig_dest with the peer and own data" do
-#            subject.should_receive(:pf_get_orig_dest).with(peername, sockname).and_return("\020\002?2\ne`a\000\000\000\000\000\000\000\000")
-#
-#            subject.original_dest(socket)
-#          end
-#
-#          it "it returns the destination socket's details" do
-#            subject.stub(:pf_get_orig_dest).with(peername, sockname).and_return("\x02\x02;\x10\x7F\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00")
-#
-#            subject.original_dest(socket).should == [ 15120, "127.0.0.1"]
-#          end
         end
 
       end
