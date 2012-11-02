@@ -5,11 +5,10 @@ module PacketThief
     # uses that information to automatically generate host certificates. It
     # creates a host certificate by performing a pre-flight request to the
     # original destination to get its certificate. It then doctors that
-    # certificate to use a known keypair and the supplied CA.
-    #
-    # For now, it is lazy with the key, meaning that the supplied key needs to
-    # match the CA certificate, but it will also be used as the key for
-    # generated certificates.
+    # certificate so that it's keypair is the supplied keypair, and so that it
+    # appears to be issued by the CA or last CA in the chain. Note that the
+    # supplied key must correspond to the last signing certificate, and that
+    # the key will be used as the doctored certificate's new key.
     class SSLSmartProxy < SSLTransparentProxy
 
       # How long to wait before giving up on a preflight request. Defaults to 5
@@ -117,6 +116,9 @@ module PacketThief
         return newcert
       end
 
+      # Check a class-level cache for an existing doctored certificate that
+      # corresponds to the requested hostname (IP address for non-SNI or
+      # pre-SNI lookup, and hostnames from SNI lookup).
       def lookup_cert(hostname=nil)
         @@certcache ||= {}
 
@@ -126,8 +128,14 @@ module PacketThief
           cachekey = "#{dest_host}:#{dest_port}"
         end
 
-        return @@certcache[cachekey] if @@certcache.has_key? cachekey
-        @@certcache[cachekey] = doctor_cert(preflight_for_cert(hostname), @ca_chain[0], @key)
+        unless @@certcache.has_key? cachekey
+          logdebug "lookup_cert: cache miss, looking up and doctoring actual cert", :dest => cachekey
+          @@certcache[cachekey] = doctor_cert(preflight_for_cert(hostname), @ca_chain[0], @key)
+        else
+          logdebug "lookup_cert: cache hit", :dest => cachekey
+        end
+        logdebug "lookup_cert: returning", :subject => @@certcache[cachekey].subject
+        @@certcache[cachekey]
       end
 
     end

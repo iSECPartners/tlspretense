@@ -97,7 +97,10 @@ module SSLTest
         @stdout.puts "Press spacebar to skip a test, or 'q' to stop testing."
         @report = SSLTestReport.new
         first = true
-        @config.tests( @test_list.empty? ? nil : @test_list).each do |test|
+        @tests = @config.tests( @test_list.empty? ? nil : @test_list)
+        loginfo "Hostname being tested (assuming certs are up to date): #{@config.hosttotest}"
+        loginfo "Running #{@tests.length} tests"
+        @tests.each do |test|
           pause if @config.pause? and not first
           if run_test(test) == :stop
             break
