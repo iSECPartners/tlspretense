@@ -73,10 +73,11 @@ module PacketThief
 
         # We use InitialServer to listen for incoming connections. It will then
         # create the actual SSLServer.
-        ::EM.watch serv, InitialServer, serv, ssl_class, args, block do |h|
+        initialserver = ::EM.watch serv, InitialServer, serv, ssl_class, args, block do |h|
           h.notify_readable = true
         end
 
+        initialserver
       end
 
       ####
