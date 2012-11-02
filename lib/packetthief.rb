@@ -153,6 +153,7 @@ module PacketThief
     if self.implementation == nil
       self.implementation = guess_implementation
     end
+    implementation.logger = @logger if implementation.respond_to? :logger=
     self.implementation.send(m, *args, &block)
   end
 

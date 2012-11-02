@@ -131,7 +131,7 @@ module PacketThief
           @state = :read_needs_to_write
           notify_writable = true
         rescue OpenSSL::SSL::SSLError => e
-          logerror "#{self.class}: #{e} (#{e.class})"
+          logerror "attempt_read: #{e} (#{e.class})"
           close_connection
         else
           @state = :ready_to_read
@@ -161,7 +161,7 @@ module PacketThief
         rescue IO::WaitReadable
           @state = :write_needs_to_read
         rescue OpenSSL::SSL::SSLError => e
-          logerror "#{self.class}: #{e} (#{e.class})"
+          logerror "attempt_write: #{e} (#{e.class})"
           close_connection
         else
           # shrink the buf
@@ -228,7 +228,7 @@ module PacketThief
       #
       # The connection will be closed after this.
       def tls_failed_handshake(e)
-        logerror "#{self.class}: Failed to accept: #{e} (#{e.class})"
+        logerror "tls_failed_handshake: Failed to accept: #{e} (#{e.class})"
       end
 
       # Override this to do something with the unecrypted data.

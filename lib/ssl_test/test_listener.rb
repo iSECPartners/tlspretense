@@ -24,7 +24,8 @@ module SSLTest
     #   present when the client attempts to connect to hostname.
     # * _keytotest_   [OpenSSL::PKey::PKey] The key corresponding to the leaf
     #   node in _chaintotest_.
-    def initialize(tcpsocket, cacert, cakey, hosttotest, chaintotest, keytotest)
+    def initialize(tcpsocket, cacert, cakey, hosttotest, chaintotest, keytotest, logger=nil)
+      @logger = logger
       @hosttotest = hosttotest
       chain = chaintotest.dup
       @hostcert = chain.shift
@@ -42,7 +43,6 @@ module SSLTest
     # the check happen after the parent class already added a re-signed
     # certificate to +@ctx+.
     def post_init
-      logdebug "Conntection received"
       check_for_hosttotest(@ctx)
     end
 

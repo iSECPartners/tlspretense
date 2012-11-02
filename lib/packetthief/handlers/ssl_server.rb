@@ -99,10 +99,11 @@ module PacketThief
         end
 
         def notify_readable
-          logdebug "#{self.class}(#{@ssl_class}): Received a new connection, spawning a #{@ssl_class}"
+          logdebug "(#{@ssl_class}): Received a new connection, spawning a #{@ssl_class}"
           sock = @servsocket.accept_nonblock
 
-          ::EM.watch sock, @ssl_class, sock, *@args do |h|
+          ::EM.watch sock, @ssl_class, sock, *@args, @logger do |h|
+            logdebug "after initialize"
             h.server_handler = self
             h.notify_readable = true
             h.logger = @logger

@@ -2,6 +2,7 @@ module SSLTest
   # Represents a single test case. It performs the test it represents and adds
   # its result to a report.
   class SSLTestCase
+    include PacketThief::Logging
 
     attr_reader :id
     attr_reader :description
@@ -22,7 +23,8 @@ module SSLTest
     # keys needed to launch a TestListener, sets up PacketThief, and
     # (currently) also sets up the keyboard user interface.
     def run
-      @appctx.logger.info "#{@id}: Starting test"
+      @logger = @appctx.logger
+      loginfo "#{@id}: Starting test"
       @certchain = @certmanager.get_chain(@certchainalias)
       @keychain = @certmanager.get_keychain(@certchainalias)
       @hosttotest = @config.hosttotest
@@ -68,6 +70,7 @@ module SSLTest
     # Called when a test completes or is skipped. It adds an SSLTestResult to
     # the report, and it cleans up after itself.
     def test_completed(actual_result)
+      logdebug "test_completed", :actual_result => actual_result, :expected_result => @expected_result
       return if actual_result == :running
 
       str = SSLTestResult.new(@id, (actual_result.to_s == @expected_result))

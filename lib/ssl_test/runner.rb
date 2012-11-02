@@ -1,6 +1,7 @@
 module SSLTest
   # Handles a list of arguments, and uses the arguments to run a sequence of tests.
   class Runner
+    include PacketThief::Logging
 
     attr_reader :results
 

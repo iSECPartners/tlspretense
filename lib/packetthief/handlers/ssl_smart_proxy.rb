@@ -27,6 +27,7 @@ module PacketThief
           @ctx.extra_chain_cert = @ca_chain
           @ctx.key = @key
         rescue OpenSSL::SSL::SSLError, Errno::ECONNREFUSED
+          logerror "initialize: Failed to look up cert", :error => e
           close_connection
         end
       end
@@ -47,7 +48,7 @@ module PacketThief
 
       # Requests a certificate from the original destination.
       def preflight_for_cert(hostname=nil)
-        puts "prefilight for: #{hostname}"
+        logdebug "prefilight for: #{hostname}"
         begin
           pfctx = OpenSSL::SSL::SSLContext.new
           pfctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
@@ -58,7 +59,7 @@ module PacketThief
 #          puts pfssl.peer_cert.subject
           return pfssl.peer_cert
         rescue OpenSSL::SSL::SSLError, Errno::ECONNREFUSED => e
-          puts "#{self.class}: Error doing preflight SSL connection: #{e} (#{e.class})"
+          logerror "Error during preflight SSL connection: #{e} (#{e.class})"
           raise
         ensure
           pfssl.close if pfssl
@@ -95,7 +96,6 @@ module PacketThief
           raise "Unsupported signing algorithm: #{@ctx.cert.signing_algorithm}"
         end
         newcert.sign(key, sigalg)
-#        puts newcert
         return newcert
       end
 
