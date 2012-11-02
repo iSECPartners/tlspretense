@@ -5,57 +5,13 @@ module SSLTest
 
     attr_reader :results
 
-    DEFAULT_OPTS = {
-        :pause => false,
-        :config => Config::DEFAULT,
-        :action => :runtests,
-        :loglevel => 'INFO',
-        :logfile => '-'
-      }
-
-    def parse_args(args)
-      options = DEFAULT_OPTS.dup
-
-      opts = OptionParser.new do |opts|
-        opts.banner = "Usage: #{$0} [options] [tests to run]"
-
-        opts.on("-p","--[no-]pause", "Pause between tests") do |v|
-          options[:pause] = true
-        end
-
-        opts.on("-c", "--config path/to/config.yml",
-                "Specify a custom config.yml file",
-                "  (Default: #{DEFAULT_OPTS[:config]})") do |confname|
-          options[:config] = confname
-        end
-
-        opts.on("-l","--list", "List all tests (or those specified on the command line") do |v|
-          options[:action] = :list
-        end
-
-        opts.on("--log-level=loglevel", "Set the log level. It can be one of:",
-                "  DEBUG, INFO, WARN, ERROR, FATAL", "  (Default: INFO, or whatever config.yml sets)") do |l|
-          options[:loglevel] = l
-        end
-
-        opts.on("--log-file=somefile.log", "Specify the file to write logs to.","  (Default: - (STDOUT))") do |l|
-          options[:logfile] = l
-        end
-
-      end
-
-      args = args.dup
-      opts.parse!(args)
-      return [options, args]
-    end
-
     def initialize(args, stdin, stdout)
-      @options, args = parse_args(args)
-      @test_list = args
+      options = RunnerOptions.parse(args)
+      @test_list = options.args
       @stdin = stdin
       @stdout = stdout
 
-      @config = Config.new @options
+      @config = Config.new options.options
       @cert_manager = CertificateManager.new(@config.certs)
       @logger = Logger.new(@config.logfile)
       @logger.level = @config.loglevel
