@@ -20,8 +20,11 @@ test as soon as the current test finishes.
 The test framework must be run on a Unix-like OS that contains a supported
 firewall, but the program being tested can run on any device whose network
 traffic can be routed through the system hosting the test framework. Currently,
-it supports netfilter and ipfw, which limits the test runner to Linux, MacOSX
-(10.6), and *BSD.
+it supports netfilter (Linux), ipfw (Mac OS X 10.6, *BSD), and PF on Mac OS X
+Lion.
+
+It also has an implementation for a newer version of PF, although this is
+untested.
 
 
 == Links
@@ -56,9 +59,11 @@ re-signed by the goodca in order to make interception easier).
   TLSPretense currently supports:
   * Netfilter on Linux
   * IPFW on MacOSX 10.6 and earlier, and *BSD
+  * PFRdr on MacOSX 10.7 (and probably also 10.8)
 
-* Ruby 1.9.x, built against a version of OpenSSL that supports the SNI TLS
-  extension. You can check for this if you run the following Ruby script:
+* Ruby 1.9.x (Developed with 1.9.3), built against a version of OpenSSL that
+  supports the SNI TLS extension. You can check for this if you run the
+  following Ruby script:
 
       ruby1.9 -ropenssl -e 'puts OpenSSL::SSL::SSLSocket.public_instance_methods.include? :hostname='
 
@@ -113,8 +118,6 @@ See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPre
   arguments it passes on to each TestListener instance in order to present the
   certificates for the current test. This _might_ help keep some connections
   from hanging...
-
-* Get a Mac OS X 10.7/10.8 PF implementation working.
 
 * Make how to determine if a client passes configurable. Currently, TLSPretense
   uses whether the TLS handshake successfully completes to decide if it

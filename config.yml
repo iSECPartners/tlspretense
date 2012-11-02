@@ -35,6 +35,8 @@ packetthief:
   #
   # - ipfw                      MacOSX10.6/BSD ipfw
   #
+  # - pfrdr                     MacOSX10.7(and 10.8)'s version of PF
+  #
   # - manual(destination)       If you choose manual, you must also choose a
   #                             default destination address or hostname.
   #

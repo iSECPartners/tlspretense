@@ -142,6 +142,8 @@ module PacketThief
       Impl::Netfilter
     when /darwin(10|[0-9]($|[^0]))/ # Mac OS X 10.6 and earlier.
       Impl::Ipfw
+    when /darwin(11)/ # Mac OS X 10.7
+      Impl::PFRdr
     else
       raise "Platform #{RUBY_PLATFORM} not yet supported! If you know your network implementation, call it directly."
     end
