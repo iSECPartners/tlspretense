@@ -34,7 +34,8 @@ module SSLTest
         'pause?' => false,
         'loglevel' => Logger::INFO,
         'logfile' => nil,
-        'packetthief' => {}
+        'packetthief' => {},
+        'hosttotest' => double('hosttotest')
       )
     end
     let(:cert_manager) { double("certificate manager") }
