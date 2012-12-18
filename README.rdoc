@@ -129,6 +129,11 @@ See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPre
   * tld hostname: \*.%TLDHOSTNAME% (reject)
   * do we want to test more complicated wildcards?
 
+* Decide how to deal with a wildcard cert at the original destination. If we
+  are testing foo.somehost.com, and the client connects to other hostnames like
+  bar.somehost.com, and they all use a *.somehost.com certificate, then
+  TLSPretense gets confused.
+
 * Add extension criticality tests (need an extension oid that nobody knows how to verify)
   * If an extension is marked critical and the verifier doesn't know how to
     verify, then it should fail. If it is not marked critical, then it is
