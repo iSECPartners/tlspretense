@@ -77,7 +77,7 @@ module SSLTest
 
         it "Returns a context where the certificate data matches the hostotest" do
           @context = OpenSSL::SSL::SSLContext.new
-          @context.cert = double('resigned remote cert')
+          @context.cert = double('resigned remote cert', :subject => double('resigned remote cert subject'))
           @context.key = cakey
           @context.extra_chain_cert = [cacert]
 
@@ -95,7 +95,7 @@ module SSLTest
 
         it "Returns an unchanged context" do
           @context = OpenSSL::SSL::SSLContext.new
-          @remotecert = double('resigned remote cert')
+          @remotecert = double('resigned remote cert', :subject => double('resigned remote cert subject'))
           @context.cert = @remotecert
           @context.key = cakey
           @context.extra_chain_cert = [cacert]
@@ -121,7 +121,9 @@ module SSLTest
         context "when a test listener's connection is to the host to test" do
           before(:each) do
             TestListener.stub(:cert_matches_host).and_return(true)
-            subject.check_for_hosttotest(OpenSSL::SSL::SSLContext.new)
+            @ctx = OpenSSL::SSL::SSLContext.new
+            @ctx.cert = double('dest cert', :subject => double('dest cert subject'))
+            subject.check_for_hosttotest(@ctx)
           end
           context "when the client connects" do
             before(:each) do

@@ -61,10 +61,13 @@ module SSLTest
     # whether the test succeeds or not.
     def check_for_hosttotest(actx)
       if TestListener.cert_matches_host(actx.cert, @hosttotest)
+        logdebug "Destination matches host-to-test", :hosttotest => @hosttotest, :certsubject => actx.cert.subject
         actx.cert = @hostcert
         actx.key = @hostkey
         actx.extra_chain_cert = @extrachain
         @testing_host = true
+      else
+        logdebug "Destination does not match host-to-test", :hosttotest => @hosttotest, :certsubject => actx.cert.subject
       end
       actx
     end
