@@ -5,8 +5,8 @@ module PacketThief
     # a configured host instead.
     class ProxyRedirector < TransparentProxy
 
-      def initialize(proxy_host, proxy_port)
-        super()
+      def initialize(proxy_host, proxy_port, log=nil)
+        super(log)
 
         @proxy_host = proxy_host
         @proxy_port = proxy_port
@@ -14,8 +14,8 @@ module PacketThief
 
       # Instead of using the original destination, use the configured destination.
       def client_connected
-        dest_host = @proxy_host
-        dest_port = @proxy_port
+        @dest_host = @proxy_host
+        @dest_port = @proxy_port
         connect_to_dest
       end
 

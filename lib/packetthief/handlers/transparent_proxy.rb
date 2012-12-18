@@ -3,6 +3,7 @@ module PacketThief
 
     # Provides a transparent proxy for any TCP connection.
     class TransparentProxy < ::EM::Connection
+      include Logging
 
       # Represents a connection out to the original destination.
       module ProxyConnection
@@ -67,6 +68,10 @@ module PacketThief
       # When the proxy should connect to a destination.
       attr_accessor :when_to_connect_to_dest
 
+      def initialize(log=nil)
+        @logger = log
+      end
+
       def post_init
         @closing = false
 
@@ -78,6 +83,8 @@ module PacketThief
 
         @client_port, @client_host = Socket.unpack_sockaddr_in(get_peername)
         @dest_port, @dest_host = PacketThief.original_dest(self)
+
+        logdebug "Client connected", :client_host => client_host, :client => "#{@client_host}:#{@client_port}", :orig_dest => "#{@dest_host}:#{@dest_port}"
 
         if @@activeconns.has_key? "#{client_host}:#{client_port}"
           puts "Warning: loop detected! Stopping the loop."
@@ -104,6 +111,7 @@ module PacketThief
 
       # Initiate the connection to @dest_host:@dest_port.
       def connect_to_dest
+        logdebug "Connecting to #{@dest_host}:#{@dest_port}"
         @dest = ::EM.connect(@dest_host, @dest_port, ProxyConnection, self)
         newport, newhost = Socket::unpack_sockaddr_in(@dest.get_sockname)
         # Add the new connection to the list to prevent loops.
@@ -121,6 +129,7 @@ module PacketThief
       # Queues up data to send to the remote host, only sending it if the
       # connection to the remote host exists.
       def send_to_dest(data)
+        logdebug "sending to dest", :data => data
         @buffer << data
         _send_buffer if @dest
       end
@@ -143,6 +152,7 @@ module PacketThief
       # to foward the data on to the original destination. Override this method
       # to analyze the data, or modify it before sending it on.
       def client_recv(data)
+        logdebug("received from client", :data => data)
         send_to_dest data
       end
 
@@ -151,17 +161,20 @@ module PacketThief
       #
       # Override it to analyze or modify the data.
       def dest_recv(data)
+        logdebug("received from dest", :data => data)
         send_to_client data
       end
 
       # Called when the client connection closes. At present, it only provides
       # informational utility.
       def client_closed
+        logdebug("client closed connection")
       end
 
       # Called when the original destination connection closes. At present, it only provides
       # informational utility.
       def dest_closed
+        logdebug("dest closed connection")
       end
 
     end
