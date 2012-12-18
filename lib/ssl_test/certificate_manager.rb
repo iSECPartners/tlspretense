@@ -1,9 +1,9 @@
 module SSLTest
+  # Handles the loading and caching of certificates and private keys.
   class CertificateManager
 
     def initialize(certinfo)
       @certinfo = certinfo
-      @@certcache = {}
     end
 
     def get_raw_cert(name)

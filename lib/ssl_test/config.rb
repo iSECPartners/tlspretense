@@ -1,4 +1,5 @@
 module SSLTest
+  # Loads and interprets the configuration file.
   class Config
 
     DEFAULT = "config.yml"
