@@ -112,7 +112,7 @@ module SSLTest
       super
       logdebug "unbind"
       if @testing_host
-        @test_manager.test_completed(@test_status)
+        @test_manager.test_completed(@test, @test_status)
       end
     end
 

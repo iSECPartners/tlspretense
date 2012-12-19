@@ -44,33 +44,33 @@ module SSLTest
     # the report, and it cleans up after itself.
     #
     # :connected, :rejected, :sentdata
-    def test_completed(actual_result)
-      logdebug "test_completed", :actual_result => actual_result, :expected_result => self.current_test.expected_result, :test => current_test.id
+    def test_completed(test, actual_result)
+      logdebug "test_completed", :actual_result => actual_result, :expected_result => test.expected_result, :test => test.id
       return if actual_result == :running
 
       passed = if @appctx.config.testing_method == 'tlshandshake'
-                 case current_test.expected_result.to_s
+                 case test.expected_result.to_s
                  when 'connected', :connected
                    %w{connected sentdata}.include? actual_result.to_s
                  when 'rejected', :rejected
                    actual_result == :rejected
                  else
-                   raise "Unknown expected_result: #{current_test.expected_result}"
+                   raise "Unknown expected_result: #{test.expected_result}"
                  end
                else # senddata, which requires data to be sent for it to pass.
-                 case current_test.expected_result
+                 case test.expected_result
                  when 'connected'
                    actual_result == :sentdata
                  when 'rejected'
                    %w{rejected connected}.include? actual_result.to_s
                  else
-                   raise "Unknown expected_result: #{current_test.expected_result}"
+                   raise "Unknown expected_result: #{test.expected_result}"
                  end
                end
 
-      str = SSLTestResult.new(current_test.id, passed)
-      str.description = current_test.description
-      str.expected_result = current_test.expected_result
+      str = SSLTestResult.new(test.id, passed)
+      str.description = test.description
+      str.expected_result = test.expected_result
       str.actual_result = actual_result.to_s
       str.start_time = @start_time
       str.stop_time = Time.now
@@ -78,12 +78,12 @@ module SSLTest
       @report.add_result(str)
 
       if actual_result == :skipped
-        loginfo "#{current_test.id}: Skipping test"
+        loginfo "#{test.id}: Skipping test"
       else
-        loginfo "#{current_test.id}: Finished test"
+        loginfo "#{test.id}: Finished test"
       end
 
-      prepare_next_test
+      prepare_next_test if current_test == test
     end
 
     def stop_testing

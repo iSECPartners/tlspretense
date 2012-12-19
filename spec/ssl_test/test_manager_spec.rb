@@ -143,19 +143,19 @@ module SSLTest
              result.should_receive(:start_time=)
              result.should_receive(:stop_time=)
 
-             subject.test_completed(:connected)
+             subject.test_completed(subject.current_test, :connected)
            end
            it "adds the result to a report" do
 
              report.should_receive(:add_result).with(result)
 
-             subject.test_completed(:connected)
+             subject.test_completed(subject.current_test, :connected)
            end
 
            it "prepares for the next test" do
              subject.should_receive(:prepare_next_test)
 
-             subject.test_completed(:connected)
+             subject.test_completed(subject.current_test, :connected)
            end
 
          end
@@ -169,12 +169,12 @@ module SSLTest
              result.should_receive(:start_time=)
              result.should_receive(:stop_time=)
 
-             subject.test_completed(:rejected)
+             subject.test_completed(subject.current_test, :rejected)
            end
            it "adds the result to a report" do
              report.should_receive(:add_result).with(result)
 
-             subject.test_completed(:rejected)
+             subject.test_completed(subject.current_test, :rejected)
            end
          end
 
@@ -182,21 +182,21 @@ module SSLTest
            it "just returns" do
              SSLTestResult.should_not_receive(:new)
 
-             subject.test_completed(:running)
+             subject.test_completed(subject.current_test, :running)
            end
          end
          context "when the listener reports connected" do
            it "creates a result that reports passing" do
              SSLTestResult.should_receive(:new).with('foo', true).and_return(result)
 
-             subject.test_completed(:connected)
+             subject.test_completed(subject.current_test, :connected)
            end
          end
          context "when the listener reports sentdata" do
            it "creates a result that reports passing" do
              SSLTestResult.should_receive(:new).with('foo', true).and_return(result)
 
-             subject.test_completed(:sentdata)
+             subject.test_completed(subject.current_test, :sentdata)
            end
          end
 
@@ -215,7 +215,7 @@ module SSLTest
              it "creates a result that reports not passing" do
                SSLTestResult.should_receive(:new).with('foo', false).and_return(result)
 
-               subject.test_completed(:rejected)
+               subject.test_completed(subject.current_test, :rejected)
              end
            end
 
@@ -223,7 +223,7 @@ module SSLTest
              it "creates a result that reports not passing" do
                SSLTestResult.should_receive(:new).with('foo', false).and_return(result)
 
-               subject.test_completed(:connected)
+               subject.test_completed(subject.current_test, :connected)
              end
            end
 
@@ -231,7 +231,7 @@ module SSLTest
              it "creates a result that reports passing" do
                SSLTestResult.should_receive(:new).with('foo', true).and_return(result)
 
-               subject.test_completed(:sentdata)
+               subject.test_completed(subject.current_test, :sentdata)
              end
            end
 
@@ -245,7 +245,7 @@ module SSLTest
              it "creates a result that reports not passing" do
                SSLTestResult.should_receive(:new).with('foo', true).and_return(result)
 
-               subject.test_completed(:rejected)
+               subject.test_completed(subject.current_test, :rejected)
              end
            end
 
@@ -253,7 +253,7 @@ module SSLTest
              it "creates a result that reports not passing" do
                SSLTestResult.should_receive(:new).with('foo', true).and_return(result)
 
-               subject.test_completed(:connected)
+               subject.test_completed(subject.current_test, :connected)
              end
            end
 
@@ -261,9 +261,25 @@ module SSLTest
              it "creates a result that reports passing" do
                SSLTestResult.should_receive(:new).with('foo', false).and_return(result)
 
-               subject.test_completed(:sentdata)
+               subject.test_completed(subject.current_test, :sentdata)
              end
            end
+         end
+       end
+
+       context "when the test passed in is the current_test" do
+         it "progresses to the next test" do
+           subject.should_receive(:prepare_next_test)
+
+           subject.test_completed(subject.current_test, :sentdata)
+         end
+       end
+
+       context "when the test passed in to test_completed is 'bar'" do
+         it "does not progress the current test to the next test" do
+           subject.should_not_receive(:prepare_next_test)
+
+           subject.test_completed(bar_test, :sentdata)
          end
        end
 

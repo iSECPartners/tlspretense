@@ -164,7 +164,7 @@ module SSLTest
           end
 
           it "calls the test_manager's test_completed callback with :connected when the connection closes" do
-            test_manager.should_receive(:test_completed).with(:connected)
+            test_manager.should_receive(:test_completed).with(test_manager.current_test, :connected)
 
             subject.unbind
           end
@@ -175,7 +175,7 @@ module SSLTest
           end
 
           it "calls the test_manager's test_completed callback with :rejected when the connection closes" do
-            test_manager.should_receive(:test_completed).with(:rejected)
+            test_manager.should_receive(:test_completed).with(test_manager.current_test, :rejected)
 
             subject.unbind
           end
@@ -187,7 +187,7 @@ module SSLTest
           end
 
           it "calls the test_manager's test_completed callback with :sentdata when the connection closes" do
-            test_manager.should_receive(:test_completed).with(:sentdata)
+            test_manager.should_receive(:test_completed).with(test_manager.current_test, :sentdata)
 
             subject.unbind
           end
