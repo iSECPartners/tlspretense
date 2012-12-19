@@ -36,7 +36,7 @@ module SSLTest
       @hostkey = @test.keytotest
       @extrachain = chain
       # Use the goodca for hosts we don't care to test against.
-      super(tcpsocket, @test.cacert, @test.cakey)
+      super(tcpsocket, @test_manager.goodcacert, @test_manager.goodcakey)
 
       @test_status = :running
       @testing_host = false

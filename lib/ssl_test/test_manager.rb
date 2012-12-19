@@ -8,6 +8,9 @@ module SSLTest
 
     attr_accessor :listener
 
+    attr_accessor :goodcacert
+    attr_accessor :goodcakey
+
     def initialize(context, testlist, report, logger=nil)
       @appctx = context
       @testlist = testlist
@@ -15,8 +18,10 @@ module SSLTest
       @logger = logger
       @remaining_tests = @testlist.dup
 
-      @pause = false
+      @goodcacert = @appctx.cert_manager.get_cert("goodca")
+      @goodcakey = @appctx.cert_manager.get_key("goodca")
 
+      @pause = false
       prepare_next_test(true)
     end
 

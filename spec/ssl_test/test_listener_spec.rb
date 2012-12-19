@@ -32,7 +32,9 @@ module SSLTest
                             ) }
     let(:test_manager) { double('test_manager',
                                 :current_test => curr_test,
-                                :test_completed => nil
+                                :test_completed => nil,
+                                :goodcacert => double('goodcacert'),
+                                :goodcakey => double('goodcakey')
                                ) }
 
     # Yes this is bad, but there are too many side effects to calling into

@@ -107,19 +107,6 @@ module SSLTest
       end
     end
 
-    subject { SSLTestCase.new(app_context, testdesc) }
-
-    describe "#run" do
-      context "when the test description is for a baseline certificate" do
-        it "acquires a certificate chain and key" do
-          cert_manager.should_receive(:get_chain).with(%w{baseline goodca}).and_return([double('baseline cert'), double('goodca cert')])
-          cert_manager.should_receive(:get_keychain).with(%w{baseline goodca}).and_return([double('baseline key'), double('goodca key')])
-
-          subject.run
-        end
-      end
-    end
-
   end
 end
 
