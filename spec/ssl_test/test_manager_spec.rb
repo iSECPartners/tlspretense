@@ -286,6 +286,9 @@ module SSLTest
    end
 
    describe "#stop_testing" do
+     before(:each) do
+       EM.stub(:stop_event_loop)
+     end
      context "when the manager is bound to a listener" do
        before(:each) { subject.listener = listener }
        it "stops the listener" do
@@ -293,6 +296,11 @@ module SSLTest
 
          subject.stop_testing
        end
+     end
+     it "stops event machine" do
+       EM.should_receive(:stop_event_loop)
+
+       subject.stop_testing
      end
    end
 
