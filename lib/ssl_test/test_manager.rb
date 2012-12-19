@@ -45,7 +45,7 @@ module SSLTest
     #
     # :connected, :rejected, :sentdata
     def test_completed(actual_result)
-      logdebug "test_completed", :actual_result => actual_result, :expected_result => self.current_test.expected_result
+      logdebug "test_completed", :actual_result => actual_result, :expected_result => self.current_test.expected_result, :test => current_test.id
       return if actual_result == :running
 
       passed = if @appctx.config.testing_method == 'tlshandshake'

@@ -69,7 +69,7 @@ module SSLTest
 
    describe "#prepare_next_test" do
      context "when there are 3 tests in the testlist" do
-       let(:testlist) { [ double('test1'), double('test2'), double('test3') ] }
+       let(:testlist) { [ double('test1', :id => 'test1'), double('test2', :id => 'test2'), double('test3', :id => 'test3') ] }
        it "sets current_test to the first element of remaining_tests" do
          subject.current_test.should == testlist[0]
          subject.remaining_tests.should == [testlist[1], testlist[2]]
@@ -99,7 +99,7 @@ module SSLTest
      end
 
      context "when there are no tests remaining" do
-       let(:testlist) { [double('test1')] }
+       let(:testlist) { [double('test1', :id => 'test1')] }
        it "stops testing" do
           subject.should_receive(:stop_testing)
 
