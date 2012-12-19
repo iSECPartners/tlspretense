@@ -28,6 +28,7 @@ module SSLTest
     let(:config) do
       double(
         "config",
+        :listener_port => 54321,
         :tests => test_data,
         'certs' => conf_certs,
         'action' => :runtests,
@@ -103,16 +104,45 @@ module SSLTest
 
     describe "#run" do
       before(:each) do
+        @logger = Logger.new(nil)
+        Logger.stub(:new).and_return(@logger)
         Config.stub(:new).and_return(config)
+        subject.stub(:start_packetthief)
+        subject.stub(:stop_packetthief)
       end
-      context "when ARGS is empty" do
-        let(:args) { [] }
+
+      context "when the action is runtests" do
+        before(:each) do
+          PacketThief.stub_chain(:redirect, :where, :run)
+          PacketThief.stub(:revert)
+
+          config.stub(:action).and_return(:runtests)
+
+        end
+
+        context "when ARGS is empty" do
+          let(:args) { [] }
 
         it "runs all defined tests" do
           subject.should_receive(:run_test).with(test_foo).ordered
           subject.should_receive(:run_test).with(test_bar).ordered
 
           subject.run
+        end
+          it "starts PacketThief before running the tests" do
+            subject.should_receive(:start_packetthief).ordered
+            subject.should_receive(:run_tests).ordered.and_return(report)
+
+            subject.run
+          end
+
+
+          it "stops PacketThief after running the tests" do
+            subject.should_receive(:run_tests).ordered.and_return(report)
+            subject.should_receive(:stop_packetthief).ordered
+
+            subject.run
+          end
         end
       end
 
@@ -304,6 +334,54 @@ module SSLTest
       end
 
     end
+
+    describe "running packet thief" do
+      before(:each) do
+        Config.stub(:new).and_return(config)
+      end
+
+      describe "#start_packetthief" do
+        before(:each) do
+          config.stub(:listener_port).and_return(54321)
+          config.stub(:packetthief).and_return({
+               :protocol => 'tcp',
+               :dest_port => 443,
+               :in_interface => 'en1'
+             })
+        end
+
+        it "launches packet thief with configuration values" do
+          @ptrule = double("ptrule")
+          PacketThief.should_receive(:redirect).with(:to_ports => 54321).and_return(@ptrule)
+          @ptrule.should_receive(:where).with(:protocol => 'tcp', :dest_port => 443, :in_interface => 'en1').ordered.and_return(@ptrule)
+          @ptrule.should_receive(:run).ordered
+
+          subject.start_packetthief
+        end
+
+        context "when the packetthief implementation is 'external(netfilter)'" do
+          before(:each) do
+            config.stub(:packetthief).and_return( { 'implementation' => 'external(netfilter)' } )
+          end
+          it "does not redirect traffic itself" do
+            PacketThief.should_not_receive(:redirect)
+
+            subject.start_packetthief
+          end
+        end
+
+      end
+
+      describe "#stop_packetthief" do
+        it "reverts PacketThief" do
+          PacketThief.should_receive(:revert)
+
+          subject.stop_packetthief
+        end
+      end
+
+    end
+
 
   end
 end

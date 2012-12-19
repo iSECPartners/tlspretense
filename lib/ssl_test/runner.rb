@@ -20,8 +20,52 @@ module SSLTest
           "#{datetime}:#{severity}: #{msg}\n"
       end
       @app_context = AppContext.new(@config, @cert_manager, @logger)
-      PacketThief.logger = @logger
 
+      @report = SSLTestReport.new
+      init_packetthief
+    end
+
+    def run
+      case @config.action
+      when :list
+        @stdout.puts "These are the test I will perform and their descriptions:"
+        @stdout.puts ''
+        @config.tests(@test_list.empty? ? nil : @test_list).each do |test|
+          display_test test
+        end
+      when :runtests
+        @stdout.puts "Press spacebar to skip a test, or 'q' to stop testing."
+        first = true
+        @tests = @config.tests( @test_list.empty? ? nil : @test_list)
+        loginfo "Hostname being tested (assuming certs are up to date): #{@config.hosttotest}"
+        loginfo "Running #{@tests.length} tests"
+        start_packetthief
+        @tests.each do |test|
+          pause if @config.pause? and not first
+          if run_test(test) == :stop
+            break
+          end
+          first = false
+        end
+        stop_packetthief
+
+        @report.print_results(@stdout)
+      else
+        raise "Unknown action: #{opts[:action]}"
+      end
+    end
+
+    # Runs a test based on the test description.
+    def run_test(test)
+      SSLTestCase.new(@app_context, @report, test).run
+    end
+
+    # Initialize custom PacketThief modes of operation. Eg, we use manual when PT
+    # does not manage the firewall rules and when it should just return a
+    # preconfigured destination, and external for when PT does not manage the
+    # firewall rules but still needs to know how to discover the destination.
+    def init_packetthief
+      PacketThief.logger = @logger
       if @config.packetthief.has_key? 'implementation'
         impl = @config.packetthief['implementation']
         case impl
@@ -36,42 +80,18 @@ module SSLTest
           PacketThief.implementation = impl
         end
       end
-      at_exit { PacketThief.revert }
-
-      @report = SSLTestReport.new
     end
 
-    def run
-      case @config.action
-      when :list
-        @stdout.puts "These are the test I will perform and their descriptions:"
-        @stdout.puts ''
-        @config.tests(@test_list.empty? ? nil : @test_list).each do |test|
-          display_test test
-        end
-      when :runtests
-        @stdout.puts "Press spacebar to skip a test, or 'q' to stop testing."
-        @report = SSLTestReport.new
-        first = true
-        @tests = @config.tests( @test_list.empty? ? nil : @test_list)
-        loginfo "Hostname being tested (assuming certs are up to date): #{@config.hosttotest}"
-        loginfo "Running #{@tests.length} tests"
-        @tests.each do |test|
-          pause if @config.pause? and not first
-          if run_test(test) == :stop
-            break
-          end
-          first = false
-        end
-        @report.print_results(@stdout)
-      else
-        raise "Unknown action: #{opts[:action]}"
+    def start_packetthief
+      ptconf = @config.packetthief
+      unless ptconf.has_key? 'implementation' and ptconf['implementation'].match(/external/i)
+        PacketThief.redirect(:to_ports => @config.listener_port).where(ptconf).run
       end
+      at_exit { PacketThief.revert }
     end
 
-    # Runs a test based on the test description.
-    def run_test(test)
-      SSLTestCase.new(@app_context, @report, test).run
+    def stop_packetthief
+      PacketThief.revert
     end
 
     def display_test(test)

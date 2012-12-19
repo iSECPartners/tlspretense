@@ -67,27 +67,6 @@ module SSLTest
           subject.run
         end
 
-        describe "activating packet thief" do
-          it "launches packet thief with configuration values" do
-            @ptrule = double("ptrule")
-            PacketThief.should_receive(:redirect).with(:to_ports => 54321).and_return(@ptrule)
-            @ptrule.should_receive(:where).with(:protocol => 'tcp', :dest_port => 443, :in_interface => 'en1').and_return(@ptrule)
-            @ptrule.should_receive(:run)
-
-            subject.run
-          end
-
-          context "when the packetthief implementation is 'external(netfilter)'" do
-            before(:each) do
-              config.stub(:packetthief).and_return( { 'implementation' => 'external(netfilter)' } )
-            end
-            it "does not redirect traffic itself" do
-              PacketThief.should_not_receive(:redirect)
-
-              subject.run
-            end
-          end
-        end
 
         it "starts an eventmachine event loop" do
           EM.should_receive(:run)

@@ -20,7 +20,7 @@ module SSLTest
     end
 
     # Sets up and launches the current test. It gathers the certificates and
-    # keys needed to launch a TestListener, sets up PacketThief, and
+    # keys needed to launch a TestListener, and
     # (currently) also sets up the keyboard user interface.
     def run
       @logger = @appctx.logger
@@ -33,11 +33,6 @@ module SSLTest
       @goodcakey = @certmanager.get_key("goodca")
 
       @start_time = Time.now
-
-      ptconf = @appctx.config.packetthief
-      unless ptconf.has_key? 'implementation' and ptconf['implementation'].match(/external/i)
-        PacketThief.redirect(:to_ports => @config.listener_port).where(@config.packetthief).run
-      end
 
       @started_em = false
       if EM.reactor_running?
@@ -64,7 +59,6 @@ module SSLTest
     def cleanup
       @listener.stop_server if @listener
       EM.stop_event_loop if @started_em
-      PacketThief.revert
     end
 
     # Called when a test completes or is skipped. It adds an SSLTestResult to
