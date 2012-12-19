@@ -24,9 +24,10 @@ module SSLTest
 
     let(:appcontext) { double('appcontext') }
     let(:curr_test) { double('curr_test',
+                             :id => 'curr_test',
                              :hosttotest => hosttotest,
-                             :chaintotest => chaintotest,
-                             :keytotest => keytotest,
+                             :certchain => chaintotest,
+                             :keychain => [keytotest],
                              :cacert => cacert,
                              :cakey => cakey,
                             ) }

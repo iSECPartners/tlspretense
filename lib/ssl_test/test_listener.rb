@@ -34,9 +34,9 @@ module SSLTest
         @paused = false
         @test = @test_manager.current_test
         @hosttotest = @test.hosttotest
-        chain = @test.chaintotest.dup
+        chain = @test.certchain.dup
         @hostcert = chain.shift
-        @hostkey = @test.keytotest
+        @hostkey = @test.keychain[0]
         @extrachain = chain
       end
       # Use the goodca for hosts we don't care to test against.
@@ -71,7 +71,7 @@ module SSLTest
       if @paused
         logdebug "Testing is paused, not checking whether this is the host to test", :certcubject => actx.cert.subject
       elsif TestListener.cert_matches_host(actx.cert, @hosttotest)
-        logdebug "Destination matches host-to-test", :hosttotest => @hosttotest, :certsubject => actx.cert.subject
+        logdebug "Destination matches host-to-test", :hosttotest => @hosttotest, :certsubject => actx.cert.subject, :testname => @test.id
         actx.cert = @hostcert
         actx.key = @hostkey
         actx.extra_chain_cert = @extrachain
