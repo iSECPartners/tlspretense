@@ -39,6 +39,25 @@ module SSLTest
         'expected_result' => 'connect'
       }
     end
+
+    let(:foo_test_data) do
+      {
+        'alias' => 'foo',
+        'name' => 'test foo',
+        'certchain' => [ 'a', 'b' ]
+      }
+    end
+    let(:bar_test_data) do
+      {
+        'alias' => 'bar',
+        'name' => 'test bar',
+        'certchain' => [ 'c', 'd' ]
+      }
+    end
+    let(:conf_tests_data) { [ foo_test_data, bar_test_data ] }
+
+
+
     let(:listener) { double("listener", :logger= => nil, :stop_server => nil) }
     let(:report) { double("report", :add_result => nil) }
     let(:logger) { Logger.new(nil) }
@@ -55,10 +74,42 @@ module SSLTest
       TestListener.stub(:start).and_return(listener)
     end
 
-    subject { SSLTestCase.new(app_context, report, testdesc) }
+
+    # list of configs, list to generate
+    describe ".factory" do
+      subject { SSLTestCase }
+      context "when an empty list of tests to perform is passed" do
+        it "returns SSLTestCases for all of the tests in the config data, in the original order" do
+          @tests = subject.factory(app_context, conf_tests_data, [])
+
+          @tests.length.should == conf_tests_data.length
+          @tests.each do |test|
+            test.class.should == subject
+          end
+        end
+      end
+
+      context "when ['foo'] is passed as an argument" do
+        it "returns a list with just a 'foo' test case" do
+          @tests = subject.factory(app_context, conf_tests_data, ['foo'])
+
+          @tests.length.should == 1
+        end
+      end
+      context "when ['bar', 'foo'] is passed as an argument" do
+        it "returns a list with 'bar', then 'foo'" do
+          @tests = subject.factory(app_context, conf_tests_data, ['bar', 'foo'])
+
+          @tests.length.should == 2
+          @tests[0].id.should == 'bar'
+          @tests[1].id.should == 'foo'
+        end
+      end
+    end
+
+    subject { SSLTestCase.new(app_context, testdesc) }
 
     describe "#run" do
-
       context "when the test description is for a baseline certificate" do
         it "acquires a certificate chain and key" do
           cert_manager.should_receive(:get_chain).with(%w{baseline goodca}).and_return([double('baseline cert'), double('goodca cert')])
@@ -66,235 +117,9 @@ module SSLTest
 
           subject.run
         end
-
-
-        it "starts an eventmachine event loop" do
-          EM.should_receive(:run)
-
-          subject.run
-        end
-
-        it "launches a test runner" do
-          @tl = double('test listener', :logger= => nil)
-          TestListener.should_receive(:start).with('',54321,goodcacert, goodcakey, 'my.hostname.com', certchain, keychain[0]).and_return(@tl)
-
-          subject.run
-        end
-
-        it "sets the test runner's test completed callback to run #test_completed" do
-          @tl = double('test listener', :logger= => nil)
-          @result = double('result')
-          TestListener.stub(:start).and_yield(@tl).and_return(@tl)
-
-          @tl.should_receive(:on_test_completed).and_yield(@result)
-          subject.should_receive(:test_completed).with(@result)
-
-          subject.run
-        end
-
-
       end
     end
 
-    describe "#test_completed" do
-      let(:result) { double("result", :description= => nil,
-                            :expected_result= => nil, :actual_result= => nil,
-                            :start_time= => nil, :stop_time= => nil) }
-      before(:each) do
-        SSLTestResult.stub(:new).and_return(result)
-        TestListener.stub(:start).and_return(listener)
-      end
-
-      context "when the expected result is a successful connection" do
-        before(:each) do
-          testdesc['expected_result'] = 'connected'
-        end
-
-        before(:each) do
-          subject.run
-        end
-
-        context "when the listener reports success" do
-          it "creates a result that reports passing" do
-
-            SSLTestResult.should_receive(:new).with('baseline', true).and_return(result)
-            result.should_receive(:description=).with('Baseline Happy Test')
-            result.should_receive(:expected_result=).with('connected')
-            result.should_receive(:actual_result=).with('connected')
-            result.should_receive(:start_time=)
-            result.should_receive(:stop_time=)
-
-            subject.test_completed(:connected)
-          end
-          it "adds the result to a report" do
-
-            report.should_receive(:add_result).with(result)
-
-            subject.test_completed(:connected)
-          end
-
-          it "stops the current listener's server socket" do
-            listener.should_receive(:stop_server)
-
-            subject.test_completed(:connected)
-          end
-
-          it "reverts PacketThief" do
-            PacketThief.should_receive(:revert)
-
-            subject.test_completed(:connected)
-          end
-
-          context "when the SSLTestCase started the event loop" do
-            before(:each) do
-              EM.stub(:reactor_running?).and_return(false)
-              EM.should_receive(:run).and_yield
-              TestListener.stub(:start).and_return(listener)
-              subject.run
-            end
-
-            it "stops the event loop" do
-              EM.should_receive(:stop_event_loop)
-
-              subject.test_completed(:connected)
-            end
-          end
-
-          context "when the SSLTestCase did not start the event loop" do
-            before(:each) do
-              EM.stub(:reactor_running?).and_return(true)
-              EM.should_not_receive(:run)
-
-              subject.run
-            end
-
-            it "does not stop the event loop" do
-              EM.should_not_receive(:stop_event_loop)
-
-              subject.test_completed(:connected)
-            end
-          end
-
-        end
-
-        context "when the listener reports rejected" do
-          it "creates a result that reports not passing" do
-            SSLTestResult.should_receive(:new).with('baseline', false).and_return(result)
-            result.should_receive(:description=).with('Baseline Happy Test')
-            result.should_receive(:expected_result=).with('connected')
-            result.should_receive(:actual_result=).with('rejected')
-            result.should_receive(:start_time=)
-            result.should_receive(:stop_time=)
-
-            subject.test_completed(:rejected)
-          end
-          it "adds the result to a report" do
-            report.should_receive(:add_result).with(result)
-
-            subject.test_completed(:rejected)
-          end
-        end
-
-        context "when the listener reports a still running test that has stopped" do
-          it "just returns" do
-            SSLTestResult.should_not_receive(:new)
-            EM.should_not_receive(:stop_event_loop)
-            listener.should_not_receive(:stop_server)
-
-            subject.test_completed(:running)
-          end
-        end
-        context "when the listener reports connected" do
-          it "creates a result that reports passing" do
-            SSLTestResult.should_receive(:new).with('baseline', true).and_return(result)
-
-            subject.test_completed(:connected)
-          end
-        end
-        context "when the listener reports sentdata" do
-          it "creates a result that reports passing" do
-            SSLTestResult.should_receive(:new).with('baseline', true).and_return(result)
-
-            subject.test_completed(:sentdata)
-          end
-        end
-
-      end
-
-      context "when the configuration requires the client to send data for it to consider it to be connected" do
-        before(:each) do
-          config.stub(:testing_method).and_return('senddata')
-        end
-        context "when the expected result is a successful connection" do
-          before(:each) do
-            testdesc['expected_result'] = 'connected'
-          end
-
-          before(:each) do
-            subject.run
-          end
-
-          context "when the listener reports rejected" do
-            it "creates a result that reports not passing" do
-              SSLTestResult.should_receive(:new).with('baseline', false).and_return(result)
-
-              subject.test_completed(:rejected)
-            end
-          end
-
-          context "when the listener reports connected" do
-            it "creates a result that reports not passing" do
-              SSLTestResult.should_receive(:new).with('baseline', false).and_return(result)
-
-              subject.test_completed(:connected)
-            end
-          end
-
-          context "when the listener reports sentdata" do
-            it "creates a result that reports passing" do
-              SSLTestResult.should_receive(:new).with('baseline', true).and_return(result)
-
-              subject.test_completed(:sentdata)
-            end
-          end
-
-        end
-        context "when the expected result is a rejected connection" do
-          before(:each) do
-            testdesc['expected_result'] = 'rejected'
-          end
-
-          before(:each) do
-            subject.run
-          end
-
-          context "when the listener reports rejected" do
-            it "creates a result that reports not passing" do
-              SSLTestResult.should_receive(:new).with('baseline', true).and_return(result)
-
-              subject.test_completed(:rejected)
-            end
-          end
-
-          context "when the listener reports connected" do
-            it "creates a result that reports not passing" do
-              SSLTestResult.should_receive(:new).with('baseline', true).and_return(result)
-
-              subject.test_completed(:connected)
-            end
-          end
-
-          context "when the listener reports sentdata" do
-            it "creates a result that reports passing" do
-              SSLTestResult.should_receive(:new).with('baseline', false).and_return(result)
-
-              subject.test_completed(:sentdata)
-            end
-          end
-        end
-      end
-
-    end
   end
 end
 

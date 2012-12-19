@@ -24,15 +24,19 @@ module SSLTest
     #   present when the client attempts to connect to hostname.
     # * _keytotest_   [OpenSSL::PKey::PKey] The key corresponding to the leaf
     #   node in _chaintotest_.
-    def initialize(tcpsocket, cacert, cakey, hosttotest, chaintotest, keytotest, logger=nil)
+    def initialize(tcpsocket, test_manager, logger=nil)
+      @test_manager = test_manager
       @logger = logger
-      @hosttotest = hosttotest
-      chain = chaintotest.dup
+
+      @test = @test_manager.current_test
+
+      @hosttotest = @test.hosttotest
+      chain = @test.chaintotest.dup
       @hostcert = chain.shift
-      @hostkey = keytotest
+      @hostkey = @test.keytotest
       @extrachain = chain
       # Use the goodca for hosts we don't care to test against.
-      super(tcpsocket, cacert, cakey)
+      super(tcpsocket, @test.cacert, @test.cakey)
 
       @test_status = :running
       @testing_host = false
@@ -97,16 +101,12 @@ module SSLTest
       end
     end
 
-    def on_test_completed(blk=nil, &block)
-      @test_completed_cb = ( blk ? blk : block)
-    end
-
     # Report our result.
     def unbind
       super
       logdebug "unbind"
       if @testing_host
-        @test_completed_cb.call(@test_status) if @test_completed_cb
+        @test_manager.test_completed(@test_status)
       end
     end
 

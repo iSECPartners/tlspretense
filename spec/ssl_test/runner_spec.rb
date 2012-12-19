@@ -6,7 +6,7 @@ module SSLTest
     let(:stdin) { double("stdin") }
     let(:stdout) { double("stdout", :puts => nil) }
 
-    let(:test_foo) do
+    let(:test_foo_data) do
       {
         'alias' => 'foo',
         'name' => 'Baseline Happy Test',
@@ -14,7 +14,7 @@ module SSLTest
         'expected_result' => 'connect'
       }
     end
-    let(:test_bar) do
+    let(:test_bar_data) do
       {
         'alias' => 'bar',
         'name' => 'Baseline Happy Test',
@@ -22,14 +22,22 @@ module SSLTest
         'expected_result' => 'connect'
       }
     end
-    let(:test_data) { [test_foo, test_bar] }
+    let(:test_data_list) { [test_foo_data, test_bar_data] }
+
+    let(:test_foo) { SSLTestCase.new(test_foo_data) }
+    let(:test_bar) { SSLTestCase.new(test_bar_data) }
+    let(:test_list) { [test_foo, test_bar] }
+
+    let(:test_listener) { double('test listener', :logger= => nil) }
+    let(:test_manager) { double('test manager') }
+
     let(:test_wrongcname) { double('test wrongcname') }
     let(:conf_certs) { double('conf certs') }
     let(:config) do
       double(
         "config",
         :listener_port => 54321,
-        :tests => test_data,
+        :tests => test_data_list,
         'certs' => conf_certs,
         'action' => :runtests,
         'pause?' => false,
@@ -40,16 +48,20 @@ module SSLTest
       )
     end
     let(:cert_manager) { double("certificate manager") }
-    let(:report) { double('report', :print_results => nil) }
+    let(:report) { double('report', :print_results => nil, :add_result => nil) }
     let(:testcaseresult) { double('test case result') }
     let(:testcase) { double('test case', :run => testcaseresult) }
-    let(:appcontext) { double('context') }
+    let(:appcontext) { double('context',
+                             :config => config,
+                             :test_manager => test_manager,
+                             :test_manager= => nil,
+                             ) }
     let(:logger) { Logger.new(nil) }
 
     let(:conf_data) do
       {
         'certs' => conf_certs,
-        'tests' => test_data,
+        'tests' => test_data_list,
         'packetthief' => {},
       }
     end
@@ -60,6 +72,7 @@ module SSLTest
       SSLTestCase.stub(:new).and_return(testcase)
       SSLTestReport.stub(:new).and_return(report)
       AppContext.stub(:new).and_return(appcontext)
+      SSLTestCase.stub(:factory).and_return(test_list)
     end
 
     after(:each) do
@@ -72,6 +85,7 @@ module SSLTest
       before(:each) do
         Config.stub(:new).and_return(config)
       end
+
       context "when ARGS is empty" do
         let(:args) { [] }
         it "loads the config from the default location" do
@@ -109,6 +123,7 @@ module SSLTest
         Config.stub(:new).and_return(config)
         subject.stub(:start_packetthief)
         subject.stub(:stop_packetthief)
+        subject.stub(:run_tests).and_return(report)
       end
 
       context "when the action is runtests" do
@@ -123,12 +138,18 @@ module SSLTest
         context "when ARGS is empty" do
           let(:args) { [] }
 
-        it "runs all defined tests" do
-          subject.should_receive(:run_test).with(test_foo).ordered
-          subject.should_receive(:run_test).with(test_bar).ordered
+          it "creates a default list of test cases" do
+            SSLTestCase.should_receive(:factory).with(appcontext, config.tests,[]).and_return(double('list of SSLTestCases', :length => 10))
 
-          subject.run
-        end
+            subject.run
+          end
+
+          it "runs the tests" do
+            subject.should_receive(:run_tests).with(test_list).and_return(report)
+
+            subject.run
+          end
+
           it "starts PacketThief before running the tests" do
             subject.should_receive(:start_packetthief).ordered
             subject.should_receive(:run_tests).ordered.and_return(report)
@@ -144,97 +165,47 @@ module SSLTest
             subject.run
           end
         end
-      end
 
-      context "when ARGS is ['wrongcname']" do
-        let(:args) { ['wrongcname'] }
-
-        it "it runs just the test named 'wrongcname'" do
-          config.stub(:tests).with(['wrongcname']).and_return([test_wrongcname])
-          subject.should_receive(:run_test).with(test_wrongcname)
-
-          subject.run
-        end
-
-      end
-
-    end
-
-    describe "#run_test" do
-      it "creates an ssl test case" do
-        SSLTestCase.should_receive(:new).with(appcontext, report, test_data)
-
-        subject.run_test test_data
-      end
-      it "runs the test case" do
-        testcase.should_receive(:run).and_return(testcaseresult)
-
-        subject.run_test test_data
-      end
-    end
-
-    describe "pausing between tests" do
-      context "when ARGV contains -p or --pause" do
-        context "when ARGV specifies 1 test" do
-          let(:args) { %w{-p baseline} }
-          it "does not pause" do
-            subject.stub(:run_test)
-
-            subject.should_not_receive(:pause)
+        context "when ARGS is ['wrongcname']" do
+          let(:args) { ['wrongcname'] }
+          it "it tells the SSLTestCase factory to just return the test called 'wrongcname'" do
+            SSLTestCase.should_receive(:factory).with(appcontext, config.tests,['wrongcname']).and_return(double('list with just wrongcname', :length => 1))
 
             subject.run
           end
         end
-        context "when ARGV specifies 3 tests" do
-          let(:args) { %w{-p baseline another athird} }
 
-          let(:baseline) { double('baseline test desc') }
-          let(:another) { double('another test desc') }
-          let(:athird) { double('athird test desc') }
-
-          it "pauses between each test" do
-            Config.any_instance.stub(:tests).with(['baseline','another','athird']).and_return([baseline, another, athird])
-
-            subject.should_receive(:run_test).with(baseline).ordered
-            subject.should_receive(:pause).ordered
-            subject.should_receive(:run_test).with(another).ordered
-            subject.should_receive(:pause).ordered
-            subject.should_receive(:run_test).with(athird).ordered
-
-            subject.run
-          end
-        end
-      end
-
-      describe "#pause" do
-        it "waits for the user to press enter to continue" do
-          stdout.stub(:puts)
-          stdin.should_receive(:gets)
-
-          subject.pause
-        end
       end
 
     end
 
-    describe "stopping after a test requests a stop" do
-      let(:baseline) { double('baseline test desc') }
-      let(:another) { double('another test desc') }
-      let(:athird) { double('athird test desc') }
+    describe "#run_tests" do
       before(:each) do
-        Config.any_instance.stub(:tests).with(nil).and_return([baseline, another, athird])
+        Config.stub(:new).and_return(config)
+        EM.stub(:run).and_yield
+        EM.stub(:add_periodic_timer)
+        EM.stub(:open_keyboard)
+        EM.stub(:stop_event_loop)
+        TestListener.stub(:start).and_return(test_listener)
+        TestManager.stub(:new).and_return(test_manager)
       end
-      it "stops running tests after the test that asks to stop" do
-        subject.should_receive(:run_test).with(baseline).and_return(:stop)
-        subject.should_not_receive(:run_test).with(another)
-        subject.should_not_receive(:run_test).with(athird)
 
-        subject.run
+      it "configures a new TestManager" do
+        TestManager.should_receive(:new).with(appcontext, test_list, report).and_return(test_manager)
+
+        subject.run_tests test_list
       end
 
-      it "still generates a report" do
-        report.should_receive(:print_results)
-        subject.run
+      it "starts an EventMachine event loop" do
+        EM.should_receive(:run)
+
+        subject.run_tests test_list
+      end
+
+      it "starts the TestListener" do
+        TestListener.should_receive(:start).with('', 54321, test_manager).and_return(test_listener)
+
+        subject.run_tests test_list
       end
     end
 

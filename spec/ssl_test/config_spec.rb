@@ -57,26 +57,6 @@ module SSLTest
       # TODO: some basic schema validation on the config file?
     end
 
-    describe "#tests" do
-      context "when no argument is passed" do
-        it "returns all of the tests in the config data, in the original order" do
-          subject.tests.should == conf_tests
-        end
-      end
-
-      context "when ['foo'] is passed as an argument" do
-        it "returns a list with just 'foo'" do
-          subject.tests(['foo']).should == [foo_test]
-        end
-      end
-      context "when ['bar', 'foo'] is passed as an argument" do
-        it "returns a list with 'bar', then 'foo'" do
-          subject.tests(['bar', 'foo']).should == [bar_test, foo_test]
-        end
-      end
-
-    end
-
     describe "#packetthief" do
       context "when a conf_data['packetthief']'s keys are strings" do
         it "adds symbol versions" do

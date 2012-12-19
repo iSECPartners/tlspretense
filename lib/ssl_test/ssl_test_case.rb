@@ -1,30 +1,50 @@
 module SSLTest
-  # Represents a single test case. It performs the test it represents and adds
-  # its result to a report.
+  # Represents a single test case.
   class SSLTestCase
     include PacketThief::Logging
 
     attr_reader :id
     attr_reader :description
+    attr_reader :certchainalias
+    attr_reader :expected_result
 
-    def initialize(appctx, report, testdesc)
+    attr_reader :certchain
+    attr_reader :keychain
+    attr_reader :hosttotest
+    attr_reader :goodcacert
+    attr_reader :goodcakey
+
+    def self.factory(appctx, test_data, tests_to_create)
+      if tests_to_create == [] or tests_to_create == nil
+        final_test_data = test_data
+      else
+        final_test_data = tests_to_create.map { |name| test_data.select { |test| test['alias'] == name }[0] }
+      end
+      final_test_data.map { |data| SSLTestCase.new(appctx, data) }
+    end
+
+    def initialize(appctx, testdesc)
       @appctx = appctx
       @config = @appctx.config
       @certmanager = @appctx.cert_manager
-      @report = report
       @raw = testdesc.dup
       @id = @raw['alias']
       @description = @raw['name']
       @certchainalias = @raw['certchain']
       @expected_result = @raw['expected_result']
+
+      @certchain = @certmanager.get_chain(@certchainalias)
+      @keychain = @certmanager.get_keychain(@certchainalias)
+      @hosttotest = @config.hosttotest
+
+      @goodcacert = @certmanager.get_cert("goodca")
+      @goodcakey = @certmanager.get_key("goodca")
     end
 
     # Sets up and launches the current test. It gathers the certificates and
     # keys needed to launch a TestListener, and
     # (currently) also sets up the keyboard user interface.
     def run
-      @logger = @appctx.logger
-      loginfo "#{@id}: Starting test"
       @certchain = @certmanager.get_chain(@certchainalias)
       @keychain = @certmanager.get_keychain(@certchainalias)
       @hosttotest = @config.hosttotest
@@ -32,86 +52,7 @@ module SSLTest
       @goodcacert = @certmanager.get_cert("goodca")
       @goodcakey = @certmanager.get_key("goodca")
 
-      @start_time = Time.now
-
-      @started_em = false
-      if EM.reactor_running?
-        TestListener.start('',@config.listener_port, self)
-      else
-        @started_em = true
-        EM.run do
-          # @listener handles the initial server socket, not the accepted connections.
-          # h in the code block is for each accepted connection.
-          @listener = TestListener.start('',@config.listener_port, @goodcacert, @goodcakey, @hosttotest, @certchain, @keychain[0]) do |h|
-            h.on_test_completed { |result| self.test_completed result }
-          end
-          @listener.logger = @appctx.logger
-          EM.open_keyboard InputHandler do |h|
-            h.on(' ') { self.test_completed :skipped }
-            h.on('q') { self.stop_testing }
-          end
-          EM.add_periodic_timer(5) { @appctx.logger.debug "EM connection count: #{EM.connection_count}" }
-        end
-      end
       @status
-    end
-
-    def cleanup
-      @listener.stop_server if @listener
-      EM.stop_event_loop if @started_em
-    end
-
-    # Called when a test completes or is skipped. It adds an SSLTestResult to
-    # the report, and it cleans up after itself.
-    #
-    # :connected, :rejected, :sentdata
-    def test_completed(actual_result)
-      logdebug "test_completed", :actual_result => actual_result, :expected_result => @expected_result
-      return if actual_result == :running
-
-      passed = if @appctx.config.testing_method == 'tlshandshake'
-                 case @expected_result
-                 when 'connected'
-                   %w{connected sentdata}.include? actual_result.to_s
-                 when 'rejected'
-                   actual_result == :rejected
-                 else
-                   raise "Unknown expected_result: #{@expected_result}"
-                 end
-               else # senddata, which requires data to be sent for it to pass.
-                 case @expected_result
-                 when 'connected'
-                   actual_result == :sentdata
-                 when 'rejected'
-                   %w{rejected connected}.include? actual_result.to_s
-                 else
-                   raise "Unknown expected_result: #{@expected_result}"
-                 end
-               end
-
-      str = SSLTestResult.new(@id, passed)
-      str.description = @description
-      str.expected_result = @expected_result
-      str.actual_result = actual_result.to_s
-      str.start_time = @start_time
-      str.stop_time = Time.now
-
-      @report.add_result(str)
-
-      if actual_result == :skipped
-        @appctx.logger.info "#{@id}: Skipping test"
-      else
-        @appctx.logger.info "#{@id}: Finished test"
-      end
-
-      cleanup
-      @status = :next
-    end
-
-    # Callback to cleanup and exit.
-    def stop_testing
-      cleanup
-      @status = :stop
     end
 
   end

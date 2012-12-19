@@ -19,9 +19,8 @@ module SSLTest
       @certs = @raw['certs']
     end
 
-    def tests(test_list=nil)
-      return @raw['tests'] unless test_list != nil
-      test_list.map { |name| @raw['tests'].select { |test| test['alias'] == name }[0] }
+    def tests
+      @raw['tests']
     end
 
     def hosttotest

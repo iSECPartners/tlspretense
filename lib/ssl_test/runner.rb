@@ -12,14 +12,14 @@ module SSLTest
       @stdout = stdout
 
       @config = Config.new options.options
-      @cert_manager = CertificateManager.new(@config.certs)
+      cert_manager = CertificateManager.new(@config.certs)
       @logger = Logger.new(@config.logfile)
       @logger.level = @config.loglevel
       @logger.datetime_format = "%Y-%m-%d %H:%M:%S %Z"
       @logger.formatter = proc do |severity, datetime, progname, msg|
           "#{datetime}:#{severity}: #{msg}\n"
       end
-      @app_context = AppContext.new(@config, @cert_manager, @logger)
+      @app_context = AppContext.new(@config, cert_manager, @logger)
 
       @report = SSLTestReport.new
       init_packetthief
@@ -35,18 +35,13 @@ module SSLTest
         end
       when :runtests
         @stdout.puts "Press spacebar to skip a test, or 'q' to stop testing."
-        first = true
-        @tests = @config.tests( @test_list.empty? ? nil : @test_list)
         loginfo "Hostname being tested (assuming certs are up to date): #{@config.hosttotest}"
+
+        @tests = SSLTestCase.factory(@app_context, @config.tests, @test_list)
         loginfo "Running #{@tests.length} tests"
+
         start_packetthief
-        @tests.each do |test|
-          pause if @config.pause? and not first
-          if run_test(test) == :stop
-            break
-          end
-          first = false
-        end
+        run_tests(@tests)
         stop_packetthief
 
         @report.print_results(@stdout)
@@ -55,9 +50,21 @@ module SSLTest
       end
     end
 
-    # Runs a test based on the test description.
-    def run_test(test)
-      SSLTestCase.new(@app_context, @report, test).run
+    def run_tests(testlist)
+      test_manager = TestManager.new(@app_context, testlist, @report)
+      test_manager.logger = @logger
+      EM.run do
+        # @listener handles the initial server socket, not the accepted connections.
+        # h in the code block is for each accepted connection.
+        @listener = TestListener.start('', @config.listener_port, test_manager)
+        @listener.logger = @logger
+        @keyboard = EM.open_keyboard InputHandler do |h|
+          h.on(' ') { puts 'space' ; test_manager.test_completed :skipped }
+          h.on('q') { test_manager.stop_testing }
+          h.on("\n") { test_manager.unpause }
+        end
+        EM.add_periodic_timer(5) { logdebug "EM connection count: #{EM.connection_count}" }
+      end
     end
 
     # Initialize custom PacketThief modes of operation. Eg, we use manual when PT
@@ -98,11 +105,6 @@ module SSLTest
       @stdout.printf "%s: %s\n", test['alias'], test['name']
       @stdout.printf "  %s\n", test['certchain'].inspect
       @stdout.puts ''
-    end
-
-    def pause
-      @stdout.puts "Press Enter to continue."
-      @stdin.gets
     end
 
   end

@@ -22,9 +22,26 @@ module SSLTest
     let(:chaintotest) { [ double('hostcert'), double('intermediatecert'), cacert] }
     let(:keytotest) { double('keytotest') }
 
+    let(:appcontext) { double('appcontext') }
+    let(:curr_test) { double('curr_test',
+                             :hosttotest => hosttotest,
+                             :chaintotest => chaintotest,
+                             :keytotest => keytotest,
+                             :cacert => cacert,
+                             :cakey => cakey,
+                            ) }
+    let(:test_manager) { double('test_manager',
+                                :current_test => curr_test,
+                                :test_completed => nil
+                               ) }
+
     # Yes this is bad, but there are too many side effects to calling into
     # the parent class right now.
     before(:each) do
+#      PacketThief::Handlers::SSLSmartProxy.any_instance.stub(:initialize)
+#      PacketThief::Handlers::SSLSmartProxy.any_instance.stub(:tls_successful_handshake)
+#      PacketThief::Handlers::SSLSmartProxy.any_instance.stub(:tls_failed_handshake)
+#      PacketThief::Handlers::SSLSmartProxy.any_instance.stub(:unbind)
       class PacketThief::Handlers::SSLSmartProxy
         def initialize(socket, certchain, key)
         end
@@ -41,13 +58,12 @@ module SSLTest
     end
 
     subject do
-      _tcpsocket, _cacert, _cakey, _hosttotest, _chaintotest, _keytotest = tcpsocket, cacert, cakey, hosttotest, chaintotest, keytotest
+      _tcpsocket, _appcontext, _testmanager = tcpsocket, appcontext, test_manager
       TestListener.allocate.instance_eval do
-        initialize(_tcpsocket, _cacert, _cakey, _hosttotest, _chaintotest, _keytotest)
+        initialize(_tcpsocket, _testmanager)
         self
       end
     end
-
 
     describe ".cert_matches_host" do
       context "when the CN in the subject is 'my.hostname.com'" do
@@ -111,59 +127,50 @@ module SSLTest
     end
 
     describe "reporting the result" do
-      context "when a test_completed callback has been set" do
+      context "when a test listener's connection is to the host to test" do
         before(:each) do
-          @result = nil
-          subject.on_test_completed do |result|
-            @result = result
-          end
+          TestListener.stub(:cert_matches_host).and_return(true)
+          @ctx = OpenSSL::SSL::SSLContext.new
+          @ctx.cert = double('dest cert', :subject => double('dest cert subject'))
+          subject.check_for_hosttotest(@ctx)
         end
-        context "when a test listener's connection is to the host to test" do
+        context "when the client connects" do
           before(:each) do
-            TestListener.stub(:cert_matches_host).and_return(true)
-            @ctx = OpenSSL::SSL::SSLContext.new
-            @ctx.cert = double('dest cert', :subject => double('dest cert subject'))
-            subject.check_for_hosttotest(@ctx)
-          end
-          context "when the client connects" do
-            before(:each) do
-              subject.tls_successful_handshake
-            end
-
-            it "calls the test_completed callback with :connected when the connection closes" do
-              subject.unbind
-
-              @result.should == :connected
-            end
-          end
-          context "when the client rejects" do
-            before(:each) do
-              subject.tls_failed_handshake(double('error'))
-            end
-
-            it "calls the test_completed callback with :rejected when the connection closes" do
-              subject.unbind
-
-              @result.should == :rejected
-            end
-          end
-          context "when the client sends data" do
-            before(:each) do
-              subject.stub(:send_to_dest)
-              subject.client_recv(double('data'))
-            end
-
-            it "calls the test_completed callback with :sentdata when the connection closes" do
-              subject.unbind
-
-              @result.should == :sentdata
-            end
+            subject.tls_successful_handshake
           end
 
+          it "calls the test_manager's test_completed callback with :connected when the connection closes" do
+            test_manager.should_receive(:test_completed).with(:connected)
+
+            subject.unbind
+          end
         end
+        context "when the client rejects" do
+          before(:each) do
+            subject.tls_failed_handshake(double('error'))
+          end
+
+          it "calls the test_manager's test_completed callback with :rejected when the connection closes" do
+            test_manager.should_receive(:test_completed).with(:rejected)
+
+            subject.unbind
+          end
+        end
+        context "when the client sends data" do
+          before(:each) do
+            subject.stub(:send_to_dest)
+            subject.client_recv(double('data'))
+          end
+
+          it "calls the test_manager's test_completed callback with :sentdata when the connection closes" do
+            test_manager.should_receive(:test_completed).with(:sentdata)
+
+            subject.unbind
+          end
+        end
+
       end
     end
 
   end
 end
-# Screw it, too much to test with super

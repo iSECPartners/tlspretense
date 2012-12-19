@@ -17,4 +17,5 @@ module SSLTest
   autoload :SSLTestReport,  'ssl_test/ssl_test_report'
   autoload :SSLTestResult,  'ssl_test/ssl_test_result'
   autoload :TestListener, 'ssl_test/test_listener'
+  autoload :TestManager, 'ssl_test/test_manager'
 end
