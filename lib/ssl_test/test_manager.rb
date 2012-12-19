@@ -31,7 +31,7 @@ module SSLTest
 
       if current_test == nil
         stop_testing
-      elsif @appctx.config.pause?
+      elsif @appctx.config.pause? and not first
         pause
       else
         loginfo "Starting test: #{current_test.id}"

@@ -67,7 +67,9 @@ module SSLTest
 
    subject { TestManager.new(app_context, testlist, report) }
 
+
    describe "#prepare_next_test" do
+
      context "when there are 3 tests in the testlist" do
        let(:testlist) { [ double('test1', :id => 'test1'), double('test2', :id => 'test2'), double('test3', :id => 'test3') ] }
        it "sets current_test to the first element of remaining_tests" do
@@ -90,6 +92,13 @@ module SSLTest
        end
        context "when the application wants to pause after each test" do
          before(:each) { config.stub(:pause?).and_return(true) }
+
+         it "does not set paused to true after initialization" do
+           subject
+
+           subject.paused?.should_not == true
+         end
+
          it "sets paused to true" do
            subject.prepare_next_test
 
