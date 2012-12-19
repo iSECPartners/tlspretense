@@ -188,10 +188,12 @@ module SSLTest
         EM.stub(:stop_event_loop)
         TestListener.stub(:start).and_return(test_listener)
         TestManager.stub(:new).and_return(test_manager)
+        @logger = logger
+        Logger.should_receive(:new).and_return(logger)
       end
 
       it "configures a new TestManager" do
-        TestManager.should_receive(:new).with(appcontext, test_list, report).and_return(test_manager)
+        TestManager.should_receive(:new).with(appcontext, test_list, report, logger).and_return(test_manager)
 
         subject.run_tests test_list
       end

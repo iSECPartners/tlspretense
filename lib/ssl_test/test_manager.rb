@@ -8,10 +8,11 @@ module SSLTest
 
     attr_accessor :listener
 
-    def initialize(context, testlist, report)
+    def initialize(context, testlist, report, logger=nil)
       @appctx = context
       @testlist = testlist
       @report = report
+      @logger = logger
       @remaining_tests = @testlist.dup
 
       @pause = false

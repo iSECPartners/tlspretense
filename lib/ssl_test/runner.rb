@@ -51,8 +51,7 @@ module SSLTest
     end
 
     def run_tests(testlist)
-      test_manager = TestManager.new(@app_context, testlist, @report)
-      test_manager.logger = @logger
+      test_manager = TestManager.new(@app_context, testlist, @report, @logger)
       EM.run do
         # @listener handles the initial server socket, not the accepted connections.
         # h in the code block is for each accepted connection.
