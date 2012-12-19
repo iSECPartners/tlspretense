@@ -31,6 +31,7 @@ module SSLTest
                              :cakey => cakey,
                             ) }
     let(:test_manager) { double('test_manager',
+                                :paused? => false,
                                 :current_test => curr_test,
                                 :test_completed => nil,
                                 :goodcacert => double('goodcacert'),
@@ -112,6 +113,26 @@ module SSLTest
         end
 
         it "Returns an unchanged context" do
+          @context = OpenSSL::SSL::SSLContext.new
+          @remotecert = double('resigned remote cert', :subject => double('resigned remote cert subject'))
+          @context.cert = @remotecert
+          @context.key = cakey
+          @context.extra_chain_cert = [cacert]
+
+          @newcontext = subject.check_for_hosttotest(@context)
+
+          @newcontext.cert.should == @remotecert
+          @newcontext.key.should == cakey
+          @newcontext.extra_chain_cert.should == [cacert]
+        end
+      end
+
+      context "when the test manager reports that testing is paused" do
+        before(:each) do
+          test_manager.stub(:paused?).and_return(true)
+        end
+
+        it "returns an unchanged context" do
           @context = OpenSSL::SSL::SSLContext.new
           @remotecert = double('resigned remote cert', :subject => double('resigned remote cert subject'))
           @context.cert = @remotecert

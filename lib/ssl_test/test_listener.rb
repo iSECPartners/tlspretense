@@ -28,13 +28,17 @@ module SSLTest
       @test_manager = test_manager
       @logger = logger
 
-      @test = @test_manager.current_test
-
-      @hosttotest = @test.hosttotest
-      chain = @test.chaintotest.dup
-      @hostcert = chain.shift
-      @hostkey = @test.keytotest
-      @extrachain = chain
+      if @test_manager.paused?
+        @paused = true
+      else
+        @paused = false
+        @test = @test_manager.current_test
+        @hosttotest = @test.hosttotest
+        chain = @test.chaintotest.dup
+        @hostcert = chain.shift
+        @hostkey = @test.keytotest
+        @extrachain = chain
+      end
       # Use the goodca for hosts we don't care to test against.
       super(tcpsocket, @test_manager.goodcacert, @test_manager.goodcakey)
 
@@ -64,7 +68,9 @@ module SSLTest
     # Additionally, if it matches, it sets @testing_host to true to check
     # whether the test succeeds or not.
     def check_for_hosttotest(actx)
-      if TestListener.cert_matches_host(actx.cert, @hosttotest)
+      if @paused
+        logdebug "Testing is paused, not checking whether this is the host to test", :certcubject => actx.cert.subject
+      elsif TestListener.cert_matches_host(actx.cert, @hosttotest)
         logdebug "Destination matches host-to-test", :hosttotest => @hosttotest, :certsubject => actx.cert.subject
         actx.cert = @hostcert
         actx.key = @hostkey
