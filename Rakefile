@@ -39,7 +39,7 @@ Rake::RDocTask.new do |rdoc|
   rdoc.before_running_rdoc do
     unless File.exist? 'rdoc'
       begin
-        sh 'git clone --branch gh-pages --single-branch git@github.com:iSECPartners/tlspretense.git rdoc'
+        sh 'git clone --branch gh-pages --single-branch `git config remote.origin.url` rdoc'
       rescue
       end
     end
