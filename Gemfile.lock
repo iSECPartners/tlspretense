@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tlspretense (0.5.0)
+    tlspretense (0.6.0)
       eventmachine (>= 1.0.0)
       ruby-termios (>= 0.9.6)
 
