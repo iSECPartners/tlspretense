@@ -49,40 +49,49 @@ This setup has the following network topography:
 
 == Installing TLSPretense
 
-Download the latest git repository with:
+Install with rubygems:
 
-    git clone https://github.com/iSECPartners/tlspretense
+    umask 0022 ; sudo gem install tlspretense
 
-To install Ruby dependencies:
+Create a new project:
 
-    cd tlspretense
-    bundle install --without=development
+    tlspretense init myproject
+    cd myproject
 
-This will install any needed Ruby gems.
+Now edit the config.yml file to suit your needs. TLSPretense installs a default
+CA when you create your project directory, but you can replace it with your own
+test CA. You can also create a new CA if you want (using the goodca certificate
+definition in the project's config.yml):
+
+    tlspretense ca
+
+Next, create certificates for the test cases (you should rerun this if you
+modify any of the certificate descriptions in config.yml):
+
+    tlspretense certs
+
+You will also need to setup the host's networking stack and firewall to support
+TLSPretense. More details can be found in {TLSPretense
+Setup}[rdoc-ref:general_setup] and in the system-specific guides.
+
+Finally, to run all of the configured test cases:
+
+    sudo tlspretense run
+
+Or just certain tests (in the order specified):
+
+    sudo tlspretense run unknownca wrongcname
 
 == Updating TLSPretense
 
-Currently, to update the repository, you need to stash your config if you just
-modified the default config.yml before updating:
-
-    git stash
-
-Then update TLSPretense and its dependencies:
-    git pull origin
-    bundle update
-
-And finally restore your configuration:
-
-    git stash apply
-    # Resolve any conflicts in your config.yml
-
-This process will be simplified if/when TLSPretense becomes an installable package.
-
+Just install TLSPretense again using rubygems. At present, TLSPretense does not
+provide any versioning or migration of its configuration file.
 
 == Configuration
 
-All configuration of the test suite happens through config.yml. What follows is
-a brief discussion of each section and what you might want to change.
+All configuration of the test suite happens through your project's config.yml.
+What follows is a brief discussion of each section and what you might want to
+change.
 
 === top-level settings
 
@@ -215,18 +224,22 @@ This final section defines a list of all of the tests to run.
 == Certificate Generation
 
 You need to pre-generate the certificates you'll use for the tests. You can do
-this with:
+this from your project directory with:
 
-    rake certs:generate
+    tlspretense certs
 
 It can generate an entire ecosystem of certificates from scratch, or it can use
 an existing CA instead of generating a new _goodca_. See the _certmaker_ and
 _certs_ sections of config.yml.
 
-WARNING: Running this task a second time will regenerate all of the
-certificates in the _certs_ directory! If you are not using an existing CA and
-wish to regenerate the certificates, you will wind up with a new set of
-certificates based around a CA that uses a new public key.
+WARNING: Running this command a second time will regenerate all of the
+certificates in the _certs_ directory! However, by default it will just copy
+the CA from the ca directory each time it is run.
+
+It you want to create a new CA, run:
+
+    tlspretense ca
+
 
 == Client Host Setup
 
@@ -248,29 +261,28 @@ Setup}[rdoc-ref:linux_setup].
 
 == Running the tests
 
-Currently, TLSPretense should be run from its project directory. If you want to
-run the test runner directly:
+While in your project directory, run all tests with:
 
-    sudo bundle exec ruby1.9 bin/tlspretense.rb
+    sudo tlspretense run
 
-The command probably needs to be run as root in order to add and remove its
-firewall rules, and <tt>bundle exec...<tt> ensures that the gem dependencies
-are added to the Ruby path. To simplify this calling convention, you can
-instead run:
-
-    bin/tlspretense_wrapper.sh
-
+The command will more than likely need to be run as root so that it can add and
+remove its firewall rules.
 
 If you only want to run certain tests, you can do so by specifying which tests
 you want to run as command line arguments, and it will run just those tests in
 the order specified, instead of in the order they are defined in config.yml:
 
-    bin/tlspretense_wrapper.sh baseline nullincname selfsigned
+    sudo tlspretense run baseline nullincname selfsigned
 
-For information about other command line options, use -h or --help:
+For information about other command line options run TLSPretense without any
+options, or call the run sub-command with -h or --help:
 
-    bin/tlspretense_wrapper.sh -h
+    tlspretense
+
+    tlspretense run -h
+
 
 == Output
 
-At present, TLSPretext prints a summary of the tests run and their results once all tests have run.
+At present, TLSPretense prints a summary of the tests run and their results
+once all tests have run.

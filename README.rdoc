@@ -61,32 +61,59 @@ re-signed by the goodca in order to make interception easier).
   * IPFW on MacOSX 10.6 and earlier, and *BSD
   * PFRdr on MacOSX 10.7 (and probably also 10.8)
 
-* Ruby 1.9.x (Developed with 1.9.3), built against a version of OpenSSL that
-  supports the SNI TLS extension. You can check for this if you run the
-  following Ruby script:
+* Ruby 1.9.x (Developed with 1.9.3). Check your version with:
 
-      ruby1.9 -ropenssl -e 'puts OpenSSL::SSL::SSLSocket.public_instance_methods.include? :hostname='
+      ruby --version
 
-  Ruby 1.8.7 will mostly work, but Ruby 1.8's OpenSSL wrapper
-  library does not support the ability for clients to use the SNI TLS
-  extension, which is needed to grab the correct remote certificate for
-  proxying miscellaneous connections. Use Ruby 1.8.x at your own risk.
+  Some systems will install Ruby 1.9.x with a suffix, like `ruby1.9`. Ruby must
+  also be built against a version of OpenSSL that supports the SNI TLS
+  extension. You can check for this if you run the following Ruby script (on
+  some systems, Ruby 1.9.x will be installed as ruby1.9, and commands like gem
+  will also have the 1.9 suffix):
 
-* Bundler. If you need it, you can install it with the Ruby gem command:
- 
-      $GEM install bundler
+      ruby -ropenssl -e 'puts OpenSSL::SSL::SSLSocket.public_instance_methods.include? :hostname='
 
-  Where $GEM is the version of the +gem+ command available on your system. This
-  might just be +gem+ if your default +ruby+ is ruby 1.9.x, or something like
-  +gem1.9+.
+  Ruby 1.8.7 will mostly work, but Ruby 1.8's OpenSSL wrapper library does not
+  support the ability for clients to use the SNI TLS extension, which is needed
+  to grab the correct remote certificate for proxying miscellaneous
+  connections. Use Ruby 1.8.x at your own risk.
 
-* You need to make the SSL client trust the _goodca_ CA certificate. You can
-  either generate a new goodca and install it in the client's trust store, or
-  you can use an existing test CA to generate the test certificates.
+* The SSL client/HTTPS user agent has to trust the CA used by TLSPretense.
+  You can either generate a new goodca and install it in the client's trust
+  store, or you can use an existing test CA with TLSPretense to generate the
+  test certificates.
 
-== Usage
+== Quick Start
 
-See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPretense.
+Install with rubygems:
+
+    umask 0022 ; sudo gem install tlspretense
+
+Create a new project:
+
+    tlspretense init myproject
+    cd myproject
+
+And edit config.yml to suit your needs. If you want to create a new test CA
+(not necessary if you want to use the default or your own):
+
+    tlspretense ca
+
+Generate certificates for the test cases:
+
+    tlspretense certs
+
+You will also need to setup the host's networking stack and firewall to support
+TLSPretense. More details can be found in {TLSPretense
+Setup}[rdoc-ref:general_setup] and in the system-specific guides.
+
+Finally, run all of the configured test cases:
+
+    sudo tlspretense run
+
+Or just certain tests (in the order specified):
+
+    sudo tlspretense run unknownca wrongcname
 
 == Limitations
 
