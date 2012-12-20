@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class PacketThief::Handlers::TransparentProxy - TLSPretense </title>
+<title>class PacketThief::Handlers::TransparentProxy - TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
 
@@ -63,12 +63,26 @@
   
 </nav>
 
-    
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../Logging.html">PacketThief::Logging</a>
+  
+  
+  </ul>
+</nav>
+
     <!-- Method Quickref -->
 <nav id="method-list-section" class="section">
   <h3 class="section-header">Methods</h3>
 
   <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
     
     <li><a href="#method-i-_send_buffer">#_send_buffer</a>
     
@@ -193,6 +207,8 @@
   
     <li><a href="../../SSLTest/Runner.html">SSLTest::Runner</a>
   
+    <li><a href="../../SSLTest/RunnerOptions.html">SSLTest::RunnerOptions</a>
+  
     <li><a href="../../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
   
     <li><a href="../../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
@@ -201,11 +217,25 @@
   
     <li><a href="../../SSLTest/TestListener.html">SSLTest::TestListener</a>
   
+    <li><a href="../../SSLTest/TestManager.html">SSLTest::TestManager</a>
+  
+    <li><a href="../../TLSPretense.html">TLSPretense</a>
+  
+    <li><a href="../../TLSPretense/App.html">TLSPretense::App</a>
+  
+    <li><a href="../../TLSPretense/CleanExitError.html">TLSPretense::CleanExitError</a>
+  
+    <li><a href="../../TLSPretense/InitRunner.html">TLSPretense::InitRunner</a>
+  
+    <li><a href="../../TLSPretense/InitRunner/InitError.html">TLSPretense::InitRunner::InitError</a>
+  
     <li><a href="../../CertMaker.html">CertMaker</a>
   
     <li><a href="../../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
   
     <li><a href="../../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../../CertMaker/Runner.html">CertMaker::Runner</a>
   
     <li><a href="../../Hash.html">Hash</a>
   
@@ -369,6 +399,42 @@ it hasn’t been created yet.</p>
 
     <!-- Methods -->
     
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(log=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 71</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">log</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-ivar">@logger</span> = <span class="ruby-identifier">log</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
       <h3 class="section-header">Public Instance Methods</h3>
 
@@ -389,7 +455,7 @@ it hasn’t been created yet.</p>
 
           
           <div class="method-source-code" id="_send_buffer-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 113</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 121</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">_send_buffer</span>
   <span class="ruby-ivar">@buffer</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pkt</span><span class="ruby-operator">|</span>
     <span class="ruby-ivar">@dest</span>.<span class="ruby-identifier">send_data</span> <span class="ruby-identifier">pkt</span>
@@ -423,8 +489,9 @@ informational utility.</p>
 
           
           <div class="method-source-code" id="client_closed-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 159</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 170</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">client_closed</span>
+  <span class="ruby-identifier">logdebug</span>(<span class="ruby-string">&quot;client closed connection&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- client_closed-source -->
           
@@ -454,7 +521,7 @@ method to change its behavior.</p>
 
           
           <div class="method-source-code" id="client_connected-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 137</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 146</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">client_connected</span>
   <span class="ruby-identifier">connect_to_dest</span>
 <span class="ruby-keyword">end</span></pre>
@@ -488,8 +555,9 @@ method to analyze the data, or modify it before sending it on.</p>
 
           
           <div class="method-source-code" id="client_recv-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 145</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 154</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">client_recv</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">logdebug</span>(<span class="ruby-string">&quot;received from client&quot;</span>, <span class="ruby-value">:data</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">send_to_dest</span> <span class="ruby-identifier">data</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- client_recv-source -->
@@ -519,8 +587,9 @@ href="TransparentProxy.html#attribute-i-dest_host">#dest_host</a>:@dest_port.</p
 
           
           <div class="method-source-code" id="connect_to_dest-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 106</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 113</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">connect_to_dest</span>
+  <span class="ruby-identifier">logdebug</span> <span class="ruby-node">&quot;Connecting to #{@dest_host}:#{@dest_port}&quot;</span>
   <span class="ruby-ivar">@dest</span> = <span class="ruby-operator">::</span><span class="ruby-constant">EM</span>.<span class="ruby-identifier">connect</span>(<span class="ruby-ivar">@dest_host</span>, <span class="ruby-ivar">@dest_port</span>, <span class="ruby-constant">ProxyConnection</span>, <span class="ruby-keyword">self</span>)
   <span class="ruby-identifier">newport</span>, <span class="ruby-identifier">newhost</span> = <span class="ruby-constant">Socket</span><span class="ruby-operator">::</span><span class="ruby-identifier">unpack_sockaddr_in</span>(<span class="ruby-ivar">@dest</span>.<span class="ruby-identifier">get_sockname</span>)
   <span class="ruby-comment"># Add the new connection to the list to prevent loops.</span>
@@ -553,8 +622,9 @@ provides informational utility.</p>
 
           
           <div class="method-source-code" id="dest_closed-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 164</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 176</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">dest_closed</span>
+  <span class="ruby-identifier">logdebug</span>(<span class="ruby-string">&quot;dest closed connection&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- dest_closed-source -->
           
@@ -587,8 +657,9 @@ data to the client.</p>
 
           
           <div class="method-source-code" id="dest_recv-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 153</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 163</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">dest_recv</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">logdebug</span>(<span class="ruby-string">&quot;received from dest&quot;</span>, <span class="ruby-value">:data</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">send_to_client</span> <span class="ruby-identifier">data</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- dest_recv-source -->
@@ -617,7 +688,7 @@ data to the client.</p>
 
           
           <div class="method-source-code" id="post_init-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 70</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 75</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">post_init</span>
   <span class="ruby-ivar">@closing</span> = <span class="ruby-keyword">false</span>
 
@@ -629,6 +700,8 @@ data to the client.</p>
 
   <span class="ruby-ivar">@client_port</span>, <span class="ruby-ivar">@client_host</span> = <span class="ruby-constant">Socket</span>.<span class="ruby-identifier">unpack_sockaddr_in</span>(<span class="ruby-identifier">get_peername</span>)
   <span class="ruby-ivar">@dest_port</span>, <span class="ruby-ivar">@dest_host</span> = <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">original_dest</span>(<span class="ruby-keyword">self</span>)
+
+  <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;Client connected&quot;</span>, <span class="ruby-value">:client_host</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">client_host</span>, <span class="ruby-value">:client</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{@client_host}:#{@client_port}&quot;</span>, <span class="ruby-value">:orig_dest</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{@dest_host}:#{@dest_port}&quot;</span>
 
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">@@activeconns</span>.<span class="ruby-identifier">has_key?</span> <span class="ruby-node">&quot;#{client_host}:#{client_port}&quot;</span>
     <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Warning: loop detected! Stopping the loop.&quot;</span>
@@ -664,7 +737,7 @@ data to the client.</p>
 
           
           <div class="method-source-code" id="receive_data-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 91</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 98</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">receive_data</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">client_recv</span> <span class="ruby-identifier">data</span>
 <span class="ruby-keyword">end</span></pre>
@@ -694,7 +767,7 @@ data to the client.</p>
 
           
           <div class="method-source-code" id="send_to_client-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 129</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 138</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">send_to_client</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">send_data</span> <span class="ruby-identifier">data</span>
 <span class="ruby-keyword">end</span></pre>
@@ -725,8 +798,9 @@ connection to the remote host exists.</p>
 
           
           <div class="method-source-code" id="send_to_dest-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 123</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 131</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">send_to_dest</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;sending to dest&quot;</span>, <span class="ruby-value">:data</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">data</span>
   <span class="ruby-ivar">@buffer</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">data</span>
   <span class="ruby-identifier">_send_buffer</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@dest</span>
 <span class="ruby-keyword">end</span></pre>
@@ -757,7 +831,7 @@ already closing.</p>
 
           
           <div class="method-source-code" id="unbind-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 97</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 104</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unbind</span>
   <span class="ruby-identifier">client_closed</span>
   <span class="ruby-identifier">@@activeconns</span>.<span class="ruby-identifier">delete</span> <span class="ruby-node">&quot;#{client_host}:#{client_port}&quot;</span>

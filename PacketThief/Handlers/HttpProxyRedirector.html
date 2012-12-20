@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class PacketThief::Impl::Ipfw - TLSPretense 0.6.1</title>
+<title>class PacketThief::Handlers::HttpProxyRedirector - TLSPretense </title>
 
 <link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
 
@@ -47,7 +47,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>lib/packetthief/impl/ipfw.rb
+    <li>lib/packetthief/handlers/http_proxy_redirector.rb
   </ul>
 </nav>
 
@@ -59,7 +59,7 @@
     <nav id="parent-class-section" class="section">
   <h3 class="section-header">Parent</h3>
   
-  <p class="link">Object
+  <p class="link">ProxyRedirector
   
 </nav>
 
@@ -70,9 +70,13 @@
 
   <ul class="link-list">
     
-    <li><a href="#method-c-original_dest">::original_dest</a>
+    <li><a href="#method-c-new">::new</a>
     
-    <li><a href="#method-c-redirect">::redirect</a>
+    <li><a href="#method-i-client_connected">#client_connected</a>
+    
+    <li><a href="#method-i-client_recv">#client_recv</a>
+    
+    <li><a href="#method-i-dest_recv">#dest_recv</a>
     
   </ul>
 </nav>
@@ -104,6 +108,8 @@
     <li><a href="../../PacketThief/Handlers.html">PacketThief::Handlers</a>
   
     <li><a href="../../PacketThief/Handlers/AbstractSSLHandler.html">PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li><a href="../../PacketThief/Handlers/HttpProxyRedirector.html">PacketThief::Handlers::HttpProxyRedirector</a>
   
     <li><a href="../../PacketThief/Handlers/ProxyRedirector.html">PacketThief::Handlers::ProxyRedirector</a>
   
@@ -214,25 +220,12 @@
 </nav>
 
 <div id="documentation">
-  <h1 class="class">class PacketThief::Impl::Ipfw</h1>
+  <h1 class="class">class PacketThief::Handlers::HttpProxyRedirector</h1>
 
   <div id="description" class="description">
     
-<p>Use <a href="Ipfw.html">Ipfw</a> to redirect traffic.</p>
-
-<p>Needed in at least Mac OS X 10.6 and <a href="http://1">later</a>?:</p>
-
-<pre>sysctl -w net.inet.ip.scopedroute=0</pre>
-
-<p>[1]: <a
-href="https://trac.macports.org/wiki/howto/SetupInterceptionSquid">trac.macports.org/wiki/howto/SetupInterceptionSquid</a></p>
-
-<p>Sample rule:</p>
-
-<pre>sudo ipfw add 1013 fwd 127.0.0.1,3129 tcp from any to any 80 recv INTERFACE</pre>
-
-<p>Note that in Mac OS X 10.7 Lion, Apple still includes ipfw, but they are
-using pfctl to do network firewalling and routing.</p>
+<p>Redirect connections to an HTTP proxy, and specify the original
+destination. We prefix a CONNECT to the original connection</p>
 
   </div><!-- description -->
 
@@ -254,56 +247,11 @@ using pfctl to do network firewalling and routing.</p>
       <h3 class="section-header">Public Class Methods</h3>
 
     
-      <div id="method-c-original_dest" class="method-detail ">
+      <div id="method-c-new" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">original_dest</span><span
-            class="method-args">(sock)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Returns the [port, host] for the original destination of <code>sock</code>.</p>
-
-<p><code>Sock</code> can be a Ruby socket or an EventMachine::Connection
-(including handler modules, which are mixed in to an anonymous descendent
-of EM::Connection).</p>
-
-<p>When <a href="Ipfw.html">Ipfw</a> uses a fwd/forward rule to redirect a
-connection to a local socket, the destination address remains unchanged,
-meaning that C’s getsockname() will return the original destination.</p>
-          
-
-          
-          <div class="method-source-code" id="original_dest-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/impl/ipfw.rb, line 127</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">original_dest</span>(<span class="ruby-identifier">sock</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">sock</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:getsockname</span>
-    <span class="ruby-identifier">sockname</span> = <span class="ruby-identifier">sock</span>.<span class="ruby-identifier">getsockname</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">sock</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:get_sockname</span>
-    <span class="ruby-identifier">sockname</span> = <span class="ruby-identifier">sock</span>.<span class="ruby-identifier">get_sockname</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;#{sock.inspect} supports neither :getsockname nor :get_sockname!&quot;</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-constant">Socket</span><span class="ruby-operator">::</span><span class="ruby-identifier">unpack_sockaddr_in</span>(<span class="ruby-identifier">sockname</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- original_dest-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- original_dest-method -->
-
-    
-      <div id="method-c-redirect" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">redirect</span><span
-            class="method-args">(args={})</span>
+          <span class="method-name">new</span><span
+            class="method-args">(*args)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
@@ -314,23 +262,150 @@ meaning that C’s getsockname() will return the original destination.</p>
           
 
           
-          <div class="method-source-code" id="redirect-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/impl/ipfw.rb, line 113</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">redirect</span>(<span class="ruby-identifier">args</span>={})
-  <span class="ruby-identifier">rule</span> = <span class="ruby-constant">IpfwRule</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>)
-  <span class="ruby-identifier">rule</span>.<span class="ruby-identifier">redirect</span>(<span class="ruby-identifier">args</span>)
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/http_proxy_redirector.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(*<span class="ruby-identifier">args</span>)
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@proxy_state</span> = <span class="ruby-value">:init</span>
+  <span class="ruby-ivar">@proxy_buf</span> = <span class="ruby-string">''</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- redirect-source -->
+          </div><!-- new-source -->
           
         </div>
 
         
 
         
-      </div><!-- redirect-method -->
+      </div><!-- new-method -->
 
     
     </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-client_connected" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">client_connected</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="client_connected-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/http_proxy_redirector.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">client_connected</span>
+  <span class="ruby-ivar">@orig_dest_host</span> = <span class="ruby-identifier">dest_host</span>
+  <span class="ruby-ivar">@orig_dest_port</span> = <span class="ruby-identifier">dest_port</span>
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-identifier">send_to_dest</span>(<span class="ruby-node">&quot;CONNECT #{@orig_dest_host}:#{@orig_dest_port} HTTP/1.1\r\n\r\n&quot;</span>)
+  <span class="ruby-ivar">@proxy_state</span> = <span class="ruby-value">:sentconnect</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- client_connected-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- client_connected-method -->
+
+    
+      <div id="method-i-client_recv" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">client_recv</span><span
+            class="method-args">(data)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="client_recv-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/http_proxy_redirector.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">client_recv</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-ivar">@proxy_state</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:init</span>, <span class="ruby-value">:sentconnect</span>
+    <span class="ruby-ivar">@proxy_buf</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">data</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:proxying</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@proxy_buf</span>
+      <span class="ruby-identifier">send_to_dest</span> <span class="ruby-ivar">@proxy_buf</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@proxy_buf</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@proxy_buf</span> <span class="ruby-operator">!=</span> <span class="ruby-string">''</span>
+      <span class="ruby-ivar">@proxy_buf</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">send_to_client</span> <span class="ruby-identifier">data</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- client_recv-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- client_recv-method -->
+
+    
+      <div id="method-i-dest_recv" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">dest_recv</span><span
+            class="method-args">(data)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="dest_recv-source">
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/http_proxy_redirector.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dest_recv</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-ivar">@proxy_state</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:sentconnect</span>
+    <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;Received response to CONNECT&quot;</span>, <span class="ruby-value">:response</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">data</span>
+    <span class="ruby-identifier">successfulre</span> = <span class="ruby-regexp">%r\A(?&lt;headers&gt;HTTP\/1\..? 200.*?\r\n\r\n)(?&lt;therest&gt;.*)\z/</span>
+    <span class="ruby-identifier">m</span> = <span class="ruby-identifier">successfulre</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">data</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">m</span>
+      <span class="ruby-ivar">@proxy_state</span> = <span class="ruby-value">:proxying</span>
+      <span class="ruby-identifier">send_to_dest</span>(<span class="ruby-ivar">@proxy_buf</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@proxy_buf</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@proxy_buf</span> <span class="ruby-operator">!=</span> <span class="ruby-string">''</span>
+      <span class="ruby-ivar">@proxy_buf</span> = <span class="ruby-keyword">nil</span>
+      <span class="ruby-identifier">send_to_client</span>(<span class="ruby-identifier">m</span>[<span class="ruby-value">:therest</span>])
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;response did not match: #{data.inspect}&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:proxying</span>
+    <span class="ruby-identifier">send_to_client</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;unhandled proxy state: #{@proxy_state}&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- dest_recv-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- dest_recv-method -->
+
+    
+    </section><!-- public-instance-method-details -->
   
   </section><!-- 5Buntitled-5D -->
 

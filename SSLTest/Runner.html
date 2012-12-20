@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class SSLTest::Runner - TLSPretense </title>
+<title>class SSLTest::Runner - TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
@@ -86,13 +86,15 @@
     
     <li><a href="#method-i-display_test">#display_test</a>
     
-    <li><a href="#method-i-parse_args">#parse_args</a>
-    
-    <li><a href="#method-i-pause">#pause</a>
+    <li><a href="#method-i-init_packetthief">#init_packetthief</a>
     
     <li><a href="#method-i-run">#run</a>
     
-    <li><a href="#method-i-run_test">#run_test</a>
+    <li><a href="#method-i-run_tests">#run_tests</a>
+    
+    <li><a href="#method-i-start_packetthief">#start_packetthief</a>
+    
+    <li><a href="#method-i-stop_packetthief">#stop_packetthief</a>
     
   </ul>
 </nav>
@@ -193,6 +195,8 @@
   
     <li><a href="../SSLTest/Runner.html">SSLTest::Runner</a>
   
+    <li><a href="../SSLTest/RunnerOptions.html">SSLTest::RunnerOptions</a>
+  
     <li><a href="../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
   
     <li><a href="../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
@@ -201,11 +205,25 @@
   
     <li><a href="../SSLTest/TestListener.html">SSLTest::TestListener</a>
   
+    <li><a href="../SSLTest/TestManager.html">SSLTest::TestManager</a>
+  
+    <li><a href="../TLSPretense.html">TLSPretense</a>
+  
+    <li><a href="../TLSPretense/App.html">TLSPretense::App</a>
+  
+    <li><a href="../TLSPretense/CleanExitError.html">TLSPretense::CleanExitError</a>
+  
+    <li><a href="../TLSPretense/InitRunner.html">TLSPretense::InitRunner</a>
+  
+    <li><a href="../TLSPretense/InitRunner/InitError.html">TLSPretense::InitRunner::InitError</a>
+  
     <li><a href="../CertMaker.html">CertMaker</a>
   
     <li><a href="../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
   
     <li><a href="../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../CertMaker/Runner.html">CertMaker::Runner</a>
   
     <li><a href="../Hash.html">Hash</a>
   
@@ -235,19 +253,6 @@ tests.</p>
 
     
 
-    
-    <!-- Constants -->
-    <section id="constants-list" class="section">
-      <h3 class="section-header">Constants</h3>
-      <dl>
-      
-        <dt id="DEFAULT_OPTS">DEFAULT_OPTS
-        
-        <dd class="description">
-        
-      
-      </dl>
-    </section>
     
 
     
@@ -294,41 +299,25 @@ tests.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 52</span>
+            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 8</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">args</span>, <span class="ruby-identifier">stdin</span>, <span class="ruby-identifier">stdout</span>)
-  <span class="ruby-ivar">@options</span>, <span class="ruby-identifier">args</span> = <span class="ruby-identifier">parse_args</span>(<span class="ruby-identifier">args</span>)
-  <span class="ruby-ivar">@test_list</span> = <span class="ruby-identifier">args</span>
+  <span class="ruby-identifier">options</span> = <span class="ruby-constant">RunnerOptions</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">args</span>)
+  <span class="ruby-ivar">@test_list</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">args</span>
   <span class="ruby-ivar">@stdin</span> = <span class="ruby-identifier">stdin</span>
   <span class="ruby-ivar">@stdout</span> = <span class="ruby-identifier">stdout</span>
 
-  <span class="ruby-ivar">@config</span> = <span class="ruby-constant">Config</span>.<span class="ruby-identifier">new</span> <span class="ruby-ivar">@options</span>
-  <span class="ruby-ivar">@cert_manager</span> = <span class="ruby-constant">CertificateManager</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@config</span>.<span class="ruby-identifier">certs</span>)
+  <span class="ruby-ivar">@config</span> = <span class="ruby-constant">Config</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">options</span>.<span class="ruby-identifier">options</span>
+  <span class="ruby-identifier">cert_manager</span> = <span class="ruby-constant">CertificateManager</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@config</span>.<span class="ruby-identifier">certs</span>)
   <span class="ruby-ivar">@logger</span> = <span class="ruby-constant">Logger</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@config</span>.<span class="ruby-identifier">logfile</span>)
   <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">level</span> = <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">loglevel</span>
   <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">datetime_format</span> = <span class="ruby-string">&quot;%Y-%m-%d %H:%M:%S %Z&quot;</span>
   <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">formatter</span> = <span class="ruby-identifier">proc</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">severity</span>, <span class="ruby-identifier">datetime</span>, <span class="ruby-identifier">progname</span>, <span class="ruby-identifier">msg</span><span class="ruby-operator">|</span>
       <span class="ruby-node">&quot;#{datetime}:#{severity}: #{msg}\n&quot;</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-ivar">@app_context</span> = <span class="ruby-constant">AppContext</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@config</span>, <span class="ruby-ivar">@cert_manager</span>, <span class="ruby-ivar">@logger</span>)
-  <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">logger</span> = <span class="ruby-ivar">@logger</span>
-
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">packetthief</span>.<span class="ruby-identifier">has_key?</span> <span class="ruby-string">'implementation'</span>
-    <span class="ruby-identifier">impl</span> = <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">packetthief</span>[<span class="ruby-string">'implementation'</span>]
-    <span class="ruby-keyword">case</span> <span class="ruby-identifier">impl</span>
-    <span class="ruby-keyword">when</span> <span class="ruby-regexp">%rmanual\(/</span>
-      <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">implementation</span> = <span class="ruby-value">:manual</span>
-      <span class="ruby-identifier">host</span> = <span class="ruby-regexp">%rmanual\((.*)\)/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">impl</span>)[<span class="ruby-value">1</span>]
-      <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">set_dest</span>(<span class="ruby-identifier">host</span>, <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">packetthief</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">'dest_port'</span>,<span class="ruby-value">443</span>))
-    <span class="ruby-keyword">when</span> <span class="ruby-regexp">%rexternal\(/</span>
-      <span class="ruby-identifier">real_impl</span> = <span class="ruby-regexp">%rexternal\((.*)\)/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">impl</span>)[<span class="ruby-value">1</span>]
-      <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">implementation</span> = <span class="ruby-identifier">real_impl</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_sym</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">implementation</span> = <span class="ruby-identifier">impl</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">at_exit</span> { <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">revert</span> }
+  <span class="ruby-ivar">@app_context</span> = <span class="ruby-constant">AppContext</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@config</span>, <span class="ruby-identifier">cert_manager</span>, <span class="ruby-ivar">@logger</span>)
 
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">SSLTestReport</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">init_packetthief</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- new-source -->
           
@@ -362,10 +351,10 @@ tests.</p>
 
           
           <div class="method-source-code" id="display_test-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 121</span>
+            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 103</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">display_test</span>(<span class="ruby-identifier">test</span>)
-  <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">printf</span> <span class="ruby-string">&quot;%s: %s\n&quot;</span>, <span class="ruby-identifier">test</span>[<span class="ruby-string">'alias'</span>], <span class="ruby-identifier">test</span>[<span class="ruby-string">'name'</span>]
-  <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">printf</span> <span class="ruby-string">&quot;  %s\n&quot;</span>, <span class="ruby-identifier">test</span>[<span class="ruby-string">'certchain'</span>].<span class="ruby-identifier">inspect</span>
+  <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">printf</span> <span class="ruby-string">&quot;%s: %s\n&quot;</span>, <span class="ruby-identifier">test</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">test</span>.<span class="ruby-identifier">description</span>
+  <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">printf</span> <span class="ruby-string">&quot;  %s\n&quot;</span>, <span class="ruby-identifier">test</span>.<span class="ruby-identifier">certchainalias</span>.<span class="ruby-identifier">inspect</span>
   <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">puts</span> <span class="ruby-string">''</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- display_test-source -->
@@ -378,72 +367,10 @@ tests.</p>
       </div><!-- display_test-method -->
 
     
-      <div id="method-i-parse_args" class="method-detail ">
+      <div id="method-i-init_packetthief" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">parse_args</span><span
-            class="method-args">(args)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-
-          
-          <div class="method-source-code" id="parse_args-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 16</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_args</span>(<span class="ruby-identifier">args</span>)
-  <span class="ruby-identifier">options</span> = <span class="ruby-constant">DEFAULT_OPTS</span>.<span class="ruby-identifier">dup</span>
-
-  <span class="ruby-identifier">opts</span> = <span class="ruby-constant">OptionParser</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">opts</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">banner</span> = <span class="ruby-node">&quot;Usage: #{$0} [options] [tests to run]&quot;</span>
-
-    <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&quot;-p&quot;</span>,<span class="ruby-string">&quot;--[no-]pause&quot;</span>, <span class="ruby-string">&quot;Pause between tests&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">options</span>[<span class="ruby-value">:pause</span>] = <span class="ruby-keyword">true</span>
-    <span class="ruby-keyword">end</span>
-
-    <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&quot;-c&quot;</span>, <span class="ruby-string">&quot;--config path/to/config.yml&quot;</span>,
-            <span class="ruby-string">&quot;Specify a custom config.yml file&quot;</span>,
-            <span class="ruby-node">&quot;  (Default: #{DEFAULT_OPTS[:config]})&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">confname</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">options</span>[<span class="ruby-value">:config</span>] = <span class="ruby-identifier">confname</span>
-    <span class="ruby-keyword">end</span>
-
-    <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&quot;-l&quot;</span>,<span class="ruby-string">&quot;--list&quot;</span>, <span class="ruby-string">&quot;List all tests (or those specified on the command line&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">options</span>[<span class="ruby-value">:action</span>] = <span class="ruby-value">:list</span>
-    <span class="ruby-keyword">end</span>
-
-    <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&quot;--log-level=loglevel&quot;</span>, <span class="ruby-string">&quot;Set the log level. It can be one of:&quot;</span>,
-            <span class="ruby-string">&quot;  DEBUG, INFO, WARN, ERROR, FATAL&quot;</span>, <span class="ruby-string">&quot;  (Default: INFO, or whatever config.yml sets)&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">options</span>[<span class="ruby-value">:loglevel</span>] = <span class="ruby-identifier">l</span>
-    <span class="ruby-keyword">end</span>
-
-    <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&quot;--log-file=somefile.log&quot;</span>, <span class="ruby-string">&quot;Specify the file to write logs to.&quot;</span>,<span class="ruby-string">&quot;  (Default: - (STDOUT))&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">options</span>[<span class="ruby-value">:logfile</span>] = <span class="ruby-identifier">l</span>
-    <span class="ruby-keyword">end</span>
-
-  <span class="ruby-keyword">end</span>
-
-  <span class="ruby-identifier">args</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">dup</span>
-  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">parse!</span>(<span class="ruby-identifier">args</span>)
-  <span class="ruby-keyword">return</span> [<span class="ruby-identifier">options</span>, <span class="ruby-identifier">args</span>]
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- parse_args-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- parse_args-method -->
-
-    
-      <div id="method-i-pause" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">pause</span><span
+          <span class="method-name">init_packetthief</span><span
             class="method-args">()</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
@@ -451,24 +378,41 @@ tests.</p>
 
         <div class="method-description">
           
-          
+          <p>Initialize custom <a href="../PacketThief.html">PacketThief</a> modes of
+operation. Eg, we use manual when PT does not manage the firewall rules and
+when it should just return a preconfigured destination, and external for
+when PT does not manage the firewall rules but still needs to know how to
+discover the destination.</p>
           
 
           
-          <div class="method-source-code" id="pause-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 127</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">pause</span>
-  <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Press Enter to continue.&quot;</span>
-  <span class="ruby-ivar">@stdin</span>.<span class="ruby-identifier">gets</span>
+          <div class="method-source-code" id="init_packetthief-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">init_packetthief</span>
+  <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">logger</span> = <span class="ruby-ivar">@logger</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">packetthief</span>.<span class="ruby-identifier">has_key?</span> <span class="ruby-string">'implementation'</span>
+    <span class="ruby-identifier">impl</span> = <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">packetthief</span>[<span class="ruby-string">'implementation'</span>]
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">impl</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-regexp">%rmanual\(/</span>
+      <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">implementation</span> = <span class="ruby-value">:manual</span>
+      <span class="ruby-identifier">host</span> = <span class="ruby-regexp">%rmanual\((.*)\)/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">impl</span>)[<span class="ruby-value">1</span>]
+      <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">set_dest</span>(<span class="ruby-identifier">host</span>, <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">packetthief</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">'dest_port'</span>,<span class="ruby-value">443</span>))
+    <span class="ruby-keyword">when</span> <span class="ruby-regexp">%rexternal\(/</span>
+      <span class="ruby-identifier">real_impl</span> = <span class="ruby-regexp">%rexternal\((.*)\)/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">impl</span>)[<span class="ruby-value">1</span>]
+      <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">implementation</span> = <span class="ruby-identifier">real_impl</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_sym</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">implementation</span> = <span class="ruby-identifier">impl</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- pause-source -->
+          </div><!-- init_packetthief-source -->
           
         </div>
 
         
 
         
-      </div><!-- pause-method -->
+      </div><!-- init_packetthief-method -->
 
     
       <div id="method-i-run" class="method-detail ">
@@ -487,29 +431,26 @@ tests.</p>
 
           
           <div class="method-source-code" id="run-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 88</span>
+            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 28</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>
   <span class="ruby-keyword">case</span> <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">action</span>
   <span class="ruby-keyword">when</span> <span class="ruby-value">:list</span>
     <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;These are the test I will perform and their descriptions:&quot;</span>
     <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">puts</span> <span class="ruby-string">''</span>
-    <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">tests</span>(<span class="ruby-ivar">@test_list</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@test_list</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">test</span><span class="ruby-operator">|</span>
+    <span class="ruby-constant">SSLTestCase</span>.<span class="ruby-identifier">factory</span>(<span class="ruby-ivar">@app_context</span>, <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">tests</span>, <span class="ruby-ivar">@test_list</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">test</span><span class="ruby-operator">|</span>
       <span class="ruby-identifier">display_test</span> <span class="ruby-identifier">test</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">when</span> <span class="ruby-value">:runtests</span>
     <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Press spacebar to skip a test, or 'q' to stop testing.&quot;</span>
-    <span class="ruby-ivar">@report</span> = <span class="ruby-constant">SSLTestReport</span>.<span class="ruby-identifier">new</span>
-    <span class="ruby-identifier">first</span> = <span class="ruby-keyword">true</span>
-    <span class="ruby-ivar">@tests</span> = <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">tests</span>( <span class="ruby-ivar">@test_list</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@test_list</span>)
     <span class="ruby-identifier">loginfo</span> <span class="ruby-node">&quot;Hostname being tested (assuming certs are up to date): #{@config.hosttotest}&quot;</span>
+
+    <span class="ruby-ivar">@tests</span> = <span class="ruby-constant">SSLTestCase</span>.<span class="ruby-identifier">factory</span>(<span class="ruby-ivar">@app_context</span>, <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">tests</span>, <span class="ruby-ivar">@test_list</span>)
     <span class="ruby-identifier">loginfo</span> <span class="ruby-node">&quot;Running #{@tests.length} tests&quot;</span>
-    <span class="ruby-ivar">@tests</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">test</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">pause</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">pause?</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">first</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">run_test</span>(<span class="ruby-identifier">test</span>) <span class="ruby-operator">==</span> <span class="ruby-value">:stop</span>
-        <span class="ruby-keyword">break</span>
-      <span class="ruby-keyword">end</span>
-      <span class="ruby-identifier">first</span> = <span class="ruby-keyword">false</span>
-    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">start_packetthief</span>
+    <span class="ruby-identifier">run_tests</span>(<span class="ruby-ivar">@tests</span>)
+    <span class="ruby-identifier">stop_packetthief</span>
+
     <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">print_results</span>(<span class="ruby-ivar">@stdout</span>)
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Unknown action: #{opts[:action]}&quot;</span>
@@ -525,34 +466,110 @@ tests.</p>
       </div><!-- run-method -->
 
     
-      <div id="method-i-run_test" class="method-detail ">
+      <div id="method-i-run_tests" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">run_test</span><span
-            class="method-args">(test)</span>
+          <span class="method-name">run_tests</span><span
+            class="method-args">(testlist)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
 
         <div class="method-description">
           
-          <p>Runs a test based on the test description.</p>
+          
           
 
           
-          <div class="method-source-code" id="run_test-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 117</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">run_test</span>(<span class="ruby-identifier">test</span>)
-  <span class="ruby-constant">SSLTestCase</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@app_context</span>, <span class="ruby-ivar">@report</span>, <span class="ruby-identifier">test</span>).<span class="ruby-identifier">run</span>
+          <div class="method-source-code" id="run_tests-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">run_tests</span>(<span class="ruby-identifier">testlist</span>)
+  <span class="ruby-identifier">test_manager</span> = <span class="ruby-constant">TestManager</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@app_context</span>, <span class="ruby-identifier">testlist</span>, <span class="ruby-ivar">@report</span>, <span class="ruby-ivar">@logger</span>)
+  <span class="ruby-constant">EM</span>.<span class="ruby-identifier">run</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-comment"># @listener handles the initial server socket, not the accepted connections.</span>
+    <span class="ruby-comment"># h in the code block is for each accepted connection.</span>
+    <span class="ruby-ivar">@listener</span> = <span class="ruby-constant">TestListener</span>.<span class="ruby-identifier">start</span>(<span class="ruby-string">''</span>, <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">listener_port</span>, <span class="ruby-identifier">test_manager</span>)
+    <span class="ruby-ivar">@listener</span>.<span class="ruby-identifier">logger</span> = <span class="ruby-ivar">@logger</span>
+    <span class="ruby-ivar">@keyboard</span> = <span class="ruby-constant">EM</span>.<span class="ruby-identifier">open_keyboard</span> <span class="ruby-constant">InputHandler</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">h</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">' '</span>) { <span class="ruby-identifier">test_manager</span>.<span class="ruby-identifier">test_completed</span>(<span class="ruby-identifier">test_manager</span>.<span class="ruby-identifier">current_test</span>, <span class="ruby-value">:skipped</span>) }
+      <span class="ruby-identifier">h</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">'q'</span>) { <span class="ruby-identifier">test_manager</span>.<span class="ruby-identifier">stop_testing</span> }
+      <span class="ruby-identifier">h</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&quot;\n&quot;</span>) { <span class="ruby-identifier">test_manager</span>.<span class="ruby-identifier">unpause</span> }
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">EM</span>.<span class="ruby-identifier">add_periodic_timer</span>(<span class="ruby-value">5</span>) { <span class="ruby-identifier">logdebug</span> <span class="ruby-node">&quot;EM connection count: #{EM.connection_count}&quot;</span> }
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- run_test-source -->
+          </div><!-- run_tests-source -->
           
         </div>
 
         
 
         
-      </div><!-- run_test-method -->
+      </div><!-- run_tests-method -->
+
+    
+      <div id="method-i-start_packetthief" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">start_packetthief</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="start_packetthief-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 91</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">start_packetthief</span>
+  <span class="ruby-identifier">ptconf</span> = <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">packetthief</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">ptconf</span>.<span class="ruby-identifier">has_key?</span> <span class="ruby-string">'implementation'</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">ptconf</span>[<span class="ruby-string">'implementation'</span>].<span class="ruby-identifier">match</span>(<span class="ruby-regexp">%rexternal/</span>)
+    <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">redirect</span>(<span class="ruby-value">:to_ports</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@config</span>.<span class="ruby-identifier">listener_port</span>).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">ptconf</span>).<span class="ruby-identifier">run</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">at_exit</span> { <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">revert</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- start_packetthief-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- start_packetthief-method -->
+
+    
+      <div id="method-i-stop_packetthief" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">stop_packetthief</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="stop_packetthief-source">
+            <pre><span class="ruby-comment"># File lib/ssl_test/runner.rb, line 99</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">stop_packetthief</span>
+  <span class="ruby-constant">PacketThief</span>.<span class="ruby-identifier">revert</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- stop_packetthief-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- stop_packetthief-method -->
 
     
     </section><!-- public-instance-method-details -->

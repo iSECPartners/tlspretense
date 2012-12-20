@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class SSLTest::SSLTestCase - TLSPretense 0.6.1</title>
+<title>class CertMaker::Runner - TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
@@ -47,7 +47,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>lib/ssl_test/ssl_test_case.rb
+    <li>lib/certmaker/runner.rb
   </ul>
 </nav>
 
@@ -70,7 +70,7 @@
   <ul class="link-list">
   
   
-    <li><a class="include" href="../PacketThief/Logging.html">PacketThief::Logging</a>
+    <li><span class="include">FileUtils</span>
   
   
   </ul>
@@ -82,9 +82,11 @@
 
   <ul class="link-list">
     
-    <li><a href="#method-c-factory">::factory</a>
+    <li><a href="#method-i-ca">#ca</a>
     
-    <li><a href="#method-c-new">::new</a>
+    <li><a href="#method-i-certs">#certs</a>
+    
+    <li><a href="#method-i-clean">#clean</a>
     
   </ul>
 </nav>
@@ -226,12 +228,10 @@
 </nav>
 
 <div id="documentation">
-  <h1 class="class">class SSLTest::SSLTestCase</h1>
+  <h1 class="class">class CertMaker::Runner</h1>
 
   <div id="description" class="description">
     
-<p>Represents a single test case.</p>
-
   </div><!-- description -->
 
   
@@ -245,182 +245,107 @@
     
 
     
-    <!-- Attributes -->
-    <section id="attribute-method-details" class="method-section section">
-      <h3 class="section-header">Attributes</h3>
-
-      
-      <div id="attribute-i-certchain" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">certchain</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-certchainalias" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">certchainalias</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-description" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">description</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-expected_result" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">expected_result</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-hosttotest" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">hosttotest</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-id" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">id</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-keychain" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">keychain</span><span
-            class="attribute-access-type">[R]</span>
-        </div>
-
-        <div class="method-description">
-        
-        
-        
-        </div>
-      </div>
-      
-    </section><!-- attribute-method-details -->
-    
 
     <!-- Methods -->
     
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Class Methods</h3>
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
 
     
-      <div id="method-c-factory" class="method-detail ">
+      <div id="method-i-ca" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">factory</span><span
-            class="method-args">(appctx, test_data, tests_to_create)</span>
+          <span class="method-name">ca</span><span
+            class="method-args">()</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
 
         <div class="method-description">
           
-          
+          <p>Checks for a CA, and generates it if needed.</p>
           
 
           
-          <div class="method-source-code" id="factory-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/ssl_test_case.rb, line 15</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">factory</span>(<span class="ruby-identifier">appctx</span>, <span class="ruby-identifier">test_data</span>, <span class="ruby-identifier">tests_to_create</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">tests_to_create</span> <span class="ruby-operator">==</span> [] <span class="ruby-keyword">or</span> <span class="ruby-identifier">tests_to_create</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
-    <span class="ruby-identifier">final_test_data</span> = <span class="ruby-identifier">test_data</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">final_test_data</span> = <span class="ruby-identifier">tests_to_create</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-identifier">test_data</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">test</span><span class="ruby-operator">|</span> <span class="ruby-identifier">test</span>[<span class="ruby-string">'alias'</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">name</span> }[<span class="ruby-value">0</span>] }
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">final_test_data</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">data</span><span class="ruby-operator">|</span> <span class="ruby-constant">SSLTestCase</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">appctx</span>, <span class="ruby-identifier">data</span>) }
+          <div class="method-source-code" id="ca-source">
+            <pre><span class="ruby-comment"># File lib/certmaker/runner.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ca</span>
+  <span class="ruby-identifier">y</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-string">'config.yml'</span>)
+  <span class="ruby-constant">CertMaker</span>.<span class="ruby-identifier">make_ca</span> <span class="ruby-identifier">y</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- factory-source -->
+          </div><!-- ca-source -->
           
         </div>
 
         
 
         
-      </div><!-- factory-method -->
+      </div><!-- ca-method -->
 
     
-      <div id="method-c-new" class="method-detail ">
+      <div id="method-i-certs" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">new</span><span
-            class="method-args">(appctx, testdesc)</span>
+          <span class="method-name">certs</span><span
+            class="method-args">()</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
 
         <div class="method-description">
           
-          
+          <p>Generate a suite of test certificates</p>
           
 
           
-          <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/ssl_test_case.rb, line 24</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">appctx</span>, <span class="ruby-identifier">testdesc</span>)
-  <span class="ruby-ivar">@appctx</span> = <span class="ruby-identifier">appctx</span>
-  <span class="ruby-ivar">@raw</span> = <span class="ruby-identifier">testdesc</span>.<span class="ruby-identifier">dup</span>
-  <span class="ruby-ivar">@id</span> = <span class="ruby-ivar">@raw</span>[<span class="ruby-string">'alias'</span>]
-  <span class="ruby-ivar">@description</span> = <span class="ruby-ivar">@raw</span>[<span class="ruby-string">'name'</span>]
-  <span class="ruby-ivar">@certchainalias</span> = <span class="ruby-ivar">@raw</span>[<span class="ruby-string">'certchain'</span>]
-  <span class="ruby-ivar">@expected_result</span> = <span class="ruby-ivar">@raw</span>[<span class="ruby-string">'expected_result'</span>]
+          <div class="method-source-code" id="certs-source">
+            <pre><span class="ruby-comment"># File lib/certmaker/runner.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">certs</span>
+  <span class="ruby-identifier">ca</span>
+  <span class="ruby-identifier">y</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-string">'config.yml'</span>)
+  <span class="ruby-constant">CertMaker</span>.<span class="ruby-identifier">make_certs</span> <span class="ruby-identifier">y</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- new-source -->
+          </div><!-- certs-source -->
           
         </div>
 
         
 
         
-      </div><!-- new-method -->
+      </div><!-- certs-method -->
 
     
-    </section><!-- public-class-method-details -->
+      <div id="method-i-clean" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">clean</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Clean up by deleting the ‘certs’ directory.</p>
+          
+
+          
+          <div class="method-source-code" id="clean-source">
+            <pre><span class="ruby-comment"># File lib/certmaker/runner.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">clean</span>
+  <span class="ruby-identifier">rm_r</span> <span class="ruby-string">&quot;certs&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- clean-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- clean-method -->
+
+    
+    </section><!-- public-instance-method-details -->
   
   </section><!-- 5Buntitled-5D -->
 

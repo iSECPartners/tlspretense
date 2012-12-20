@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class PacketThief::Handlers::SSLServer - TLSPretense </title>
+<title>class PacketThief::Handlers::SSLServer - TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
 
@@ -177,6 +177,8 @@
   
     <li><a href="../../SSLTest/Runner.html">SSLTest::Runner</a>
   
+    <li><a href="../../SSLTest/RunnerOptions.html">SSLTest::RunnerOptions</a>
+  
     <li><a href="../../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
   
     <li><a href="../../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
@@ -185,11 +187,25 @@
   
     <li><a href="../../SSLTest/TestListener.html">SSLTest::TestListener</a>
   
+    <li><a href="../../SSLTest/TestManager.html">SSLTest::TestManager</a>
+  
+    <li><a href="../../TLSPretense.html">TLSPretense</a>
+  
+    <li><a href="../../TLSPretense/App.html">TLSPretense::App</a>
+  
+    <li><a href="../../TLSPretense/CleanExitError.html">TLSPretense::CleanExitError</a>
+  
+    <li><a href="../../TLSPretense/InitRunner.html">TLSPretense::InitRunner</a>
+  
+    <li><a href="../../TLSPretense/InitRunner/InitError.html">TLSPretense::InitRunner::InitError</a>
+  
     <li><a href="../../CertMaker.html">CertMaker</a>
   
     <li><a href="../../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
   
     <li><a href="../../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../../CertMaker/Runner.html">CertMaker::Runner</a>
   
     <li><a href="../../Hash.html">Hash</a>
   
@@ -318,7 +334,7 @@ else to it directly.</p>
         
         <div class="method-heading">
           <span class="method-name">new</span><span
-            class="method-args">(tcpsocket)</span>
+            class="method-args">(tcpsocket,logger=nil)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
@@ -331,8 +347,8 @@ else to it directly.</p>
           
           <div class="method-source-code" id="new-source">
             <pre><span class="ruby-comment"># File lib/packetthief/handlers/ssl_server.rb, line 148</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">tcpsocket</span>)
-  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">tcpsocket</span>)
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">tcpsocket</span>,<span class="ruby-identifier">logger</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">tcpsocket</span>, <span class="ruby-identifier">logger</span>)
   <span class="ruby-ivar">@ctx</span>.<span class="ruby-identifier">servername_cb</span> = <span class="ruby-identifier">proc</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">sslsocket</span>, <span class="ruby-identifier">hostname</span><span class="ruby-operator">|</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">servername_cb</span>(<span class="ruby-identifier">sslsocket</span>, <span class="ruby-identifier">hostname</span>) }
 <span class="ruby-keyword">end</span></pre>
           </div><!-- new-source -->

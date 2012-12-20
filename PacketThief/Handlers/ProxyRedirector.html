@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class PacketThief::Handlers::ProxyRedirector - TLSPretense </title>
+<title>class PacketThief::Handlers::ProxyRedirector - TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
 
@@ -173,6 +173,8 @@
   
     <li><a href="../../SSLTest/Runner.html">SSLTest::Runner</a>
   
+    <li><a href="../../SSLTest/RunnerOptions.html">SSLTest::RunnerOptions</a>
+  
     <li><a href="../../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
   
     <li><a href="../../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
@@ -181,11 +183,25 @@
   
     <li><a href="../../SSLTest/TestListener.html">SSLTest::TestListener</a>
   
+    <li><a href="../../SSLTest/TestManager.html">SSLTest::TestManager</a>
+  
+    <li><a href="../../TLSPretense.html">TLSPretense</a>
+  
+    <li><a href="../../TLSPretense/App.html">TLSPretense::App</a>
+  
+    <li><a href="../../TLSPretense/CleanExitError.html">TLSPretense::CleanExitError</a>
+  
+    <li><a href="../../TLSPretense/InitRunner.html">TLSPretense::InitRunner</a>
+  
+    <li><a href="../../TLSPretense/InitRunner/InitError.html">TLSPretense::InitRunner::InitError</a>
+  
     <li><a href="../../CertMaker.html">CertMaker</a>
   
     <li><a href="../../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
   
     <li><a href="../../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../../CertMaker/Runner.html">CertMaker::Runner</a>
   
     <li><a href="../../Hash.html">Hash</a>
   
@@ -229,7 +245,7 @@ configured host instead.</p>
         
         <div class="method-heading">
           <span class="method-name">new</span><span
-            class="method-args">(proxy_host, proxy_port)</span>
+            class="method-args">(proxy_host, proxy_port, log=nil)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
@@ -242,8 +258,8 @@ configured host instead.</p>
           
           <div class="method-source-code" id="new-source">
             <pre><span class="ruby-comment"># File lib/packetthief/handlers/proxy_redirector.rb, line 8</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">proxy_host</span>, <span class="ruby-identifier">proxy_port</span>)
-  <span class="ruby-keyword">super</span>()
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">proxy_host</span>, <span class="ruby-identifier">proxy_port</span>, <span class="ruby-identifier">log</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">log</span>)
 
   <span class="ruby-ivar">@proxy_host</span> = <span class="ruby-identifier">proxy_host</span>
   <span class="ruby-ivar">@proxy_port</span> = <span class="ruby-identifier">proxy_port</span>
@@ -282,8 +298,8 @@ configured host instead.</p>
           <div class="method-source-code" id="client_connected-source">
             <pre><span class="ruby-comment"># File lib/packetthief/handlers/proxy_redirector.rb, line 16</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">client_connected</span>
-  <span class="ruby-identifier">dest_host</span> = <span class="ruby-ivar">@proxy_host</span>
-  <span class="ruby-identifier">dest_port</span> = <span class="ruby-ivar">@proxy_port</span>
+  <span class="ruby-ivar">@dest_host</span> = <span class="ruby-ivar">@proxy_host</span>
+  <span class="ruby-ivar">@dest_port</span> = <span class="ruby-ivar">@proxy_port</span>
   <span class="ruby-identifier">connect_to_dest</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- client_connected-source -->

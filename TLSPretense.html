@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class IO - TLSPretense 0.6.1</title>
+<title>module TLSPretense - TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
@@ -20,7 +20,7 @@
 <script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
 
 
-<body id="top" class="class">
+<body id="top" class="module">
 <nav id="metadata">
   <nav id="home-section" class="section">
   <h3 class="section-header">
@@ -47,7 +47,10 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>lib/ssl_test/ext_core/io_raw_input.rb
+    <li>lib/tlspretense.rb
+    <li>lib/tlspretense/app.rb
+    <li>lib/tlspretense/init_runner.rb
+    <li>lib/tlspretense/version.rb
   </ul>
 </nav>
 
@@ -56,27 +59,9 @@
 
   <div id="class-metadata">
     
-    <nav id="parent-class-section" class="section">
-  <h3 class="section-header">Parent</h3>
-  
-  <p class="link">Object
-  
-</nav>
-
     
-    <!-- Method Quickref -->
-<nav id="method-list-section" class="section">
-  <h3 class="section-header">Methods</h3>
-
-  <ul class="link-list">
     
-    <li><a href="#method-i-disable_raw_chars">#disable_raw_chars</a>
     
-    <li><a href="#method-i-enable_raw_chars">#enable_raw_chars</a>
-    
-  </ul>
-</nav>
-
   </div>
 
   <div id="project-metadata">
@@ -214,12 +199,10 @@
 </nav>
 
 <div id="documentation">
-  <h1 class="class">class IO</h1>
+  <h1 class="module">module TLSPretense</h1>
 
   <div id="description" class="description">
     
-<p>Extends <a href="IO.html">IO</a> to enable “raw” input on TTYs.</p>
-
   </div><!-- description -->
 
   
@@ -231,93 +214,24 @@
     
 
     
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="VERSION">VERSION
+        
+        <dd class="description">
+        
+      
+      </dl>
+    </section>
+    
 
     
 
     <!-- Methods -->
     
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Instance Methods</h3>
-
-    
-      <div id="method-i-disable_raw_chars" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">disable_raw_chars</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Reverts the termios state to what it was before calling <a
-href="IO.html#method-i-enable_raw_chars">enable_raw_chars</a>.</p>
-          
-
-          
-          <div class="method-source-code" id="disable_raw_chars-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/ext_core/io_raw_input.rb, line 25</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">disable_raw_chars</span>
-  <span class="ruby-identifier">raise</span> <span class="ruby-constant">IOError</span>, <span class="ruby-node">&quot;#{self} is not a TTY.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tty?</span>
-  <span class="ruby-constant">Termios</span>.<span class="ruby-identifier">tcsetattr</span>(<span class="ruby-keyword">self</span>, <span class="ruby-constant">Termios</span><span class="ruby-operator">::</span><span class="ruby-constant">TCSANOW</span>, <span class="ruby-ivar">@_oldtermios</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- disable_raw_chars-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- disable_raw_chars-method -->
-
-    
-      <div id="method-i-enable_raw_chars" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">enable_raw_chars</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Enables raw character input for a TTY. It uses the ruby-termios gem to
-disable ICANON and ECHO functionality. This means that characters will
-become immediately available to IO#gets, IO#getchar, etc. after the user
-presses a button, and that the characters will not be implicitly echoed to
-the screen.</p>
-
-<p>If you call this on $stdin, you probably should ensure that you call <a
-href="IO.html#method-i-disable_raw_chars">disable_raw_chars</a> in order to
-restore the previous termios state after your program exits. Otherwise, you
-may screw up the user’s terminal, and they will have to call `reset`.</p>
-          
-
-          
-          <div class="method-source-code" id="enable_raw_chars-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/ext_core/io_raw_input.rb, line 15</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">enable_raw_chars</span>
-  <span class="ruby-identifier">raise</span> <span class="ruby-constant">IOError</span>, <span class="ruby-node">&quot;#{self} is not a TTY.&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tty?</span>
-  <span class="ruby-ivar">@_oldtermios</span> = <span class="ruby-constant">Termios</span>.<span class="ruby-identifier">tcgetattr</span>(<span class="ruby-keyword">self</span>)
-  <span class="ruby-identifier">newt</span> = <span class="ruby-ivar">@_oldtermios</span>.<span class="ruby-identifier">dup</span>
-  <span class="ruby-identifier">newt</span>.<span class="ruby-identifier">c_lflag</span> <span class="ruby-operator">&amp;=</span> <span class="ruby-operator">~</span><span class="ruby-constant">Termios</span><span class="ruby-operator">::</span><span class="ruby-constant">ICANON</span>
-  <span class="ruby-identifier">newt</span>.<span class="ruby-identifier">c_lflag</span> <span class="ruby-operator">&amp;=</span> <span class="ruby-operator">~</span><span class="ruby-constant">Termios</span><span class="ruby-operator">::</span><span class="ruby-constant">ECHO</span>
-  <span class="ruby-constant">Termios</span>.<span class="ruby-identifier">tcsetattr</span>(<span class="ruby-keyword">self</span>, <span class="ruby-constant">Termios</span><span class="ruby-operator">::</span><span class="ruby-constant">TCSANOW</span>, <span class="ruby-identifier">newt</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- enable_raw_chars-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- enable_raw_chars-method -->
-
-    
-    </section><!-- public-instance-method-details -->
-  
   </section><!-- 5Buntitled-5D -->
 
 </div><!-- documentation -->

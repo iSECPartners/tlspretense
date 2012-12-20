@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>linux_setup - TLSPretense 0.6.1</title>
+<title>class TLSPretense::CleanExitError - TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
@@ -20,7 +20,7 @@
 <script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
 
 
-<body class="file">
+<body id="top" class="class">
 <nav id="metadata">
   <nav id="home-section" class="section">
   <h3 class="section-header">
@@ -42,6 +42,30 @@
   <ul id="search-results" class="initially-hidden"></ul>
 </nav>
 
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/tlspretense.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">StandardError
+  
+</nav>
+
+    
+    
+  </div>
 
   <div id="project-metadata">
     <nav id="fileindex-section" class="section project-section">
@@ -177,79 +201,30 @@
   </div>
 </nav>
 
-<div id="documentation" class="description">
+<div id="documentation">
+  <h1 class="class">class TLSPretense::CleanExitError</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
   
-<h1 id="label-Setting+Up+Linux+for+Use+With+TLSPretense">Setting Up Linux for Use With <a href="../TLSPretense.html">TLSPretense</a></h1>
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
 
-<p>To run <a href="../TLSPretense.html">TLSPretense</a> on Linux, you need a
-system that has two network interfaces. This Linux system could run from a
-virtual machine, or it could run on a laptop and use the laptop’s wifi card
-as a wireless access point to test.</p>
+    
 
-<p>The following setup will use a Linux host to run <a
-href="../TLSPretense.html">TLSPretense</a>, and it will configure netfilter
-to be a NAT with statically managed IP address on its internal network.</p>
+    
 
-<p>TODO: How to host a DHCP server on certain systems.</p>
+    
 
-<h2 id="label-Configuring+Linux+to+act+as+a+NAT%2Frouter%2Fgateway">Configuring Linux to act as a NAT/router/gateway</h2>
+    <!-- Methods -->
+    
+  </section><!-- 5Buntitled-5D -->
 
-<p>The first step is to configure the Linux system’s routing with IPTables.
-The following script will turn the system into a NAT router. <a
-href="../TLSPretense.html">TLSPretense</a> will then later add and remove
-iptables rules as needed in order to intercept network traffic during
-testing.</p>
-
-<p>In this script, we assume <code>eth0</code> is the external interface that
-can connect to the original destination, and <code>eth1</code> is the
-internal interface that the client system will connect to.</p>
-
-<pre>#!/bin/sh
-external=eth0
-internal=eth1
-
-iptables --flush
-iptables --table nat --flush
-iptables --delete-chain
-iptables --table nat --delete-chain
-
-echo &quot;Manually setup the internal network's nic&quot;
-ifconfig $internal 192.168.42.1 netmask 255.255.255.0 
-
-echo &quot;Enable packet forwarding&quot;
-echo 1 &gt; /proc/sys/net/ipv4/ip_forward
-
-echo &quot;Apply basic iptables rules to create a NAT&quot;
-iptables -t nat -A POSTROUTING -o $external -j MASQUERADE
-
-echo &quot;Done! TLSPretense will automatically add and remove the rules for redirecting traffic.&quot;</pre>
-
-<p>Here we choose 192.168.42.* as the internal network IP address range.</p>
-
-<p>Check to make sure that the <a href="../TLSPretense.html">TLSPretense</a>
-host is able to access the internet over the external interface, and that
-it can look up hostnames.</p>
-
-<p>TODO: handling wireless (<a
-href="https://bitbucket.org/IntrepidusGroup/mallory/wiki/Wifi_Hotspot_Setup">although
-Mallory already has a guide</a>)</p>
-
-<h2 id="label-Configure+the+Client%27s+Host">Configure the Client’s Host</h2>
-
-<p>Next, the system that will run the client code needs to be configured to
-use the <a href="../TLSPretense.html">TLSPretense</a> host as its gateway.
-This usually involves configuring the system’s network connection with
-information like the following:</p>
-
-<pre>Address: 192.168.42.100
-Gateway: 192.168.42.1
-Subnet mask: 255.255.255.0</pre>
-
-<p>You will also need to configure the client’s DNS with a known good DNS
-server.</p>
-
-</div>
-
+</div><!-- documentation -->
 
 
 <footer id="validator-badges">

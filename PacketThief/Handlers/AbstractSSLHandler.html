@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class PacketThief::Handlers::AbstractSSLHandler - TLSPretense </title>
+<title>class PacketThief::Handlers::AbstractSSLHandler - TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
 
@@ -209,6 +209,8 @@
   
     <li><a href="../../SSLTest/Runner.html">SSLTest::Runner</a>
   
+    <li><a href="../../SSLTest/RunnerOptions.html">SSLTest::RunnerOptions</a>
+  
     <li><a href="../../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
   
     <li><a href="../../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
@@ -217,11 +219,25 @@
   
     <li><a href="../../SSLTest/TestListener.html">SSLTest::TestListener</a>
   
+    <li><a href="../../SSLTest/TestManager.html">SSLTest::TestManager</a>
+  
+    <li><a href="../../TLSPretense.html">TLSPretense</a>
+  
+    <li><a href="../../TLSPretense/App.html">TLSPretense::App</a>
+  
+    <li><a href="../../TLSPretense/CleanExitError.html">TLSPretense::CleanExitError</a>
+  
+    <li><a href="../../TLSPretense/InitRunner.html">TLSPretense::InitRunner</a>
+  
+    <li><a href="../../TLSPretense/InitRunner/InitError.html">TLSPretense::InitRunner::InitError</a>
+  
     <li><a href="../../CertMaker.html">CertMaker</a>
   
     <li><a href="../../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
   
     <li><a href="../../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../../CertMaker/Runner.html">CertMaker::Runner</a>
   
     <li><a href="../../Hash.html">Hash</a>
   
@@ -336,7 +352,7 @@ initialize.</p>
         
         <div class="method-heading">
           <span class="method-name">new</span><span
-            class="method-args">(tcpsocket)</span>
+            class="method-args">(tcpsocket, logger=nil)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
@@ -349,7 +365,8 @@ initialize.</p>
           
           <div class="method-source-code" id="new-source">
             <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 29</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">tcpsocket</span>)
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">tcpsocket</span>, <span class="ruby-identifier">logger</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-ivar">@logger</span> = <span class="ruby-identifier">logger</span>
   <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;initialize&quot;</span>
   <span class="ruby-comment"># Set up initial values</span>
   <span class="ruby-ivar">@tcpsocket</span> = <span class="ruby-identifier">tcpsocket</span>
@@ -390,7 +407,7 @@ initialize.</p>
 
           
           <div class="method-source-code" id="close_connection-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 192</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 193</span>
       <span class="ruby-keyword">def</span> <span class="ruby-identifier">close_connection</span>
         <span class="ruby-identifier">detach</span>
         <span class="ruby-ivar">@sslsocket</span>.<span class="ruby-identifier">close</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@sslsocket</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@sslsocket</span>.<span class="ruby-identifier">closed?</span>
@@ -423,7 +440,7 @@ initialize.</p>
 
           
           <div class="method-source-code" id="close_connection_after_writing-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 199</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 200</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">close_connection_after_writing</span>
   <span class="ruby-ivar">@close_after_writing</span> = <span class="ruby-keyword">true</span>
   <span class="ruby-comment"># if we aren't waiting to write, then we can flush and close.</span>
@@ -460,7 +477,7 @@ based on the current state of the connection.</p>
 
           
           <div class="method-source-code" id="notify_readable-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 62</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 63</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_readable</span>
   <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;notify_readable&quot;</span>, <span class="ruby-value">:state</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@state</span>
   <span class="ruby-keyword">case</span> <span class="ruby-ivar">@state</span>
@@ -500,7 +517,7 @@ if we are waiting to write for some reason.</p>
 
           
           <div class="method-source-code" id="notify_writable-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 76</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 77</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_writable</span>
   <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;notify_writable&quot;</span>, <span class="ruby-value">:state</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@state</span>
   <span class="ruby-identifier">notify_writable</span> = <span class="ruby-keyword">false</span> <span class="ruby-comment"># disable it now. if we still need it, we'll renabled it.</span>
@@ -552,7 +569,7 @@ you a chance to manipulate the SSLContext.</p>
 
           
           <div class="method-source-code" id="post_init-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 215</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 216</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">post_init</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- post_init-source -->
@@ -581,7 +598,7 @@ you a chance to manipulate the SSLContext.</p>
 
           
           <div class="method-source-code" id="receive_data-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 235</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 236</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">receive_data</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;receive_data:&quot;</span>, <span class="ruby-value">:data</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">data</span>
 <span class="ruby-keyword">end</span></pre>
@@ -611,7 +628,7 @@ you a chance to manipulate the SSLContext.</p>
 
           
           <div class="method-source-code" id="send_data-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 187</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 188</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">send_data</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;send_data:&quot;</span>, <span class="ruby-value">:data</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">data</span>
   <span class="ruby-identifier">attempt_write</span>(<span class="ruby-identifier">data</span>)
@@ -651,7 +668,7 @@ order to enable sending a hostname in the SNI TLS extension.</p>
 
           
           <div class="method-source-code" id="tls_begin-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 46</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 47</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tls_begin</span>
   <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;tls begin&quot;</span>, <span class="ruby-value">:sni_hostname</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@sni_hostname</span>
   <span class="ruby-ivar">@sslsocket</span> = <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSLSocket</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@tcpsocket</span>, <span class="ruby-ivar">@ctx</span>)
@@ -694,7 +711,7 @@ parameter contains the OpenSSL::SSL::SSLError object that was thrown.</p>
 
           
           <div class="method-source-code" id="tls_failed_handshake-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 230</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 231</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tls_failed_handshake</span>(<span class="ruby-identifier">e</span>)
   <span class="ruby-identifier">logerror</span> <span class="ruby-node">&quot;tls_failed_handshake: Failed to accept: #{e} (#{e.class})&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -725,7 +742,7 @@ href="AbstractSSLHandler.html#method-i-post_init">post_init</a>.</p>
 
           
           <div class="method-source-code" id="tls_successful_handshake-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 221</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 222</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tls_successful_handshake</span>
   <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;Succesful handshake!&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -755,7 +772,7 @@ href="AbstractSSLHandler.html#method-i-post_init">post_init</a>.</p>
 
           
           <div class="method-source-code" id="unbind-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 240</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 241</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unbind</span>
   <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;unbind&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -785,7 +802,7 @@ href="AbstractSSLHandler.html#method-i-post_init">post_init</a>.</p>
 
           
           <div class="method-source-code" id="write_buffer-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 142</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 143</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">write_buffer</span>
   <span class="ruby-ivar">@write_buffer</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&quot;&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -815,7 +832,7 @@ href="AbstractSSLHandler.html#method-i-post_init">post_init</a>.</p>
 
           
           <div class="method-source-code" id="write_buffer-3D-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 147</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/abstract_ssl_handler.rb, line 148</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">write_buffer=</span>(<span class="ruby-identifier">rhs</span>)
   <span class="ruby-ivar">@write_buffer</span> = <span class="ruby-identifier">rhs</span>
 <span class="ruby-keyword">end</span></pre>

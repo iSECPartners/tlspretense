@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>module PacketThief::Handlers::TransparentProxy::ProxyConnection - TLSPretense </title>
+<title>module PacketThief::Handlers::TransparentProxy::ProxyConnection - TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="../../../rdoc.css" rel="stylesheet">
 
@@ -171,6 +171,8 @@
   
     <li><a href="../../../SSLTest/Runner.html">SSLTest::Runner</a>
   
+    <li><a href="../../../SSLTest/RunnerOptions.html">SSLTest::RunnerOptions</a>
+  
     <li><a href="../../../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
   
     <li><a href="../../../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
@@ -179,11 +181,25 @@
   
     <li><a href="../../../SSLTest/TestListener.html">SSLTest::TestListener</a>
   
+    <li><a href="../../../SSLTest/TestManager.html">SSLTest::TestManager</a>
+  
+    <li><a href="../../../TLSPretense.html">TLSPretense</a>
+  
+    <li><a href="../../../TLSPretense/App.html">TLSPretense::App</a>
+  
+    <li><a href="../../../TLSPretense/CleanExitError.html">TLSPretense::CleanExitError</a>
+  
+    <li><a href="../../../TLSPretense/InitRunner.html">TLSPretense::InitRunner</a>
+  
+    <li><a href="../../../TLSPretense/InitRunner/InitError.html">TLSPretense::InitRunner::InitError</a>
+  
     <li><a href="../../../CertMaker.html">CertMaker</a>
   
     <li><a href="../../../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
   
     <li><a href="../../../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../../../CertMaker/Runner.html">CertMaker::Runner</a>
   
     <li><a href="../../../Hash.html">Hash</a>
   
@@ -274,7 +290,7 @@ handler.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 19</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">client_conn</span>)
   <span class="ruby-ivar">@client</span> = <span class="ruby-identifier">client_conn</span>
 
@@ -313,7 +329,7 @@ handler.</p>
 
           
           <div class="method-source-code" id="post_init-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 26</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">post_init</span>
   <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">_send_buffer</span>
 <span class="ruby-keyword">end</span></pre>
@@ -343,7 +359,7 @@ handler.</p>
 
           
           <div class="method-source-code" id="receive_data-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 31</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 32</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">receive_data</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">dest_recv</span>(<span class="ruby-identifier">data</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -374,7 +390,7 @@ already closing.</p>
 
           
           <div class="method-source-code" id="unbind-source">
-            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 37</span>
+            <pre><span class="ruby-comment"># File lib/packetthief/handlers/transparent_proxy.rb, line 38</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unbind</span>
   <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">dest_closed</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">closing</span> = <span class="ruby-keyword">true</span>

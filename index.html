@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>TLSPretense </title>
+<title>TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
@@ -137,6 +137,8 @@
   
     <li><a href="./SSLTest/Runner.html">SSLTest::Runner</a>
   
+    <li><a href="./SSLTest/RunnerOptions.html">SSLTest::RunnerOptions</a>
+  
     <li><a href="./SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
   
     <li><a href="./SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
@@ -145,11 +147,25 @@
   
     <li><a href="./SSLTest/TestListener.html">SSLTest::TestListener</a>
   
+    <li><a href="./SSLTest/TestManager.html">SSLTest::TestManager</a>
+  
+    <li><a href="./TLSPretense.html">TLSPretense</a>
+  
+    <li><a href="./TLSPretense/App.html">TLSPretense::App</a>
+  
+    <li><a href="./TLSPretense/CleanExitError.html">TLSPretense::CleanExitError</a>
+  
+    <li><a href="./TLSPretense/InitRunner.html">TLSPretense::InitRunner</a>
+  
+    <li><a href="./TLSPretense/InitRunner/InitError.html">TLSPretense::InitRunner::InitError</a>
+  
     <li><a href="./CertMaker.html">CertMaker</a>
   
     <li><a href="./CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
   
     <li><a href="./CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="./CertMaker/Runner.html">CertMaker::Runner</a>
   
     <li><a href="./Hash.html">Hash</a>
   
@@ -163,36 +179,48 @@
 
 <div id="documentation" class="description">
   
-<h1 id="label-TLSPretense+---+SSL%2FTLS+Client+Testing+Framework">TLSPretense — SSL/TLS Client Testing Framework</h1>
+<h1 id="label-TLSPretense+---+SSL%2FTLS+Client+Testing+Framework"><a href="TLSPretense.html">TLSPretense</a> --- SSL/TLS Client Testing Framework</h1>
 
 <p>A test framework for testing SSL/TLS client certificate validation.</p>
 
 <h2 id="label-Description">Description</h2>
 
-<p>Note: TLSPretense is still undergoing a lot of polishing. It is currently
-usable, but features may change and documentation may be missing. As such,
-please bear with us over next few months as we find time to work on the
-tools, and feel free to file a bug with details.</p>
+<p>Note: <a href="TLSPretense.html">TLSPretense</a> is still undergoing a lot
+of polishing. It is currently usable, but features may change and
+documentation may be missing. As such, please bear with us over next few
+months as we find time to work on the tools, and feel free to file a bug
+with details.</p>
 
-<p>TLSPretense provides a test framework for testing SSL certificate
-validation. It generates a set of certificates containing specific flaws,
-and it presents the certificates to a client that has been configured to
-trust a CA used by TLSPretense. The test framework then configures its
-system’s firewall to redirect and intercept network traffic so that the
+<p><a href="TLSPretense.html">TLSPretense</a> provides a test framework for
+testing SSL certificate validation. It generates a set of certificates
+containing specific flaws, and it presents the certificates to a client
+that has been configured to trust a CA used by <a
+href="TLSPretense.html">TLSPretense</a>. The test framework then configures
+its system's firewall to redirect and intercept network traffic so that the
 test runner can present its certificate to the client. To speed up testing,
 the test runner starts the next test as soon as the current test finishes.</p>
 
 <p>The test framework must be run on a Unix-like OS that contains a supported
 firewall, but the program being tested can run on any device whose network
 traffic can be routed through the system hosting the test framework.
-Currently, it supports netfilter and ipfw, which limits the test runner to
-Linux, MacOSX (10.6), and *BSD.</p>
+Currently, it supports netfilter (Linux), ipfw (Mac OS X 10.6, *BSD), and
+PF on Mac OS X Lion.</p>
+
+<p>It also has an implementation for a newer version of PF, although this is
+untested.</p>
+
+<h2 id="label-Links">Links</h2>
+<ul><li>
+<p><a href="http://isecpartners.github.com/tlspretense/">Generated
+Documentation</a></p>
+</li></ul>
 
 <h2 id="label-How+It+Works">How It Works</h2>
 
-<p>TLSPretense requires the TLS client software to be configured to trust a CA
-that TLPretense controls. That way “good” certificates created by
-TLSPretense will be accepted by the client.</p>
+<p><a href="TLSPretense.html">TLSPretense</a> requires the TLS client software
+to be configured to trust a CA that TLPretense controls. That way "good"
+certificates created by <a href="TLSPretense.html">TLSPretense</a> will be
+accepted by the client.</p>
 
 <p>Once the system hosting the test runner has been configured to be a gateway
 for the network traffic of thest client being tested, it will add a
@@ -212,41 +240,71 @@ certificate re-signed by the goodca in order to make interception easier).</p>
 <h2 id="label-Requirements">Requirements</h2>
 <ul><li>
 <p>A Unix-like system that uses a supported firewall/routing implementation.
-TLSPretense currently supports:</p>
+<a href="TLSPretense.html">TLSPretense</a> currently supports:</p>
 <ul><li>
 <p>Netfilter on Linux</p>
 </li><li>
 <p>IPFW on MacOSX 10.6 and earlier, and *BSD</p>
+</li><li>
+<p>PFRdr on MacOSX 10.7 (and probably also 10.8)</p>
 </li></ul>
 </li><li>
-<p>Ruby 1.9.x, built against a version of OpenSSL that supports the SNI TLS
-extension. You can check for this if you run the following Ruby script:</p>
+<p>Ruby 1.9.x (Developed with 1.9.3). Check your version with:</p>
 
-<pre>ruby1.9 -ropenssl -e 'puts OpenSSL::SSL::SSLSocket.public_instance_methods.include? :hostname='</pre>
+<pre>ruby --version</pre>
+
+<p>Some systems will install Ruby 1.9.x with a suffix, like `ruby1.9`. Ruby
+must also be built against a version of OpenSSL that supports the SNI TLS
+extension. You can check for this if you run the following Ruby script (on
+some systems, Ruby 1.9.x will be installed as ruby1.9, and commands like
+gem will also have the 1.9 suffix):</p>
+
+<pre>ruby -ropenssl -e 'puts OpenSSL::SSL::SSLSocket.public_instance_methods.include? :hostname='</pre>
 
 <p>Ruby 1.8.7 will mostly work, but Ruby 1.8’s OpenSSL wrapper library does
 not support the ability for clients to use the SNI TLS extension, which is
 needed to grab the correct remote certificate for proxying miscellaneous
 connections. Use Ruby 1.8.x at your own risk.</p>
 </li><li>
-<p>Bundler. If you need it, you can install it with the Ruby gem command:</p>
-
-<pre>$GEM install bundler</pre>
-
-<p>Where $GEM is the version of the <code>gem</code> command available on your
-system. This might just be <code>gem</code> if your default
-<code>ruby</code> is ruby 1.9.x, or something like <code>gem1.9</code>.</p>
-</li><li>
-<p>You need to make the SSL client trust the <em>goodca</em> CA certificate.
-You can either generate a new goodca and install it in the client’s trust
-store, or you can use an existing test CA to generate the test
-certificates.</p>
+<p>The SSL client/HTTPS user agent has to trust the CA used by <a
+href="TLSPretense.html">TLSPretense</a>. You can either generate a new
+goodca and install it in the client’s trust store, or you can use an
+existing test CA with <a href="TLSPretense.html">TLSPretense</a> to
+generate the test certificates.</p>
 </li></ul>
 
-<h2 id="label-Usage">Usage</h2>
+<h2 id="label-Quick+Start">Quick Start</h2>
 
-<p>See <a href="doc/general_setup_rdoc.html">TLSPretense Setup</a> for details
-on setting up TLSPretense.</p>
+<p>Install with rubygems:</p>
+
+<pre>umask 0022 ; sudo gem install tlspretense</pre>
+
+<p>Create a new project:</p>
+
+<pre>tlspretense init myproject
+cd myproject</pre>
+
+<p>And edit config.yml to suit your needs. If you want to create a new test CA
+(not necessary if you want to use the default or your own):</p>
+
+<pre>tlspretense ca</pre>
+
+<p>Generate certificates for the test cases:</p>
+
+<pre>tlspretense certs</pre>
+
+<p>You will also need to setup the host’s networking stack and firewall to
+support <a href="TLSPretense.html">TLSPretense</a>. More details can be
+found in <a href="doc/general_setup_rdoc.html">TLSPretense Setup</a> and in
+the system-specific guides.</p>
+
+<p>Finally, run all of the configured test cases:</p>
+
+<pre>sudo tlspretense run</pre>
+
+<p>Or just certain tests (in the order specified):</p>
+
+<pre>sudo tlspretense run unknownca wrongcname</pre>
 
 <h2 id="label-Limitations">Limitations</h2>
 <ul><li>
@@ -274,22 +332,6 @@ use of this functionality though.</p>
 socket until the pre-flight finishes. (the SSLClient within
 SSLTransparentProxy probably also should do this until the client connects)</p>
 </li><li>
-<p>Move <a href="PacketThief.html">PacketThief</a> calls and TestListener’s
-intial server into the runner. The TestListener’s initial server should
-then have a way to change what initial arguments it passes on to each
-TestListener instance in order to present the certificates for the current
-test. This <em>might</em> help keep some connections from hanging…</p>
-</li><li>
-<p>Get a Mac OS X 10.7/10.8 PF implementation working.</p>
-</li><li>
-<p>Make how to determine if a client passes configurable. Currently,
-TLSPretense uses whether the TLS handshake successfully completes to decide
-if it succeeds. However, there appears to be Java/Android code that
-finishes the connection before rejecting the certificate. Instead of using
-the handshake state, we could instead decide based on whether the client
-sends data over the encrypted session or not. Making it configurable
-provides more options for how to test.</p>
-</li><li>
 <p>Fix the subjectAltName null byte test. It requires manual construction of
 the ASN1 encoding due to the null byte causing a truncation somewhere in
 OpenSSL or Ruby’s OpenSSL.</p>
@@ -304,6 +346,11 @@ OpenSSL or Ruby’s OpenSSL.</p>
 </li><li>
 <p>do we want to test more complicated wildcards?</p>
 </li></ul>
+</li><li>
+<p>Decide how to deal with a wildcard cert at the original destination. If we
+are testing foo.somehost.com, and the client connects to other hostnames
+like bar.somehost.com, and they all use a *.somehost.com certificate, then
+<a href="TLSPretense.html">TLSPretense</a> gets confused.</p>
 </li><li>
 <p>Add extension criticality tests (need an extension oid that nobody knows
 how to verify)</p>
@@ -346,11 +393,6 @@ make testing certificate validation logic difficult.</p>
 </li><li>
 <p>Command line option to specify where to write the results to</p>
 </li><li>
-<p>Wrap certmaker functionality in a command instead of just using rake</p>
-</li><li>
-<p>Gemify for easier distribution/installation and eliminate the need for
-bundle exec</p>
-</li><li>
 <p>Add more result output formats</p>
 <ul><li>
 <p>(X)HTML</p>
@@ -370,16 +412,23 @@ first cert’s serial as a starting point and increment from there.</p>
 <p>Build certs and chains of certs for each test so that something like
 s_server could use them.</p>
 </li><li>
+<p>Make initialization interactive. It should prompt the user to choose or
+confirm configuration details like the interception/firewalling method to
+use, the network device to listen on, the default hostname, etc. It could
+then auto-generate the necessary certificates as well.</p>
+</li><li>
 <p>Config file validator</p>
 </li><li>
 <p>Add an API for interacting with an external test controller. This could be
 a little web service, although that lacks real-time responses. A TCP/unix
 socket interface that sends/receives JSON messages (or something simpler)
-might be better. The client would tell TLSPretense which test to start, and
-then TLSPretense would reply with a result when it completes.</p>
+might be better. The client would tell <a
+href="TLSPretense.html">TLSPretense</a> which test to start, and then <a
+href="TLSPretense.html">TLSPretense</a> would reply with a result when it
+completes.</p>
 </li></ul>
 
-<h2 id="label-Contributing+to+TLSPretense">Contributing to TLSPretense</h2>
+<h2 id="label-Contributing+to+TLSPretense">Contributing to <a href="TLSPretense.html">TLSPretense</a></h2>
 <ul><li>
 <p>Check out the latest master to make sure the feature hasn’t been
 implemented or the bug hasn’t been fixed yet.</p>

@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class SSLTest::TestListener - TLSPretense </title>
+<title>class SSLTest::TestListener - TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
@@ -77,8 +77,6 @@
     <li><a href="#method-i-check_for_hosttotest">#check_for_hosttotest</a>
     
     <li><a href="#method-i-client_recv">#client_recv</a>
-    
-    <li><a href="#method-i-on_test_completed">#on_test_completed</a>
     
     <li><a href="#method-i-post_init">#post_init</a>
     
@@ -189,6 +187,8 @@
   
     <li><a href="../SSLTest/Runner.html">SSLTest::Runner</a>
   
+    <li><a href="../SSLTest/RunnerOptions.html">SSLTest::RunnerOptions</a>
+  
     <li><a href="../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
   
     <li><a href="../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
@@ -197,11 +197,25 @@
   
     <li><a href="../SSLTest/TestListener.html">SSLTest::TestListener</a>
   
+    <li><a href="../SSLTest/TestManager.html">SSLTest::TestManager</a>
+  
+    <li><a href="../TLSPretense.html">TLSPretense</a>
+  
+    <li><a href="../TLSPretense/App.html">TLSPretense::App</a>
+  
+    <li><a href="../TLSPretense/CleanExitError.html">TLSPretense::CleanExitError</a>
+  
+    <li><a href="../TLSPretense/InitRunner.html">TLSPretense::InitRunner</a>
+  
+    <li><a href="../TLSPretense/InitRunner/InitError.html">TLSPretense::InitRunner::InitError</a>
+  
     <li><a href="../CertMaker.html">CertMaker</a>
   
     <li><a href="../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
   
     <li><a href="../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../CertMaker/Runner.html">CertMaker::Runner</a>
   
     <li><a href="../Hash.html">Hash</a>
   
@@ -267,7 +281,7 @@ otherwise return false.</p>
 
           
           <div class="method-source-code" id="cert_matches_host-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 74</span>
+            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 86</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">cert_matches_host</span>(<span class="ruby-identifier">cert</span>, <span class="ruby-identifier">hostname</span>)
   <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSL</span>.<span class="ruby-identifier">verify_certificate_identity</span>(<span class="ruby-identifier">cert</span>, <span class="ruby-identifier">hostname</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -285,7 +299,7 @@ otherwise return false.</p>
         
         <div class="method-heading">
           <span class="method-name">new</span><span
-            class="method-args">(tcpsocket, cacert, cakey, hosttotest, chaintotest, keytotest, logger=nil)</span>
+            class="method-args">(tcpsocket, test_manager, logger=nil)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
@@ -316,15 +330,22 @@ leaf node in <em>chaintotest</em>.</p>
           
           <div class="method-source-code" id="new-source">
             <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 27</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">tcpsocket</span>, <span class="ruby-identifier">cacert</span>, <span class="ruby-identifier">cakey</span>, <span class="ruby-identifier">hosttotest</span>, <span class="ruby-identifier">chaintotest</span>, <span class="ruby-identifier">keytotest</span>, <span class="ruby-identifier">logger</span>=<span class="ruby-keyword">nil</span>)
-  <span class="ruby-ivar">@logger</span> = <span class="ruby-identifier">logger</span>
-  <span class="ruby-ivar">@hosttotest</span> = <span class="ruby-identifier">hosttotest</span>
-  <span class="ruby-identifier">chain</span> = <span class="ruby-identifier">chaintotest</span>.<span class="ruby-identifier">dup</span>
-  <span class="ruby-ivar">@hostcert</span> = <span class="ruby-identifier">chain</span>.<span class="ruby-identifier">shift</span>
-  <span class="ruby-ivar">@hostkey</span> = <span class="ruby-identifier">keytotest</span>
-  <span class="ruby-ivar">@extrachain</span> = <span class="ruby-identifier">chain</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">tcpsocket</span>, <span class="ruby-identifier">test_manager</span>, <span class="ruby-identifier">logger</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-ivar">@test_manager</span> = <span class="ruby-identifier">test_manager</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@test_manager</span>.<span class="ruby-identifier">paused?</span>
+    <span class="ruby-ivar">@paused</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@paused</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-ivar">@test</span> = <span class="ruby-ivar">@test_manager</span>.<span class="ruby-identifier">current_test</span>
+    <span class="ruby-ivar">@hosttotest</span> = <span class="ruby-ivar">@test</span>.<span class="ruby-identifier">hosttotest</span>
+    <span class="ruby-identifier">chain</span> = <span class="ruby-ivar">@test</span>.<span class="ruby-identifier">certchain</span>.<span class="ruby-identifier">dup</span>
+    <span class="ruby-ivar">@hostcert</span> = <span class="ruby-identifier">chain</span>.<span class="ruby-identifier">shift</span>
+    <span class="ruby-ivar">@hostkey</span> = <span class="ruby-ivar">@test</span>.<span class="ruby-identifier">keychain</span>[<span class="ruby-value">0</span>]
+    <span class="ruby-ivar">@extrachain</span> = <span class="ruby-identifier">chain</span>
+  <span class="ruby-keyword">end</span>
   <span class="ruby-comment"># Use the goodca for hosts we don't care to test against.</span>
-  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">tcpsocket</span>, <span class="ruby-identifier">cacert</span>, <span class="ruby-identifier">cakey</span>)
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">tcpsocket</span>, <span class="ruby-ivar">@test_manager</span>.<span class="ruby-identifier">goodcacert</span>, <span class="ruby-ivar">@test_manager</span>.<span class="ruby-identifier">goodcakey</span>, <span class="ruby-identifier">logger</span>)
 
   <span class="ruby-ivar">@test_status</span> = <span class="ruby-value">:running</span>
   <span class="ruby-ivar">@testing_host</span> = <span class="ruby-keyword">false</span>
@@ -366,13 +387,18 @@ the test succeeds or not.</p>
 
           
           <div class="method-source-code" id="check_for_hosttotest-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 62</span>
+            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">check_for_hosttotest</span>(<span class="ruby-identifier">actx</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">TestListener</span>.<span class="ruby-identifier">cert_matches_host</span>(<span class="ruby-identifier">actx</span>.<span class="ruby-identifier">cert</span>, <span class="ruby-ivar">@hosttotest</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@paused</span>
+    <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;Testing is paused, not checking whether this is the host to test&quot;</span>, <span class="ruby-value">:certcubject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">actx</span>.<span class="ruby-identifier">cert</span>.<span class="ruby-identifier">subject</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-constant">TestListener</span>.<span class="ruby-identifier">cert_matches_host</span>(<span class="ruby-identifier">actx</span>.<span class="ruby-identifier">cert</span>, <span class="ruby-ivar">@hosttotest</span>)
+    <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;Destination matches host-to-test&quot;</span>, <span class="ruby-value">:hosttotest</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@hosttotest</span>, <span class="ruby-value">:certsubject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">actx</span>.<span class="ruby-identifier">cert</span>.<span class="ruby-identifier">subject</span>, <span class="ruby-value">:testname</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@test</span>.<span class="ruby-identifier">id</span>
     <span class="ruby-identifier">actx</span>.<span class="ruby-identifier">cert</span> = <span class="ruby-ivar">@hostcert</span>
     <span class="ruby-identifier">actx</span>.<span class="ruby-identifier">key</span> = <span class="ruby-ivar">@hostkey</span>
     <span class="ruby-identifier">actx</span>.<span class="ruby-identifier">extra_chain_cert</span> = <span class="ruby-ivar">@extrachain</span>
     <span class="ruby-ivar">@testing_host</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;Destination does not match host-to-test&quot;</span>, <span class="ruby-value">:hosttotest</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@hosttotest</span>, <span class="ruby-value">:certsubject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">actx</span>.<span class="ruby-identifier">cert</span>.<span class="ruby-identifier">subject</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">actx</span>
 <span class="ruby-keyword">end</span></pre>
@@ -397,15 +423,21 @@ the test succeeds or not.</p>
 
         <div class="method-description">
           
-          
+          <p><a href="TestListener.html#method-i-client_recv">#client_recv</a> means
+that the client sent data over the TLS connection, meaning they definately
+trusted our certificate chain.</p>
           
 
           
           <div class="method-source-code" id="client_recv-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 110</span>
+            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 128</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">client_recv</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@testing_host</span>
     <span class="ruby-ivar">@test_status</span> = <span class="ruby-value">:sentdata</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@test_manager</span>.<span class="ruby-identifier">testing_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'senddata'</span>
+      <span class="ruby-ivar">@test_manager</span>.<span class="ruby-identifier">test_completed</span>(<span class="ruby-ivar">@test</span>, <span class="ruby-ivar">@test_status</span>)
+      <span class="ruby-ivar">@testing_host</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">super</span>(<span class="ruby-identifier">data</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -417,36 +449,6 @@ the test succeeds or not.</p>
 
         
       </div><!-- client_recv-method -->
-
-    
-      <div id="method-i-on_test_completed" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">on_test_completed</span><span
-            class="method-args">(blk=nil, &block)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-
-          
-          <div class="method-source-code" id="on_test_completed-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 97</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_test_completed</span>(<span class="ruby-identifier">blk</span>=<span class="ruby-keyword">nil</span>, &amp;<span class="ruby-identifier">block</span>)
-  <span class="ruby-ivar">@test_completed_cb</span> = ( <span class="ruby-identifier">blk</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">blk</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">block</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- on_test_completed-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- on_test_completed-method -->
 
     
       <div id="method-i-post_init" class="method-detail ">
@@ -469,7 +471,7 @@ to +@ctx+.</p>
 
           
           <div class="method-source-code" id="post_init-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 45</span>
+            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 52</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">post_init</span>
   <span class="ruby-identifier">check_for_hosttotest</span>(<span class="ruby-ivar">@ctx</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -501,7 +503,7 @@ a certificate based on the remote host’s certificate.</p>
 
           
           <div class="method-source-code" id="servername_cb-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 52</span>
+            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 59</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">servername_cb</span>(<span class="ruby-identifier">sslsock</span>, <span class="ruby-identifier">hostname</span>)
   <span class="ruby-identifier">check_for_hosttotest</span>(<span class="ruby-keyword">super</span>(<span class="ruby-identifier">sslsock</span>, <span class="ruby-identifier">hostname</span>))
 <span class="ruby-keyword">end</span></pre>
@@ -526,18 +528,19 @@ a certificate based on the remote host’s certificate.</p>
 
         <div class="method-description">
           
-          <p>If the handshake failed, then we believe the client rejected our cert
-chain.</p>
+          <p>If the handshake failed, then the client rejected our cert chain.</p>
           
 
           
           <div class="method-source-code" id="tls_failed_handshake-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 89</span>
+            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 106</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tls_failed_handshake</span>(<span class="ruby-identifier">e</span>)
   <span class="ruby-keyword">super</span>
   <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;failed handshake&quot;</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@testing_host</span>
     <span class="ruby-ivar">@test_status</span> = <span class="ruby-value">:rejected</span>
+    <span class="ruby-ivar">@test_manager</span>.<span class="ruby-identifier">test_completed</span>(<span class="ruby-ivar">@test</span>, <span class="ruby-ivar">@test_status</span>)
+    <span class="ruby-ivar">@testing_host</span> = <span class="ruby-keyword">false</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- tls_failed_handshake-source -->
@@ -561,17 +564,23 @@ chain.</p>
 
         <div class="method-description">
           
-          <p>If the client completes connecting, then they trusted our cert chain.</p>
+          <p>If the client completes connecting, we might consider that trusting our
+certificate chain. However, at least Java’s SSL client classes don’t reject
+until after completing the handshake.</p>
           
 
           
           <div class="method-source-code" id="tls_successful_handshake-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 79</span>
+            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 93</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tls_successful_handshake</span>
   <span class="ruby-keyword">super</span>
   <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;successful handshake&quot;</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@testing_host</span>
     <span class="ruby-ivar">@test_status</span> = <span class="ruby-value">:connected</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@test_manager</span>.<span class="ruby-identifier">testing_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'tlshandshake'</span>
+      <span class="ruby-ivar">@test_manager</span>.<span class="ruby-identifier">test_completed</span>(<span class="ruby-ivar">@test</span>, <span class="ruby-ivar">@test_status</span>)
+      <span class="ruby-ivar">@testing_host</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- tls_successful_handshake-source -->
@@ -600,12 +609,13 @@ chain.</p>
 
           
           <div class="method-source-code" id="unbind-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 102</span>
+            <pre><span class="ruby-comment"># File lib/ssl_test/test_listener.rb, line 117</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unbind</span>
   <span class="ruby-keyword">super</span>
   <span class="ruby-identifier">logdebug</span> <span class="ruby-string">&quot;unbind&quot;</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@testing_host</span>
-    <span class="ruby-ivar">@test_completed_cb</span>.<span class="ruby-identifier">call</span>(<span class="ruby-ivar">@test_status</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@test_completed_cb</span>
+    <span class="ruby-ivar">@test_manager</span>.<span class="ruby-identifier">test_completed</span>(<span class="ruby-ivar">@test</span>, <span class="ruby-ivar">@test_status</span>)
+    <span class="ruby-ivar">@testing_host</span> = <span class="ruby-keyword">false</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- unbind-source -->

@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class SSLTest::SSLTestReport - TLSPretense </title>
+<title>class SSLTest::SSLTestReport - TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
@@ -75,8 +75,6 @@
     <li><a href="#method-i-add_result">#add_result</a>
     
     <li><a href="#method-i-print_results">#print_results</a>
-    
-    <li><a href="#method-i-to_csv">#to_csv</a>
     
   </ul>
 </nav>
@@ -177,6 +175,8 @@
   
     <li><a href="../SSLTest/Runner.html">SSLTest::Runner</a>
   
+    <li><a href="../SSLTest/RunnerOptions.html">SSLTest::RunnerOptions</a>
+  
     <li><a href="../SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
   
     <li><a href="../SSLTest/SSLTestReport.html">SSLTest::SSLTestReport</a>
@@ -185,11 +185,25 @@
   
     <li><a href="../SSLTest/TestListener.html">SSLTest::TestListener</a>
   
+    <li><a href="../SSLTest/TestManager.html">SSLTest::TestManager</a>
+  
+    <li><a href="../TLSPretense.html">TLSPretense</a>
+  
+    <li><a href="../TLSPretense/App.html">TLSPretense::App</a>
+  
+    <li><a href="../TLSPretense/CleanExitError.html">TLSPretense::CleanExitError</a>
+  
+    <li><a href="../TLSPretense/InitRunner.html">TLSPretense::InitRunner</a>
+  
+    <li><a href="../TLSPretense/InitRunner/InitError.html">TLSPretense::InitRunner::InitError</a>
+  
     <li><a href="../CertMaker.html">CertMaker</a>
   
     <li><a href="../CertMaker/CertificateFactory.html">CertMaker::CertificateFactory</a>
   
     <li><a href="../CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  
+    <li><a href="../CertMaker/Runner.html">CertMaker::Runner</a>
   
     <li><a href="../Hash.html">Hash</a>
   
@@ -318,6 +332,7 @@ later format.</p>
   <span class="ruby-ivar">@results</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">out</span>.<span class="ruby-identifier">printf</span> <span class="ruby-string">&quot;%-16.16&lt;id&gt;s %-16.16&lt;description&gt;s %-4.4&lt;passed&gt;s %-8.8&lt;expected_result&gt;s %-8.8&lt;actual_result&gt;s %&lt;start_time&gt;s %&lt;stop_time&gt;s\n&quot;</span>, <span class="ruby-identifier">r</span>.<span class="ruby-identifier">to_h</span>
   <span class="ruby-keyword">end</span>
+
 <span class="ruby-keyword">end</span></pre>
           </div><!-- print_results-source -->
           
@@ -327,42 +342,6 @@ later format.</p>
 
         
       </div><!-- print_results-method -->
-
-    
-      <div id="method-i-to_csv" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">to_csv</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-
-          
-          <div class="method-source-code" id="to_csv-source">
-            <pre><span class="ruby-comment"># File lib/ssl_test/ssl_test_report.rb, line 22</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_csv</span>
-  <span class="ruby-identifier">out</span> = <span class="ruby-constant">IOString</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-identifier">out</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">column_names</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>)
-  <span class="ruby-ivar">@results</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">line</span> = <span class="ruby-identifier">columns</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">r</span>[<span class="ruby-identifier">c</span>] }.<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>)
-    <span class="ruby-identifier">out</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">line</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">out</span>.<span class="ruby-identifier">to_s</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- to_csv-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- to_csv-method -->
 
     
     </section><!-- public-instance-method-details -->

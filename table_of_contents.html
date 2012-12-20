@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>Table of Contents - TLSPretense </title>
+<title>Table of Contents - TLSPretense 0.6.1</title>
 
 <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
@@ -21,7 +21,7 @@
 
 
 <body class="indexpage">
-<h1>Table of Contents - TLSPretense </h1>
+<h1>Table of Contents - TLSPretense 0.6.1</h1>
 
 <h2>Pages</h2>
 <ul>
@@ -32,9 +32,10 @@
     <ul class="initially-hidden">
       <li><a href="README_rdoc.html#label-TLSPretense+---+SSL%2FTLS+Client+Testing+Framework">TLSPretense — SSL/TLS Client Testing Framework</a>
       <li><a href="README_rdoc.html#label-Description">Description</a>
+      <li><a href="README_rdoc.html#label-Links">Links</a>
       <li><a href="README_rdoc.html#label-How+It+Works">How It Works</a>
       <li><a href="README_rdoc.html#label-Requirements">Requirements</a>
-      <li><a href="README_rdoc.html#label-Usage">Usage</a>
+      <li><a href="README_rdoc.html#label-Quick+Start">Quick Start</a>
       <li><a href="README_rdoc.html#label-Limitations">Limitations</a>
       <li><a href="README_rdoc.html#label-TODO">TODO</a>
       <li><a href="README_rdoc.html#label-Contributing+to+TLSPretense">Contributing to TLSPretense</a>
@@ -81,13 +82,6 @@
 <ul>
   <li class="module">
     <a href="PacketThief.html">PacketThief</a>
-
-    <img class="toc-toggle" src="images/transparent.png" alt="" title="toggle headings">
-    <ul class="initially-hidden">
-      <li><a href="PacketThief.html#label-Description">Description</a>
-      <li><a href="PacketThief.html#label-Usage">Usage</a>
-      <li><a href="PacketThief.html#label-Mac+OS+X+Setup+example">Mac OS X Setup example</a>
-    </ul>
   </li>
     <li class="module">
     <a href="PacketThief/Handlers.html">PacketThief::Handlers</a>
@@ -210,6 +204,9 @@
     <a href="SSLTest/Runner.html">SSLTest::Runner</a>
   </li>
     <li class="class">
+    <a href="SSLTest/RunnerOptions.html">SSLTest::RunnerOptions</a>
+  </li>
+    <li class="class">
     <a href="SSLTest/SSLTestCase.html">SSLTest::SSLTestCase</a>
   </li>
     <li class="class">
@@ -221,6 +218,24 @@
     <li class="class">
     <a href="SSLTest/TestListener.html">SSLTest::TestListener</a>
   </li>
+    <li class="class">
+    <a href="SSLTest/TestManager.html">SSLTest::TestManager</a>
+  </li>
+    <li class="module">
+    <a href="TLSPretense.html">TLSPretense</a>
+  </li>
+    <li class="class">
+    <a href="TLSPretense/App.html">TLSPretense::App</a>
+  </li>
+    <li class="class">
+    <a href="TLSPretense/CleanExitError.html">TLSPretense::CleanExitError</a>
+  </li>
+    <li class="class">
+    <a href="TLSPretense/InitRunner.html">TLSPretense::InitRunner</a>
+  </li>
+    <li class="class">
+    <a href="TLSPretense/InitRunner/InitError.html">TLSPretense::InitRunner::InitError</a>
+  </li>
     <li class="module">
     <a href="CertMaker.html">CertMaker</a>
   </li>
@@ -229,6 +244,9 @@
   </li>
     <li class="class">
     <a href="CertMaker/CertificateSuiteGenerator.html">CertMaker::CertificateSuiteGenerator</a>
+  </li>
+    <li class="class">
+    <a href="CertMaker/Runner.html">CertMaker::Runner</a>
   </li>
     <li class="class">
     <a href="Hash.html">Hash</a>
@@ -248,6 +266,8 @@
   
     <li class="method"><a href="PacketThief/Handlers/SSLClient.html#method-c-connect">::connect &mdash; PacketThief::Handlers::SSLClient</a>
   
+    <li class="method"><a href="SSLTest/SSLTestCase.html#method-c-factory">::factory &mdash; SSLTest::SSLTestCase</a>
+  
     <li class="method"><a href="PacketThief.html#method-c-guess_implementation">::guess_implementation &mdash; PacketThief</a>
   
     <li class="method"><a href="PacketThief.html#method-c-implementation">::implementation &mdash; PacketThief</a>
@@ -264,55 +284,67 @@
   
     <li class="method"><a href="CertMaker/CertificateFactory.html#method-c-new">::new &mdash; CertMaker::CertificateFactory</a>
   
+    <li class="method"><a href="SSLTest/Config.html#method-c-new">::new &mdash; SSLTest::Config</a>
+  
+    <li class="method"><a href="PacketThief/Handlers/TransparentProxy.html#method-c-new">::new &mdash; PacketThief::Handlers::TransparentProxy</a>
+  
+    <li class="method"><a href="PacketThief/Impl/Manual/NullRule.html#method-c-new">::new &mdash; PacketThief::Impl::Manual::NullRule</a>
+  
+    <li class="method"><a href="PacketThief/Impl/Netfilter/IPTablesRule.html#method-c-new">::new &mdash; PacketThief::Impl::Netfilter::IPTablesRule</a>
+  
     <li class="method"><a href="PacketThief/Handlers/SSLServer/InitialServer.html#method-c-new">::new &mdash; PacketThief::Handlers::SSLServer::InitialServer</a>
   
     <li class="method"><a href="PacketThief/Handlers/AbstractSSLHandler.html#method-c-new">::new &mdash; PacketThief::Handlers::AbstractSSLHandler</a>
   
-    <li class="method"><a href="PacketThief/Handlers/TransparentProxy/ProxyConnection.html#method-c-new">::new &mdash; PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
-  
-    <li class="method"><a href="PacketThief/Impl/Netfilter/IPTablesRule.html#method-c-new">::new &mdash; PacketThief::Impl::Netfilter::IPTablesRule</a>
-  
-    <li class="method"><a href="SSLTest/Runner.html#method-c-new">::new &mdash; SSLTest::Runner</a>
-  
-    <li class="method"><a href="PacketThief/Impl/PFRdr/PFRdrRule.html#method-c-new">::new &mdash; PacketThief::Impl::PFRdr::PFRdrRule</a>
-  
     <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html#method-c-new">::new &mdash; PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
   
-    <li class="method"><a href="SSLTest/InputHandler.html#method-c-new">::new &mdash; SSLTest::InputHandler</a>
+    <li class="method"><a href="TLSPretense/InitRunner.html#method-c-new">::new &mdash; TLSPretense::InitRunner</a>
   
-    <li class="method"><a href="PacketThief/RedirectRule.html#method-c-new">::new &mdash; PacketThief::RedirectRule</a>
+    <li class="method"><a href="TLSPretense/App.html#method-c-new">::new &mdash; TLSPretense::App</a>
   
-    <li class="method"><a href="CertMaker/CertificateSuiteGenerator.html#method-c-new">::new &mdash; CertMaker::CertificateSuiteGenerator</a>
+    <li class="method"><a href="SSLTest/TestManager.html#method-c-new">::new &mdash; SSLTest::TestManager</a>
   
-    <li class="method"><a href="SSLTest/AppContext.html#method-c-new">::new &mdash; SSLTest::AppContext</a>
-  
-    <li class="method"><a href="PacketThief/Handlers/ProxyRedirector.html#method-c-new">::new &mdash; PacketThief::Handlers::ProxyRedirector</a>
-  
-    <li class="method"><a href="SSLTest/CertificateManager.html#method-c-new">::new &mdash; SSLTest::CertificateManager</a>
-  
-    <li class="method"><a href="PacketThief/Impl/Manual/NullRule.html#method-c-new">::new &mdash; PacketThief::Impl::Manual::NullRule</a>
-  
-    <li class="method"><a href="SSLTest/TestListener.html#method-c-new">::new &mdash; SSLTest::TestListener</a>
-  
-    <li class="method"><a href="PacketThief/Impl/Ipfw/IpfwRule.html#method-c-new">::new &mdash; PacketThief::Impl::Ipfw::IpfwRule</a>
-  
-    <li class="method"><a href="PacketThief/Handlers/SSLServer.html#method-c-new">::new &mdash; PacketThief::Handlers::SSLServer</a>
-  
-    <li class="method"><a href="SSLTest/SSLTestResult.html#method-c-new">::new &mdash; SSLTest::SSLTestResult</a>
-  
-    <li class="method"><a href="SSLTest/Config.html#method-c-new">::new &mdash; SSLTest::Config</a>
-  
-    <li class="method"><a href="PacketThief/Handlers/SSLSmartProxy.html#method-c-new">::new &mdash; PacketThief::Handlers::SSLSmartProxy</a>
-  
-    <li class="method"><a href="SSLTest/SSLTestReport.html#method-c-new">::new &mdash; SSLTest::SSLTestReport</a>
-  
-    <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy.html#method-c-new">::new &mdash; PacketThief::Handlers::SSLTransparentProxy</a>
-  
-    <li class="method"><a href="SSLTest/SSLTestCase.html#method-c-new">::new &mdash; SSLTest::SSLTestCase</a>
+    <li class="method"><a href="PacketThief/Handlers/TransparentProxy/ProxyConnection.html#method-c-new">::new &mdash; PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
   
     <li class="method"><a href="PacketThief/Impl/PFDivert/PFDivertRule.html#method-c-new">::new &mdash; PacketThief::Impl::PFDivert::PFDivertRule</a>
   
+    <li class="method"><a href="SSLTest/TestListener.html#method-c-new">::new &mdash; SSLTest::TestListener</a>
+  
+    <li class="method"><a href="PacketThief/Handlers/ProxyRedirector.html#method-c-new">::new &mdash; PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li class="method"><a href="PacketThief/Impl/Ipfw/IpfwRule.html#method-c-new">::new &mdash; PacketThief::Impl::Ipfw::IpfwRule</a>
+  
+    <li class="method"><a href="PacketThief/Impl/PFRdr/PFRdrRule.html#method-c-new">::new &mdash; PacketThief::Impl::PFRdr::PFRdrRule</a>
+  
+    <li class="method"><a href="SSLTest/SSLTestResult.html#method-c-new">::new &mdash; SSLTest::SSLTestResult</a>
+  
+    <li class="method"><a href="PacketThief/RedirectRule.html#method-c-new">::new &mdash; PacketThief::RedirectRule</a>
+  
+    <li class="method"><a href="PacketThief/Handlers/SSLServer.html#method-c-new">::new &mdash; PacketThief::Handlers::SSLServer</a>
+  
+    <li class="method"><a href="SSLTest/AppContext.html#method-c-new">::new &mdash; SSLTest::AppContext</a>
+  
+    <li class="method"><a href="SSLTest/SSLTestReport.html#method-c-new">::new &mdash; SSLTest::SSLTestReport</a>
+  
+    <li class="method"><a href="PacketThief/Handlers/SSLSmartProxy.html#method-c-new">::new &mdash; PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li class="method"><a href="SSLTest/SSLTestCase.html#method-c-new">::new &mdash; SSLTest::SSLTestCase</a>
+  
+    <li class="method"><a href="CertMaker/CertificateSuiteGenerator.html#method-c-new">::new &mdash; CertMaker::CertificateSuiteGenerator</a>
+  
+    <li class="method"><a href="SSLTest/RunnerOptions.html#method-c-new">::new &mdash; SSLTest::RunnerOptions</a>
+  
+    <li class="method"><a href="SSLTest/CertificateManager.html#method-c-new">::new &mdash; SSLTest::CertificateManager</a>
+  
+    <li class="method"><a href="SSLTest/InputHandler.html#method-c-new">::new &mdash; SSLTest::InputHandler</a>
+  
+    <li class="method"><a href="SSLTest/Runner.html#method-c-new">::new &mdash; SSLTest::Runner</a>
+  
+    <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy.html#method-c-new">::new &mdash; PacketThief::Handlers::SSLTransparentProxy</a>
+  
     <li class="method"><a href="PacketThief/Impl/Ipfw.html#method-c-original_dest">::original_dest &mdash; PacketThief::Impl::Ipfw</a>
+  
+    <li class="method"><a href="PacketThief/Impl/Manual.html#method-c-original_dest">::original_dest &mdash; PacketThief::Impl::Manual</a>
   
     <li class="method"><a href="PacketThief/Impl/PFDivert.html#method-c-original_dest">::original_dest &mdash; PacketThief::Impl::PFDivert</a>
   
@@ -320,17 +352,17 @@
   
     <li class="method"><a href="PacketThief/Impl/PFRdr.html#method-c-original_dest">::original_dest &mdash; PacketThief::Impl::PFRdr</a>
   
-    <li class="method"><a href="PacketThief/Impl/Manual.html#method-c-original_dest">::original_dest &mdash; PacketThief::Impl::Manual</a>
+    <li class="method"><a href="SSLTest/RunnerOptions.html#method-c-parse">::parse &mdash; SSLTest::RunnerOptions</a>
   
     <li class="method"><a href="PacketThief/Impl/Manual.html#method-c-redirect">::redirect &mdash; PacketThief::Impl::Manual</a>
-  
-    <li class="method"><a href="PacketThief/Impl/PFRdr.html#method-c-redirect">::redirect &mdash; PacketThief::Impl::PFRdr</a>
   
     <li class="method"><a href="PacketThief/Impl/Netfilter.html#method-c-redirect">::redirect &mdash; PacketThief::Impl::Netfilter</a>
   
     <li class="method"><a href="PacketThief/Impl/Ipfw.html#method-c-redirect">::redirect &mdash; PacketThief::Impl::Ipfw</a>
   
     <li class="method"><a href="PacketThief/Impl/PFDivert.html#method-c-redirect">::redirect &mdash; PacketThief::Impl::PFDivert</a>
+  
+    <li class="method"><a href="PacketThief/Impl/PFRdr.html#method-c-redirect">::redirect &mdash; PacketThief::Impl::PFRdr</a>
   
     <li class="method"><a href="PacketThief.html#method-c-revert">::revert &mdash; PacketThief</a>
   
@@ -348,19 +380,25 @@
   
     <li class="method"><a href="SSLTest/SSLTestReport.html#method-i-add_result">#add_result &mdash; SSLTest::SSLTestReport</a>
   
+    <li class="method"><a href="CertMaker/Runner.html#method-i-ca">#ca &mdash; CertMaker::Runner</a>
+  
+    <li class="method"><a href="CertMaker/Runner.html#method-i-certs">#certs &mdash; CertMaker::Runner</a>
+  
+    <li class="method"><a href="TLSPretense/InitRunner.html#method-i-check_environment">#check_environment &mdash; TLSPretense::InitRunner</a>
+  
     <li class="method"><a href="SSLTest/TestListener.html#method-i-check_for_hosttotest">#check_for_hosttotest &mdash; SSLTest::TestListener</a>
   
-    <li class="method"><a href="SSLTest/SSLTestCase.html#method-i-cleanup">#cleanup &mdash; SSLTest::SSLTestCase</a>
+    <li class="method"><a href="CertMaker/Runner.html#method-i-clean">#clean &mdash; CertMaker::Runner</a>
   
     <li class="method"><a href="PacketThief/Handlers/TransparentProxy.html#method-i-client_closed">#client_closed &mdash; PacketThief::Handlers::TransparentProxy</a>
   
     <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy.html#method-i-client_closed">#client_closed &mdash; PacketThief::Handlers::SSLTransparentProxy</a>
   
-    <li class="method"><a href="PacketThief/Handlers/TransparentProxy.html#method-i-client_connected">#client_connected &mdash; PacketThief::Handlers::TransparentProxy</a>
-  
     <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy.html#method-i-client_connected">#client_connected &mdash; PacketThief::Handlers::SSLTransparentProxy</a>
   
     <li class="method"><a href="PacketThief/Handlers/ProxyRedirector.html#method-i-client_connected">#client_connected &mdash; PacketThief::Handlers::ProxyRedirector</a>
+  
+    <li class="method"><a href="PacketThief/Handlers/TransparentProxy.html#method-i-client_connected">#client_connected &mdash; PacketThief::Handlers::TransparentProxy</a>
   
     <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy.html#method-i-client_handshake_failed">#client_handshake_failed &mdash; PacketThief::Handlers::SSLTransparentProxy</a>
   
@@ -424,6 +462,10 @@
   
     <li class="method"><a href="Hash.html#method-i-indifferent_fetch">#indifferent_fetch &mdash; Hash</a>
   
+    <li class="method"><a href="SSLTest/Runner.html#method-i-init_packetthief">#init_packetthief &mdash; SSLTest::Runner</a>
+  
+    <li class="method"><a href="TLSPretense/InitRunner.html#method-i-init_project">#init_project &mdash; TLSPretense::InitRunner</a>
+  
     <li class="method"><a href="SSLTest/Config.html#method-i-listener_port">#listener_port &mdash; SSLTest::Config</a>
   
     <li class="method"><a href="SSLTest/Config.html#method-i-logfile">#logfile &mdash; SSLTest::Config</a>
@@ -432,9 +474,9 @@
   
     <li class="method"><a href="PacketThief/Handlers/SSLSmartProxy.html#method-i-lookup_cert">#lookup_cert &mdash; PacketThief::Handlers::SSLSmartProxy</a>
   
-    <li class="method"><a href="PacketThief/Handlers/SSLServer/InitialServer.html#method-i-notify_readable">#notify_readable &mdash; PacketThief::Handlers::SSLServer::InitialServer</a>
-  
     <li class="method"><a href="PacketThief/Handlers/AbstractSSLHandler.html#method-i-notify_readable">#notify_readable &mdash; PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li class="method"><a href="PacketThief/Handlers/SSLServer/InitialServer.html#method-i-notify_readable">#notify_readable &mdash; PacketThief::Handlers::SSLServer::InitialServer</a>
   
     <li class="method"><a href="PacketThief/Handlers/SSLServer/InitialServer.html#method-i-notify_writable">#notify_writable &mdash; PacketThief::Handlers::SSLServer::InitialServer</a>
   
@@ -442,39 +484,43 @@
   
     <li class="method"><a href="SSLTest/InputHandler.html#method-i-on">#on &mdash; SSLTest::InputHandler</a>
   
-    <li class="method"><a href="SSLTest/TestListener.html#method-i-on_test_completed">#on_test_completed &mdash; SSLTest::TestListener</a>
+    <li class="method"><a href="TLSPretense/InitRunner.html#method-i-openssl_supports_sni-3F">#openssl_supports_sni? &mdash; TLSPretense::InitRunner</a>
   
     <li class="method"><a href="SSLTest/Config.html#method-i-packetthief">#packetthief &mdash; SSLTest::Config</a>
   
-    <li class="method"><a href="SSLTest/Runner.html#method-i-parse_args">#parse_args &mdash; SSLTest::Runner</a>
+    <li class="method"><a href="SSLTest/RunnerOptions.html#method-i-parse">#parse &mdash; SSLTest::RunnerOptions</a>
   
     <li class="method"><a href="SSLTest/SSLTestResult.html#method-i-passed-3F">#passed? &mdash; SSLTest::SSLTestResult</a>
   
-    <li class="method"><a href="SSLTest/Runner.html#method-i-pause">#pause &mdash; SSLTest::Runner</a>
+    <li class="method"><a href="SSLTest/TestManager.html#method-i-pause">#pause &mdash; SSLTest::TestManager</a>
   
     <li class="method"><a href="SSLTest/Config.html#method-i-pause-3F">#pause? &mdash; SSLTest::Config</a>
   
-    <li class="method"><a href="PacketThief/Handlers/TransparentProxy.html#method-i-post_init">#post_init &mdash; PacketThief::Handlers::TransparentProxy</a>
-  
-    <li class="method"><a href="SSLTest/TestListener.html#method-i-post_init">#post_init &mdash; SSLTest::TestListener</a>
-  
-    <li class="method"><a href="PacketThief/Handlers/TransparentProxy/ProxyConnection.html#method-i-post_init">#post_init &mdash; PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+    <li class="method"><a href="SSLTest/TestManager.html#method-i-paused-3F">#paused? &mdash; SSLTest::TestManager</a>
   
     <li class="method"><a href="PacketThief/Handlers/AbstractSSLHandler.html#method-i-post_init">#post_init &mdash; PacketThief::Handlers::AbstractSSLHandler</a>
   
+    <li class="method"><a href="PacketThief/Handlers/TransparentProxy.html#method-i-post_init">#post_init &mdash; PacketThief::Handlers::TransparentProxy</a>
+  
+    <li class="method"><a href="PacketThief/Handlers/TransparentProxy/ProxyConnection.html#method-i-post_init">#post_init &mdash; PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
+  
+    <li class="method"><a href="SSLTest/TestListener.html#method-i-post_init">#post_init &mdash; SSLTest::TestListener</a>
+  
     <li class="method"><a href="PacketThief/Handlers/SSLSmartProxy.html#method-i-preflight_for_cert">#preflight_for_cert &mdash; PacketThief::Handlers::SSLSmartProxy</a>
+  
+    <li class="method"><a href="SSLTest/TestManager.html#method-i-prepare_next_test">#prepare_next_test &mdash; SSLTest::TestManager</a>
   
     <li class="method"><a href="SSLTest/SSLTestReport.html#method-i-print_results">#print_results &mdash; SSLTest::SSLTestReport</a>
   
     <li class="method"><a href="CertMaker/CertificateSuiteGenerator.html#method-i-randomserial">#randomserial &mdash; CertMaker::CertificateSuiteGenerator</a>
   
-    <li class="method"><a href="PacketThief/Handlers/TransparentProxy.html#method-i-receive_data">#receive_data &mdash; PacketThief::Handlers::TransparentProxy</a>
+    <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html#method-i-receive_data">#receive_data &mdash; PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
   
-    <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy.html#method-i-receive_data">#receive_data &mdash; PacketThief::Handlers::SSLTransparentProxy</a>
+    <li class="method"><a href="PacketThief/Handlers/TransparentProxy.html#method-i-receive_data">#receive_data &mdash; PacketThief::Handlers::TransparentProxy</a>
   
     <li class="method"><a href="SSLTest/InputHandler.html#method-i-receive_data">#receive_data &mdash; SSLTest::InputHandler</a>
   
-    <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html#method-i-receive_data">#receive_data &mdash; PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
+    <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy.html#method-i-receive_data">#receive_data &mdash; PacketThief::Handlers::SSLTransparentProxy</a>
   
     <li class="method"><a href="PacketThief/Handlers/TransparentProxy/ProxyConnection.html#method-i-receive_data">#receive_data &mdash; PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
   
@@ -482,39 +528,43 @@
   
     <li class="method"><a href="PacketThief/RedirectRule.html#method-i-redirect">#redirect &mdash; PacketThief::RedirectRule</a>
   
-    <li class="method"><a href="PacketThief/Impl/PFRdr/PFRdrRuleHandler.html#method-i-revert">#revert &mdash; PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
+    <li class="method"><a href="PacketThief/Impl/Manual/NullRuleHandler.html#method-i-revert">#revert &mdash; PacketThief::Impl::Manual::NullRuleHandler</a>
   
     <li class="method"><a href="PacketThief/Impl/Ipfw/IpfwRuleHandler.html#method-i-revert">#revert &mdash; PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
   
-    <li class="method"><a href="PacketThief/Impl/Netfilter/IPTablesRuleHandler.html#method-i-revert">#revert &mdash; PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
-  
-    <li class="method"><a href="PacketThief/Impl/Manual/NullRuleHandler.html#method-i-revert">#revert &mdash; PacketThief::Impl::Manual::NullRuleHandler</a>
-  
     <li class="method"><a href="PacketThief/Impl/PFDivert/PFDivertRuleHandler.html#method-i-revert">#revert &mdash; PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
   
-    <li class="method"><a href="PacketThief/Impl/Netfilter/IPTablesRuleHandler.html#method-i-run">#run &mdash; PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+    <li class="method"><a href="PacketThief/Impl/Netfilter/IPTablesRuleHandler.html#method-i-revert">#revert &mdash; PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
   
-    <li class="method"><a href="PacketThief/Impl/Ipfw/IpfwRuleHandler.html#method-i-run">#run &mdash; PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+    <li class="method"><a href="PacketThief/Impl/PFRdr/PFRdrRuleHandler.html#method-i-revert">#revert &mdash; PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
   
-    <li class="method"><a href="PacketThief/Impl/PFDivert/PFDivertRuleHandler.html#method-i-run">#run &mdash; PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
-  
-    <li class="method"><a href="SSLTest/SSLTestCase.html#method-i-run">#run &mdash; SSLTest::SSLTestCase</a>
+    <li class="method"><a href="TLSPretense/InitRunner.html#method-i-ruby_version">#ruby_version &mdash; TLSPretense::InitRunner</a>
   
     <li class="method"><a href="PacketThief/Impl/PFRdr/PFRdrRuleHandler.html#method-i-run">#run &mdash; PacketThief::Impl::PFRdr::PFRdrRuleHandler</a>
   
-    <li class="method"><a href="PacketThief/Impl/Manual/NullRuleHandler.html#method-i-run">#run &mdash; PacketThief::Impl::Manual::NullRuleHandler</a>
+    <li class="method"><a href="PacketThief/Impl/Ipfw/IpfwRuleHandler.html#method-i-run">#run &mdash; PacketThief::Impl::Ipfw::IpfwRuleHandler</a>
+  
+    <li class="method"><a href="TLSPretense/App.html#method-i-run">#run &mdash; TLSPretense::App</a>
+  
+    <li class="method"><a href="PacketThief/Impl/PFDivert/PFDivertRuleHandler.html#method-i-run">#run &mdash; PacketThief::Impl::PFDivert::PFDivertRuleHandler</a>
+  
+    <li class="method"><a href="TLSPretense/InitRunner.html#method-i-run">#run &mdash; TLSPretense::InitRunner</a>
   
     <li class="method"><a href="PacketThief/RedirectRule.html#method-i-run">#run &mdash; PacketThief::RedirectRule</a>
   
+    <li class="method"><a href="PacketThief/Impl/Manual/NullRuleHandler.html#method-i-run">#run &mdash; PacketThief::Impl::Manual::NullRuleHandler</a>
+  
     <li class="method"><a href="SSLTest/Runner.html#method-i-run">#run &mdash; SSLTest::Runner</a>
   
-    <li class="method"><a href="SSLTest/Runner.html#method-i-run_test">#run_test &mdash; SSLTest::Runner</a>
+    <li class="method"><a href="PacketThief/Impl/Netfilter/IPTablesRuleHandler.html#method-i-run">#run &mdash; PacketThief::Impl::Netfilter::IPTablesRuleHandler</a>
+  
+    <li class="method"><a href="SSLTest/Runner.html#method-i-run_tests">#run_tests &mdash; SSLTest::Runner</a>
   
     <li class="method"><a href="PacketThief/Handlers/AbstractSSLHandler.html#method-i-send_data">#send_data &mdash; PacketThief::Handlers::AbstractSSLHandler</a>
   
-    <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy.html#method-i-send_to_client">#send_to_client &mdash; PacketThief::Handlers::SSLTransparentProxy</a>
-  
     <li class="method"><a href="PacketThief/Handlers/TransparentProxy.html#method-i-send_to_client">#send_to_client &mdash; PacketThief::Handlers::TransparentProxy</a>
+  
+    <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy.html#method-i-send_to_client">#send_to_client &mdash; PacketThief::Handlers::SSLTransparentProxy</a>
   
     <li class="method"><a href="PacketThief/Handlers/TransparentProxy.html#method-i-send_to_dest">#send_to_dest &mdash; PacketThief::Handlers::TransparentProxy</a>
   
@@ -524,19 +574,25 @@
   
     <li class="method"><a href="SSLTest/TestListener.html#method-i-servername_cb">#servername_cb &mdash; SSLTest::TestListener</a>
   
-    <li class="method"><a href="PacketThief/Handlers/SSLServer.html#method-i-servername_cb">#servername_cb &mdash; PacketThief::Handlers::SSLServer</a>
-  
     <li class="method"><a href="PacketThief/Handlers/SSLSmartProxy.html#method-i-servername_cb">#servername_cb &mdash; PacketThief::Handlers::SSLSmartProxy</a>
   
-    <li class="method"><a href="PacketThief/Handlers/SSLServer/InitialServer.html#method-i-stop_server">#stop_server &mdash; PacketThief::Handlers::SSLServer::InitialServer</a>
+    <li class="method"><a href="PacketThief/Handlers/SSLServer.html#method-i-servername_cb">#servername_cb &mdash; PacketThief::Handlers::SSLServer</a>
+  
+    <li class="method"><a href="SSLTest/Runner.html#method-i-start_packetthief">#start_packetthief &mdash; SSLTest::Runner</a>
+  
+    <li class="method"><a href="SSLTest/Runner.html#method-i-stop_packetthief">#stop_packetthief &mdash; SSLTest::Runner</a>
   
     <li class="method"><a href="PacketThief/Handlers/SSLServer.html#method-i-stop_server">#stop_server &mdash; PacketThief::Handlers::SSLServer</a>
   
-    <li class="method"><a href="SSLTest/SSLTestCase.html#method-i-stop_testing">#stop_testing &mdash; SSLTest::SSLTestCase</a>
+    <li class="method"><a href="PacketThief/Handlers/SSLServer/InitialServer.html#method-i-stop_server">#stop_server &mdash; PacketThief::Handlers::SSLServer::InitialServer</a>
   
-    <li class="method"><a href="SSLTest/SSLTestCase.html#method-i-test_completed">#test_completed &mdash; SSLTest::SSLTestCase</a>
+    <li class="method"><a href="SSLTest/TestManager.html#method-i-stop_testing">#stop_testing &mdash; SSLTest::TestManager</a>
+  
+    <li class="method"><a href="SSLTest/TestManager.html#method-i-test_completed">#test_completed &mdash; SSLTest::TestManager</a>
   
     <li class="method"><a href="SSLTest/Config.html#method-i-testing_method">#testing_method &mdash; SSLTest::Config</a>
+  
+    <li class="method"><a href="SSLTest/TestManager.html#method-i-testing_method">#testing_method &mdash; SSLTest::TestManager</a>
   
     <li class="method"><a href="SSLTest/Config.html#method-i-tests">#tests &mdash; SSLTest::Config</a>
   
@@ -550,15 +606,13 @@
   
     <li class="method"><a href="PacketThief/Handlers/AbstractSSLHandler.html#method-i-tls_failed_handshake">#tls_failed_handshake &mdash; PacketThief::Handlers::AbstractSSLHandler</a>
   
-    <li class="method"><a href="PacketThief/Handlers/AbstractSSLHandler.html#method-i-tls_successful_handshake">#tls_successful_handshake &mdash; PacketThief::Handlers::AbstractSSLHandler</a>
-  
-    <li class="method"><a href="SSLTest/TestListener.html#method-i-tls_successful_handshake">#tls_successful_handshake &mdash; SSLTest::TestListener</a>
-  
     <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html#method-i-tls_successful_handshake">#tls_successful_handshake &mdash; PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
   
     <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy.html#method-i-tls_successful_handshake">#tls_successful_handshake &mdash; PacketThief::Handlers::SSLTransparentProxy</a>
   
-    <li class="method"><a href="SSLTest/SSLTestReport.html#method-i-to_csv">#to_csv &mdash; SSLTest::SSLTestReport</a>
+    <li class="method"><a href="SSLTest/TestListener.html#method-i-tls_successful_handshake">#tls_successful_handshake &mdash; SSLTest::TestListener</a>
+  
+    <li class="method"><a href="PacketThief/Handlers/AbstractSSLHandler.html#method-i-tls_successful_handshake">#tls_successful_handshake &mdash; PacketThief::Handlers::AbstractSSLHandler</a>
   
     <li class="method"><a href="SSLTest/SSLTestResult.html#method-i-to_h">#to_h &mdash; SSLTest::SSLTestResult</a>
   
@@ -566,9 +620,13 @@
   
     <li class="method"><a href="PacketThief/Impl/Netfilter/IPTablesRule.html#method-i-to_netfilter_command">#to_netfilter_command &mdash; PacketThief::Impl::Netfilter::IPTablesRule</a>
   
+    <li class="method"><a href="PacketThief/Impl/PFDivert/PFDivertRule.html#method-i-to_pf_command">#to_pf_command &mdash; PacketThief::Impl::PFDivert::PFDivertRule</a>
+  
     <li class="method"><a href="PacketThief/Impl/PFRdr/PFRdrRule.html#method-i-to_pf_command">#to_pf_command &mdash; PacketThief::Impl::PFRdr::PFRdrRule</a>
   
-    <li class="method"><a href="PacketThief/Impl/PFDivert/PFDivertRule.html#method-i-to_pf_command">#to_pf_command &mdash; PacketThief::Impl::PFDivert::PFDivertRule</a>
+    <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy.html#method-i-unbind">#unbind &mdash; PacketThief::Handlers::SSLTransparentProxy</a>
+  
+    <li class="method"><a href="SSLTest/InputHandler.html#method-i-unbind">#unbind &mdash; SSLTest::InputHandler</a>
   
     <li class="method"><a href="PacketThief/Handlers/TransparentProxy/ProxyConnection.html#method-i-unbind">#unbind &mdash; PacketThief::Handlers::TransparentProxy::ProxyConnection</a>
   
@@ -576,15 +634,17 @@
   
     <li class="method"><a href="PacketThief/Handlers/TransparentProxy.html#method-i-unbind">#unbind &mdash; PacketThief::Handlers::TransparentProxy</a>
   
-    <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html#method-i-unbind">#unbind &mdash; PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
-  
-    <li class="method"><a href="SSLTest/InputHandler.html#method-i-unbind">#unbind &mdash; SSLTest::InputHandler</a>
-  
     <li class="method"><a href="PacketThief/Handlers/SSLServer/InitialServer.html#method-i-unbind">#unbind &mdash; PacketThief::Handlers::SSLServer::InitialServer</a>
   
-    <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy.html#method-i-unbind">#unbind &mdash; PacketThief::Handlers::SSLTransparentProxy</a>
+    <li class="method"><a href="PacketThief/Handlers/SSLTransparentProxy/SSLProxyConnection.html#method-i-unbind">#unbind &mdash; PacketThief::Handlers::SSLTransparentProxy::SSLProxyConnection</a>
   
     <li class="method"><a href="PacketThief/Handlers/AbstractSSLHandler.html#method-i-unbind">#unbind &mdash; PacketThief::Handlers::AbstractSSLHandler</a>
+  
+    <li class="method"><a href="SSLTest/TestManager.html#method-i-unpause">#unpause &mdash; SSLTest::TestManager</a>
+  
+    <li class="method"><a href="TLSPretense/InitRunner.html#method-i-usage">#usage &mdash; TLSPretense::InitRunner</a>
+  
+    <li class="method"><a href="TLSPretense/App.html#method-i-usage">#usage &mdash; TLSPretense::App</a>
   
     <li class="method"><a href="PacketThief/RedirectRule.html#method-i-where">#where &mdash; PacketThief::RedirectRule</a>
   
