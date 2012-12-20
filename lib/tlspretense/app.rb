@@ -13,6 +13,8 @@ module TLSPretense
 Usage: #{0} action arguments...
 
 Actions:
+  init PATH   Creates a new TLSPretense working directory. This includes
+              configuration files and test certificates.
   run         Run all or some of the test cases. Call `run -h` for more
               information.
   list, ls    List all or some of the test cases (equivalent to `run -l`).
@@ -24,6 +26,8 @@ QUOTE
 
     def run
       case @action
+      when 'init'
+        InitRunner.new(@action_args, @stdin, @stdout).run
       when 'run'
         SSLTest::Runner.new(@action_args, @stdin, @stdout).run
       when 'list', 'ls'
