@@ -30,7 +30,7 @@ module SSLTest
       when :list
         @stdout.puts "These are the test I will perform and their descriptions:"
         @stdout.puts ''
-        @config.tests(@test_list.empty? ? nil : @test_list).each do |test|
+        SSLTestCase.factory(@app_context, @config.tests, @test_list).each do |test|
           display_test test
         end
       when :runtests
@@ -101,8 +101,8 @@ module SSLTest
     end
 
     def display_test(test)
-      @stdout.printf "%s: %s\n", test['alias'], test['name']
-      @stdout.printf "  %s\n", test['certchain'].inspect
+      @stdout.printf "%s: %s\n", test.id, test.description
+      @stdout.printf "  %s\n", test.certchainalias.inspect
       @stdout.puts ''
     end
 
