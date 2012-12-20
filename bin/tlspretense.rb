@@ -5,4 +5,3 @@ $:.unshift(File.dirname(__FILE__)+ '/../lib') unless $:.include?(File.dirname(__
 require 'tlspretense'
 
 TLSPretense::App.new(ARGV,$stdin,$stdout).run
-
