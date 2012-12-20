@@ -25,21 +25,27 @@ QUOTE
     end
 
     def run
-      case @action
-      when 'init'
-        InitRunner.new(@action_args, @stdin, @stdout).run
-      when 'run'
-        SSLTest::Runner.new(@action_args, @stdin, @stdout).run
-      when 'list', 'ls'
-        SSLTest::Runner.new(['--list'] + @action_args, @stdin, @stdout).run
-      when 'ca'
-        CertMaker::Runner.new.ca
-      when 'certs'
-        CertMaker::Runner.new.certs
-      when 'cleancerts'
-        CertMaker::Runner.new.clean
-      else
-        usage
+      begin
+        case @action
+        when 'init'
+          InitRunner.new(@action_args, @stdin, @stdout).run
+        when 'run'
+          SSLTest::Runner.new(@action_args, @stdin, @stdout).run
+        when 'list', 'ls'
+          SSLTest::Runner.new(['--list'] + @action_args, @stdin, @stdout).run
+        when 'ca'
+          CertMaker::Runner.new.ca
+        when 'certs'
+          CertMaker::Runner.new.certs
+        when 'cleancerts'
+          CertMaker::Runner.new.clean
+        else
+          usage
+        end
+      rescue CleanExitError => e
+        @stdout.puts ""
+        @stdout.puts "#{e.class}: #{e}"
+        exit 1
       end
     end
   end

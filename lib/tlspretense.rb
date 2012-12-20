@@ -6,6 +6,8 @@ require 'certmaker'
 require 'certmaker/runner'
 
 module TLSPretense
+  class CleanExitError < StandardError ; end
+
   autoload :App,  'tlspretense/app'
   autoload :InitRunner, 'tlspretense/init_runner'
 end
