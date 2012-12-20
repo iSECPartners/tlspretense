@@ -35,6 +35,7 @@ module SSLTest
                                 :paused? => false,
                                 :current_test => curr_test,
                                 :test_completed => nil,
+                                :testing_method => 'senddata',
                                 :goodcacert => double('goodcacert'),
                                 :goodcakey => double('goodcakey')
                                ) }
@@ -170,26 +171,24 @@ module SSLTest
           end
         end
         context "when the client rejects" do
-          before(:each) do
-            subject.tls_failed_handshake(double('error'))
-          end
-
-          it "calls the test_manager's test_completed callback with :rejected when the connection closes" do
+          it "calls the test_manager's test_completed callback with :rejected" do
             test_manager.should_receive(:test_completed).with(test_manager.current_test, :rejected)
 
-            subject.unbind
+            subject.tls_failed_handshake(double('error'))
           end
         end
         context "when the client sends data" do
-          before(:each) do
-            subject.stub(:send_to_dest)
-            subject.client_recv(double('data'))
-          end
+          context "when the testing_method is 'senddata'" do
+            before(:each) do
+              test_manager.stub(:testing_method).and_return('senddata')
+            end
+            it "client_recv calls the test_manager's test_completed callback with :sentdata" do
+              subject.stub(:send_to_dest)
 
-          it "calls the test_manager's test_completed callback with :sentdata when the connection closes" do
-            test_manager.should_receive(:test_completed).with(test_manager.current_test, :sentdata)
+              test_manager.should_receive(:test_completed).with(test_manager.current_test, :sentdata)
 
-            subject.unbind
+              subject.client_recv(double('data'))
+            end
           end
         end
 

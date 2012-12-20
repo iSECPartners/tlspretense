@@ -108,5 +108,9 @@ module SSLTest
       end
     end
 
+    def testing_method
+      @appctx.config.testing_method
+    end
+
   end
 end

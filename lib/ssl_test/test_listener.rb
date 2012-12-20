@@ -88,22 +88,29 @@ module SSLTest
       OpenSSL::SSL.verify_certificate_identity(cert, hostname)
     end
 
-    # If the client completes connecting, then they trusted our cert chain.
+    # If the client completes connecting, we might consider that trusting our
+    # certificate chain. However, at least Java's SSL client classes don't
+    # reject until after completing the handshake.
     def tls_successful_handshake
       super
       logdebug "successful handshake"
       if @testing_host
         @test_status = :connected
+        if @test_manager.testing_method == 'tlshandshake'
+          @test_manager.test_completed(@test, @test_status)
+          @testing_host = false
+        end
       end
     end
 
-    # If the handshake failed, then we believe the client rejected our cert
-    # chain.
+    # If the handshake failed, then the client rejected our cert chain.
     def tls_failed_handshake(e)
       super
       logdebug "failed handshake"
       if @testing_host
         @test_status = :rejected
+        @test_manager.test_completed(@test, @test_status)
+        @testing_host = false
       end
     end
 
@@ -113,12 +120,19 @@ module SSLTest
       logdebug "unbind"
       if @testing_host
         @test_manager.test_completed(@test, @test_status)
+        @testing_host = false
       end
     end
 
+    # client_recv means that the client sent data over the TLS connection,
+    # meaning they definately trusted our certificate chain.
     def client_recv(data)
       if @testing_host
         @test_status = :sentdata
+        if @test_manager.testing_method == 'senddata'
+          @test_manager.test_completed(@test, @test_status)
+          @testing_host = false
+        end
       end
       super(data)
     end
