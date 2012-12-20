@@ -61,7 +61,6 @@ Rake::RDocTask.new do |rdoc|
 end
 
 $: << "lib"
-$: << "packetthief/lib"
 require 'certmaker/tasks'
 
 desc "Runs certs:clean"
