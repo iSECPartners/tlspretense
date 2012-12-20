@@ -13,8 +13,12 @@ module TLSPretense
 Usage: #{0} action arguments...
 
 Actions:
-  run         Run all or some of the test cases. Call run -h for more information.
+  run         Run all or some of the test cases. Call `run -h` for more
+              information.
   list, ls    List all or some of the test cases (equivalent to `run -l`).
+  ca          Checks for a ca, and generates it if needed.
+  certs       (Re)generate a suite of test certificates.
+  cleancerts  Remove the certs directory.
 QUOTE
     end
 
@@ -24,6 +28,12 @@ QUOTE
         SSLTest::Runner.new(@action_args, @stdin, @stdout).run
       when 'list', 'ls'
         SSLTest::Runner.new(['--list'] + @action_args, @stdin, @stdout).run
+      when 'ca'
+        CertMaker::Runner.new.ca
+      when 'certs'
+        CertMaker::Runner.new.certs
+      when 'cleancerts'
+        CertMaker::Runner.new.clean
       else
         usage
       end

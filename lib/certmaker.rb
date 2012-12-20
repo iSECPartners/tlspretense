@@ -37,7 +37,7 @@ module CertMaker
     cakey = config['certmaker']['customgoodca']['keyfile']
 
     if File.exist? cacert and File.exist? cakey
-      puts "CA and CA's key exist."
+      puts "CA and CA's key already exist."
     elsif File.exist? cacert and not File.exist? cakey
       raise "CA certificate exists, but the key file does not exist?!"
     elsif not File.exist? cacert and File.exist? cakey
