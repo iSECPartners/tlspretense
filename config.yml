@@ -213,6 +213,18 @@ certs:
     addextensions:
     - "extendedKeyUsage = codeSigning"
 
+  rightextendedkeyusagecrit: &rightextendedkeyusagecrit
+    <<: *baseline
+    blockextensions:
+    - extendedKeyUsage
+    addextensions:
+    - "extendedKeyUsage = critical,serverAuth"
+  wrongextendedkeyusagecrit: &wrongextendedkeyusagecrit
+    <<: *baseline
+    blockextensions:
+    - extendedKeyUsage
+    addextensions:
+    - "extendedKeyUsage = critical,codeSigning"
 
   selfsigned: &selfsigned
     <<: *baseline
@@ -386,6 +398,23 @@ tests:
   - wrongextendedkeyusage
   - goodca
   expected_result: rejected
+
+- alias: rightextendedkeyusagecrit
+  name: extendedKeyUsage lacks serverAuth
+  certchain:
+  - rightextendedkeyusagecrit
+  - goodca
+  expected_result: connected
+
+#####################
+# This one fails against Java/Android's standard SSL client code.
+- alias: wrongextendedkeyusagecrit
+  name: extendedKeyUsage lacks serverAuth
+  certchain:
+  - wrongextendedkeyusagecrit
+  - goodca
+  expected_result: rejected
+#####################
 
 # cert chain issues
 - alias: selfsigned
