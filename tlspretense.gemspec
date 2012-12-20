@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   QUOTE
   s.executables = ["tlspretense"]
   s.files = `git ls-files`.split("\n")
-  s.test_files = `git ls-files spec`
+  s.test_files = `git ls-files spec`.split("\n")
   s.require_paths = ["lib"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
