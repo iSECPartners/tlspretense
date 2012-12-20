@@ -28,10 +28,18 @@ module SSLTest
       @description = @raw['name']
       @certchainalias = @raw['certchain']
       @expected_result = @raw['expected_result']
+    end
 
-      @certchain = @appctx.cert_manager.get_chain(@certchainalias)
-      @keychain = @appctx.cert_manager.get_keychain(@certchainalias)
-      @hosttotest = @appctx.config.hosttotest
+    def certchain
+      @certchain ||= @appctx.cert_manager.get_chain(@certchainalias)
+    end
+
+    def keychain
+      @keychain ||= @appctx.cert_manager.get_keychain(@certchainalias)
+    end
+
+    def hosttotest
+      @hosttotest ||= @appctx.config.hosttotest
     end
 
   end
