@@ -113,12 +113,6 @@ See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPre
   until the pre-flight finishes. (the SSLClient within SSLTransparentProxy
   probably also should do this until the client connects)
 
-* Move PacketThief calls and TestListener's intial server into the runner. The
-  TestListener's initial server should then have a way to change what initial
-  arguments it passes on to each TestListener instance in order to present the
-  certificates for the current test. This _might_ help keep some connections
-  from hanging...
-
 * Fix the subjectAltName null byte test. It requires manual construction of the
   ASN1 encoding due to the null byte causing a truncation somewhere in OpenSSL
   or Ruby's OpenSSL.
