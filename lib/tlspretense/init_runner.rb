@@ -90,6 +90,17 @@ module TLSPretense
         And you should copy the PEM encoded private key to:
 
             #{path}/ca/goodcakey.pem
+
+        Otherwise you can use the preinstalled CA certificate or delete the ca
+        directory and run:
+
+            tlspretense ca
+
+        to generate a new CA (which you will then need to install so that the software
+        you are testing will trust it).
+
+        Refer to the guides on http://isecpartners.github.com/tlspretense/ for more
+        information on configuring your host to run TLSPretense.
         QUOTE
     end
 
