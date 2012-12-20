@@ -1,5 +1,5 @@
 # encoding: utf-8
-
+$: << "lib"
 require 'rubygems'
 require 'bundler'
 begin
@@ -10,21 +10,6 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 require 'rake'
-
-# Not really planning to be a gem, yet.
-#require 'jeweler'
-#Jeweler::Tasks.new do |gem|
-#  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-#  gem.name = "tlspretense"
-#  gem.homepage = "https://github.com/iSECPartners/tlspretense"
-#  gem.license = "MIT"
-#  gem.summary = %Q{A set of tools for testing an SSL/TLS client's certificate validation}
-#  gem.description = %Q{TLSPretense provides a set of tools to test SSL/TLS certificate validation. It includes a library for generating certificates and a test framework for running tests against a client by intercepting client network traffic.}
-#  gem.email = "bjorvis@isecpartners.com"
-#  gem.authors = ["William (B.J.) Snow Orvis"]
-#  # dependencies defined in Gemfile
-#end
-#Jeweler::RubygemsDotOrgTasks.new
 
 require 'rspec/core'
 require 'rspec/core/rake_task'
@@ -41,7 +26,8 @@ task :default => :spec
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+  require 'tlspretense/version'
+  version = TLSPretense::VERSION
 
   rdoc.rdoc_dir = 'rdoc'
   rdoc.main = 'README.rdoc'
@@ -60,7 +46,6 @@ Rake::RDocTask.new do |rdoc|
   end
 end
 
-$: << "lib"
 require 'certmaker/tasks'
 
 desc "Runs certs:clean"
