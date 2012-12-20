@@ -26,7 +26,6 @@ module SSLTest
     #   node in _chaintotest_.
     def initialize(tcpsocket, test_manager, logger=nil)
       @test_manager = test_manager
-      @logger = logger
 
       if @test_manager.paused?
         @paused = true
@@ -40,7 +39,7 @@ module SSLTest
         @extrachain = chain
       end
       # Use the goodca for hosts we don't care to test against.
-      super(tcpsocket, @test_manager.goodcacert, @test_manager.goodcakey)
+      super(tcpsocket, @test_manager.goodcacert, @test_manager.goodcakey, logger)
 
       @test_status = :running
       @testing_host = false

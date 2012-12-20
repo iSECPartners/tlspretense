@@ -145,8 +145,8 @@ module PacketThief
       ####
 
       public
-      def initialize(tcpsocket)
-        super(tcpsocket)
+      def initialize(tcpsocket,logger=nil)
+        super(tcpsocket, logger)
         @ctx.servername_cb = proc {|sslsocket, hostname| self.servername_cb(sslsocket, hostname) }
       end
 

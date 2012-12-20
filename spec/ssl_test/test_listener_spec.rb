@@ -48,7 +48,7 @@ module SSLTest
 #      PacketThief::Handlers::SSLSmartProxy.any_instance.stub(:tls_failed_handshake)
 #      PacketThief::Handlers::SSLSmartProxy.any_instance.stub(:unbind)
       class PacketThief::Handlers::SSLSmartProxy
-        def initialize(socket, certchain, key)
+        def initialize(socket, certchain, key, logger=nil)
         end
 
         def tls_successful_handshake
