@@ -157,10 +157,6 @@ See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPre
 
 * Command line option to specify where to write the results to
 
-* Wrap certmaker functionality in a command instead of just using rake
-
-* Gemify for easier distribution/installation and eliminate the need for bundle exec
-
 * Add more result output formats
   * (X)HTML
   * CSV
@@ -173,6 +169,11 @@ See {TLSPretense Setup}[rdoc-ref:general_setup] for details on setting up TLSPre
 
 * Build certs and chains of certs for each test so that something like
   s\_server could use them.
+
+* Make initialization interactive. It should prompt the user to choose or
+  confirm configuration details like the interception/firewalling method to
+  use, the network device to listen on, the default hostname, etc. It could
+  then auto-generate the necessary certificates as well.
 
 * Config file validator
 
