@@ -58,7 +58,7 @@ module SSLTest
         @listener = TestListener.start('', @config.listener_port, test_manager)
         @listener.logger = @logger
         @keyboard = EM.open_keyboard InputHandler do |h|
-          h.on(' ') { test_manager.test_completed :skipped }
+          h.on(' ') { test_manager.test_completed(test_manager.current_test, :skipped) }
           h.on('q') { test_manager.stop_testing }
           h.on("\n") { test_manager.unpause }
         end
