@@ -1,7 +1,16 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
+
+if ENV["COVERAGE"]
+  require 'simplecov'
+  SimpleCov.start do
+    add_group 'Source', '/lib/'
+    add_group 'RSpec', '/spec/'
+  end
+end
+
 require 'rspec'
-require 'ssl_test'
+require 'tlspretense'
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.

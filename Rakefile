@@ -1,3 +1,4 @@
+
 require 'bundler/gem_tasks'
 
 require 'rspec/core/rake_task'
@@ -5,9 +6,12 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
-RSpec::Core::RakeTask.new(:rcov) do |spec|
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
+namespace(:spec) do
+  desc "Create rspec code coverage"
+  task :coverage do
+    ENV['COVERAGE'] = 'true'
+    Rake::Task["spec"].execute
+  end
 end
 
 task :default => :spec

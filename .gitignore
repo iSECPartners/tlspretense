@@ -1,6 +1,7 @@
 certs
+coverage
 rdoc
-doc .yardoc
+.yardoc
 .bundle
 pkg
 tags
