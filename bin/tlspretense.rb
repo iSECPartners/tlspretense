@@ -3,7 +3,7 @@
 $:.unshift(File.dirname(__FILE__)+ '/../lib') unless $:.include?(File.dirname(__FILE__)+ '/../lib')
 $:.unshift(File.dirname(__FILE__)+ '/../packetthief/lib') unless $:.include?(File.dirname(__FILE__)+ '/../packetthief/lib')
 
-require 'ssl_test'
+require 'tlspretense'
 
-SSLTest::Runner.new(ARGV,$stdin,$stdout).run
+TLSPretense::App.new(ARGV,$stdin,$stdout).run
 
