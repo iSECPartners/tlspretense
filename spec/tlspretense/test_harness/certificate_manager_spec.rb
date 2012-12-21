@@ -1,6 +1,7 @@
-require File.expand_path(File.join(File.dirname(__FILE__),'..','spec_helper'))
+require File.expand_path(File.join(File.dirname(__FILE__),'..','..','spec_helper'))
 
-module SSLTest
+module TLSPretense
+module TestHarness
   describe CertificateManager do
     let(:rawfoocert) do (<<-EOF).gsub(/^\s*/,'')
       -----BEGIN CERTIFICATE-----
@@ -219,4 +220,4 @@ module SSLTest
 
   end
 end
-
+end

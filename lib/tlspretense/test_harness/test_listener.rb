@@ -1,4 +1,5 @@
-module SSLTest
+module TLSPretense
+module TestHarness
 
   # TestListener is the real workhorse used by SSLTestCases. It builds on the
   # SSLSmartProxy from PacketThief in order to intercept and forward SSL
@@ -137,4 +138,5 @@ module SSLTest
     end
 
   end
+end
 end

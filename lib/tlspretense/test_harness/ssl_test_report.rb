@@ -1,4 +1,5 @@
-module SSLTest
+module TLSPretense
+module TestHarness
   # Represents an entire report. SSLTestCases add results to it, which it can
   # later format.
   class SSLTestReport
@@ -21,4 +22,5 @@ module SSLTest
     end
 
   end
+end
 end

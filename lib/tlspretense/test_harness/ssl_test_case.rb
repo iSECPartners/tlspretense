@@ -1,4 +1,5 @@
-module SSLTest
+module TLSPretense
+module TestHarness
   # Represents a single test case.
   class SSLTestCase
     include PacketThief::Logging
@@ -43,4 +44,5 @@ module SSLTest
     end
 
   end
+end
 end

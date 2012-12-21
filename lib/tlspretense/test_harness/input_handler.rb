@@ -1,6 +1,5 @@
-
-
-module SSLTest
+module TLSPretense
+module TestHarness
   # EM handler to handle keyboard input while a test is running.
   module InputHandler
 
@@ -32,4 +31,5 @@ module SSLTest
     end
 
   end
+end
 end

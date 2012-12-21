@@ -1,4 +1,5 @@
-module SSLTest
+module TLSPretense
+module TestHarness
   # SSLTestResults are created by running SSLTestCases. They are then added to
   # an SSLTestReport so that they can be included in that report.
   class SSLTestResult
@@ -27,4 +28,5 @@ module SSLTest
       }
     end
   end
+end
 end

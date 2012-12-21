@@ -1,4 +1,5 @@
-module SSLTest
+module TLSPretense
+module TestHarness
 
   # Class to hold onto application-wide values in a single place and to track
   # application state.
@@ -14,4 +15,5 @@ module SSLTest
       @logger = logger
     end
   end
+end
 end

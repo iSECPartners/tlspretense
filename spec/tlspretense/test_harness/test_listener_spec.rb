@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__),'..','spec_helper'))
+require File.expand_path(File.join(File.dirname(__FILE__),'..','..','spec_helper'))
 require 'certmaker'
 
 # quick and dirty. just create the fields we need.
@@ -13,7 +13,8 @@ def quickcertmaker(hostname, altnames=nil)
 end
 
 
-module SSLTest
+module TLSPretense
+module TestHarness
   describe TestListener do
     let(:tcpsocket) { double('tcpsocket') }
     let(:cacert) { double('cacert') }
@@ -196,4 +197,5 @@ module SSLTest
     end
 
   end
+end
 end

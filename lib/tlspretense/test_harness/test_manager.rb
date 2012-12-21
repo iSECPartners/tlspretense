@@ -1,4 +1,5 @@
-module SSLTest
+module TLSPretense
+module TestHarness
   # Tracks testing state and handles reporting for the TestListener.
   class TestManager
     include PacketThief::Logging
@@ -113,4 +114,5 @@ module SSLTest
     end
 
   end
+end
 end

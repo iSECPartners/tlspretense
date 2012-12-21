@@ -30,9 +30,9 @@ QUOTE
         when 'init'
           InitRunner.new(@action_args, @stdin, @stdout).run
         when 'run'
-          SSLTest::Runner.new(@action_args, @stdin, @stdout).run
+          TestHarness::Runner.new(@action_args, @stdin, @stdout).run
         when 'list', 'ls'
-          SSLTest::Runner.new(['--list'] + @action_args, @stdin, @stdout).run
+          TestHarness::Runner.new(['--list'] + @action_args, @stdin, @stdout).run
         when 'ca'
           CertMaker::Runner.new.ca
         when 'certs'

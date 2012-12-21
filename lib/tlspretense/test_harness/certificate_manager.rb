@@ -1,4 +1,5 @@
-module SSLTest
+module TLSPretense
+module TestHarness
   # Handles the loading and caching of certificates and private keys.
   class CertificateManager
 
@@ -30,4 +31,5 @@ module SSLTest
       list.map { |name| get_key(name) }
     end
   end
+end
 end

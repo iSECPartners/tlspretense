@@ -1,4 +1,6 @@
-module SSLTest
+module TLSPretense
+module TestHarness
+
   class RunnerOptions
 
     DEFAULT_OPTS = {
@@ -65,4 +67,5 @@ module SSLTest
     end
 
   end
+end
 end

@@ -1,4 +1,5 @@
-module SSLTest
+module TLSPretense
+module TestHarness
   # Handles a list of arguments, and uses the arguments to run a sequence of tests.
   class Runner
     include PacketThief::Logging
@@ -107,4 +108,5 @@ module SSLTest
     end
 
   end
+end
 end

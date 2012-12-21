@@ -1,4 +1,5 @@
-module SSLTest
+module TLSPretense
+module TestHarness
   # Loads and interprets the configuration file.
   class Config
 
@@ -76,4 +77,5 @@ module SSLTest
 
 
   end
+end
 end

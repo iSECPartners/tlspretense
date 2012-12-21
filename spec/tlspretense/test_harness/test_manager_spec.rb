@@ -1,6 +1,7 @@
-require File.expand_path(File.join(File.dirname(__FILE__),'..','spec_helper'))
+require File.expand_path(File.join(File.dirname(__FILE__),'..','..','spec_helper'))
 
-module SSLTest
+module TLSPretense
+module TestHarness
   describe TestManager do
 
     let(:config) do
@@ -321,4 +322,5 @@ module SSLTest
    end
 
   end
+end
 end

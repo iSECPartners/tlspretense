@@ -1,6 +1,7 @@
-require File.expand_path(File.join(File.dirname(__FILE__),'..','spec_helper'))
+require File.expand_path(File.join(File.dirname(__FILE__),'..','..','spec_helper'))
 
-module SSLTest
+module TLSPretense
+module TestHarness
   describe SSLTestCase do
     let(:certchain) { double('certchain') }
     let(:keychain) { [ double('firstkey'), double('secondkey'), double('cakey') ] }
@@ -109,5 +110,4 @@ module SSLTest
 
   end
 end
-
-
+end
