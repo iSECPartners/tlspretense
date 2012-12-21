@@ -1,7 +1,6 @@
-require 'certmaker'
-require 'yaml'
-require 'fileutils'
+require 'tlspretense/cert_maker'
 
+module TLSPretense
 module CertMaker
   class Runner
     include FileUtils
@@ -24,4 +23,5 @@ module CertMaker
       rm_r "certs"
     end
   end
+end
 end

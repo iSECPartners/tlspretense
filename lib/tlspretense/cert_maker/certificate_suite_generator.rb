@@ -1,4 +1,4 @@
-
+module TLSPretense
 module CertMaker
   # Generates a suite of certificates from a configuration.
   #
@@ -117,4 +117,5 @@ module CertMaker
     end
 
   end
+end
 end

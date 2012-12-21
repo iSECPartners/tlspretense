@@ -1,8 +1,7 @@
 require 'fileutils'
 
 require 'packetthief'
-require 'certmaker'
-require 'certmaker/runner'
+require 'tlspretense/cert_maker/runner'
 
 module TLSPretense
   class CleanExitError < StandardError ; end
@@ -11,4 +10,5 @@ module TLSPretense
   autoload :InitRunner, 'tlspretense/init_runner'
   autoload :TestHarness, 'tlspretense/test_harness'
   autoload :VERSION,    'tlspretense/version'
+  autoload :CertMaker,  'tlspretense/cert_maker'
 end

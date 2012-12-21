@@ -1,3 +1,4 @@
+module TLSPretense
 module CertMaker
   class CertificateFactory
 
@@ -103,4 +104,5 @@ module CertMaker
 
   end
 
+end
 end

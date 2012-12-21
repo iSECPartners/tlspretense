@@ -1,13 +1,14 @@
-
 require 'fileutils'
-require 'yaml'
 require 'openssl'
+require 'yaml'
 
-require 'certmaker/ext_core/hash_indifferent_fetch'
-require 'certmaker/certificate_factory'
-require 'certmaker/certificate_suite_generator'
+require 'tlspretense/ext_core/hash_indifferent_fetch'
 
-module CertMaker
+module TLSPretense
+  module CertMaker
+
+    autoload :CertificateFactory,         'tlspretense/cert_maker/certificate_factory'
+    autoload :CertificateSuiteGenerator,  'tlspretense/cert_maker/certificate_suite_generator'
 
 
   # Generate certificates and keys using +config+.
@@ -29,7 +30,7 @@ module CertMaker
   # Ensure that the custom ca exists.
   def make_ca(config, verbose=false)
     unless config['certmaker'].has_key? 'customgoodca'
-      puts "certmaker does not have a 'customgoodca' entry, so a CA will be regenerated every time."
+      puts "CertMaker does not have a 'customgoodca' entry, so a CA will be regenerated every time."
       return
     end
 
@@ -58,4 +59,6 @@ module CertMaker
     end
   end
   module_function :make_ca
+
+  end
 end
