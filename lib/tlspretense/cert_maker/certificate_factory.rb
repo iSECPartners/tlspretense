@@ -59,6 +59,7 @@ module CertMaker
       # Prep for extensions
       ef = OpenSSL::X509::ExtensionFactory.new
       ef.subject_certificate = nc
+      san_ef = SubjectAltNameFactory.new
 
       self.ca = args.indifferent_fetch(:ca,self.ca)
       # Issuer handling
@@ -85,7 +86,12 @@ module CertMaker
 
       # Add the extensions
       exts.each do |ext|
-        nc.add_extension(ef.create_ext_from_string(ext))
+        # hack to allow null bytes in subjectAltName DNS entries.
+        if ext.strip.index('subjectAltName') == 0
+          nc.add_extension(san_ef.create_san_ext(ext))
+        else
+          nc.add_extension(ef.create_ext_from_string(ext))
+        end
       end
 
       # Look up the signing algorithm. If it is set to a symbol or string,

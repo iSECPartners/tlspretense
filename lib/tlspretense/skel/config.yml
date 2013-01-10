@@ -195,10 +195,10 @@ certs:
   # This fails to generate as desired. the null byte truncates the
   # subjectAltName somewhere within OpenSSL. We need to manually construct the
   # ASN1 encoding ourselves.
-#  nullinsubjectaltname: &nullinsubjectaltname
-#    <<: *subjectaltnameonly
-#    addextensions:
-#    - "subjectAltName=DNS:%HOSTNAME%\x00.foo.com, DNS:another.com"
+  nullinsubjectaltname: &nullinsubjectaltname
+    <<: *subjectaltnameonly
+    addextensions:
+    - "subjectAltName=DNS:%HOSTNAME%\x00.foo.com, DNS:another.com"
 
   parentinsubjectaltname: &parentinsubjectaltname
     <<: *subjectaltnameonly

@@ -9,6 +9,7 @@ module TLSPretense
 
     autoload :CertificateFactory,         'tlspretense/cert_maker/certificate_factory'
     autoload :CertificateSuiteGenerator,  'tlspretense/cert_maker/certificate_suite_generator'
+    autoload :SubjectAltNameFactory,      'tlspretense/cert_maker/subject_alt_name_factory'
 
 
   # Generate certificates and keys using +config+.
