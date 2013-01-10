@@ -140,10 +140,6 @@ Or just certain tests (in the order specified):
   until the pre-flight finishes. (the SSLClient within SSLTransparentProxy
   probably also should do this until the client connects)
 
-* Fix the subjectAltName null byte test. It requires manual construction of the
-  ASN1 encoding due to the null byte causing a truncation somewhere in OpenSSL
-  or Ruby's OpenSSL.
-
 * Add wildcard tests
   * cert hostname: \*.%PARENTHOSTNAME%
   * bad hostname: \*.other.com

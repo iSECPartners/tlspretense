@@ -192,9 +192,23 @@ certs:
     addextensions:
     - "subjectAltName=DNS:www.foo.com"
 
-  # This fails to generate as desired. the null byte truncates the
-  # subjectAltName somewhere within OpenSSL. We need to manually construct the
-  # ASN1 encoding ourselves.
+  # The nullinsubjectaltname certificate will generate as intended with
+  # TLSPretense 0.7.0 and later. TLSPretense partially reconstructs
+  # subjectAltName extensions that contain a null byte in a DNSName. Note that
+  # the OpenSSL command line display of the certificate will truncate a
+  # subjectAltName DNSName entry at the null byte, failing to display the full
+  # entry. Eg:
+  #
+  #     $ openssl x509 -in certs/nullinsubjectaltnamecert.pem -noout -text
+  #     ...
+  #                 X509v3 Subject Alternative Name:
+  #                     DNS:www.isecpartners.com, DNS:another.com
+  #     ...
+  #
+  # when the first entry is actually "www.isecpartners.com\0.foo.com". However,
+  # the full DNSName can be verified by examining the bytes of the DER encoding
+  # of the certificate, or by parsing the extension and carefully examining the
+  # ASN1 tree.
   nullinsubjectaltname: &nullinsubjectaltname
     <<: *subjectaltnameonly
     addextensions:
@@ -377,13 +391,13 @@ tests:
   - goodca
   expected_result: rejected
 
-#- alias: nullinsubjectaltname
-#  name: "null byte in subjectAltName"
-#  certchain:
-#  - nullinsubjectaltname
-#  - goodca
-#  expected_result: rejected
-#
+- alias: nullinsubjectaltname
+  name: "null byte in subjectAltName"
+  certchain:
+  - nullinsubjectaltname
+  - goodca
+  expected_result: rejected
+
 - alias: parentinsubjectaltname
   name: "parent domain in subjectAltName"
   certchain:
