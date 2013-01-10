@@ -151,11 +151,6 @@ Or just certain tests (in the order specified):
   bar.somehost.com, and they all use a *.somehost.com certificate, then
   TLSPretense gets confused.
 
-* Add extension criticality tests (need an extension oid that nobody knows how to verify)
-  * If an extension is marked critical and the verifier doesn't know how to
-    verify, then it should fail. If it is not marked critical, then it is
-    allowed to skip the extension.
-
 * Advanced: Add name constraints tests.
   * success: dnsName of leaf matches exactly the dnsName permitted constraint
     nameConstraints=permitted;dnsName:%HOSTNAME%
