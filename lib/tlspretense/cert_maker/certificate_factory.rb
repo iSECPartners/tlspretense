@@ -87,10 +87,14 @@ module CertMaker
       # Add the extensions
       exts.each do |ext|
         # hack to allow null bytes in subjectAltName DNS entries.
-        if ext.strip.index('subjectAltName') == 0
-          nc.add_extension(san_ef.create_san_ext(ext))
-        else
-          nc.add_extension(ef.create_ext_from_string(ext))
+        if ext.kind_of? String
+          if ext.strip.index('subjectAltName') == 0
+            nc.add_extension(san_ef.create_san_ext(ext))
+          else
+            nc.add_extension(ef.create_ext_from_string(ext))
+          end
+        else # hash
+          nc.add_extension(OpenSSL::X509::Extension.new(ext['oid'],ext['value'],ext['critical']))
         end
       end
 

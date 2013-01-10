@@ -81,12 +81,26 @@ module CertMaker
         cf.ca_key = @certificates[signeralias][:key]
       end
       # doctor the certinfo's subject line and any extensions.
-      certinfo['subject'] = certinfo['subject'].gsub(/%HOSTNAME%/, @defaulthostname).gsub(/%PARENTHOSTNAME%/, @parenthostname)
+      certinfo['subject'] = replace_tokens(certinfo['subject'])
       if certinfo.has_key? 'extensions'
-        certinfo['extensions'] = certinfo['extensions'].map { |ext| ext.gsub(/%HOSTNAME%/, @defaulthostname).gsub(/%PARENTHOSTNAME%/, @parenthostname) }
+        certinfo['extensions'] = certinfo['extensions'].map do |ext|
+          if ext.kind_of? String
+            replace_tokens ext
+          else
+            ext['value'] = replace_tokens(ext['value'])
+            ext
+          end
+        end
       end
       if certinfo.has_key? 'addextensions'
-        certinfo['addextensions'] = certinfo['addextensions'].map { |ext| ext.gsub(/%HOSTNAME%/, @defaulthostname).gsub(/%PARENTHOSTNAME%/, @parenthostname) }
+        certinfo['addextensions'] = certinfo['addextensions'].map do |ext|
+          if ext.kind_of? String
+            replace_tokens(ext)
+          else
+            ext['value'] = replace_tokens(ext['value'])
+            ext
+          end
+        end
       end
       # doctor the serial number.
       if @config.has_key? 'missing_serial_generation'
@@ -114,6 +128,10 @@ module CertMaker
       rescue LoadError # no securerandom, so use weaker rand.
         rand(range)
       end
+    end
+
+    def replace_tokens(str)
+        str.gsub(/%HOSTNAME%/, @defaulthostname).gsub(/%PARENTHOSTNAME%/, @parenthostname)
     end
 
   end

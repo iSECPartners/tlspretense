@@ -329,6 +329,12 @@ certs:
     <<: *baseline
     issuer: expiredca
 
+  unknowncriticalextension:
+    <<: *baseline
+    addextensions:
+    - oid: 1.2.3.4.5.6.7.8.9.10
+      value: ' ' # must have something
+      critical: true
 
 tests:
 # baseline
@@ -535,3 +541,9 @@ tests:
 #  - expiredca
 #  expected_result: rejected
 
+- alias: unknowncriticalextension
+  name: Certificate contains a critical extension that the client does not understand
+  certchain:
+  - unknowncriticalextension
+  - goodca
+  expected_result: rejected
