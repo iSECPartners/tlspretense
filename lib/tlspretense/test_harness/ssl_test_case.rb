@@ -29,18 +29,11 @@ module TestHarness
       @description = @raw['name']
       @certchainalias = @raw['certchain']
       @expected_result = @raw['expected_result']
-    end
-
-    def certchain
+      # ensure that the certificate exists
       @certchain ||= @appctx.cert_manager.get_chain(@certchainalias)
-    end
-
-    def keychain
       @keychain ||= @appctx.cert_manager.get_keychain(@certchainalias)
-    end
-
-    def hosttotest
       @hosttotest ||= @appctx.config.hosttotest
+      nil
     end
 
   end
