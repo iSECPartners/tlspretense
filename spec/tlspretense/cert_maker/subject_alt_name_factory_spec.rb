@@ -48,13 +48,23 @@ module TLSPretense
           end
         end
 
-        context 'when the descriptor is "subjectAltName=DNS:www.isecpartners.com\foo.com, DNS:bar.com"' do
+        context 'when the descriptor is "subjectAltName=DNS:www.isecpartners.com\0foo.com, DNS:bar.com"' do
           let(:arg) { "subjectAltName=DNS:www.isecpartners.com\0foo.com, DNS:bar.com" }
-          it "the der encoding contains www.isecpartners.com" do
+          it 'the der encoding contains www.isecpartners.com\0foo.com' do
             subject.to_der.should match /www\.isecpartners\.com\0foo\.com/
           end
           it "the der encoding contains bar.com" do
             subject.to_der.should match /bar\.com/
+          end
+        end
+
+        context 'when the descriptor is "subjectAltName=DNS:www.isecpartners.com\0.foo.com, DNS:bar.com\0.foo.com"' do
+          let(:arg) { "subjectAltName=DNS:www.isecpartners.com\0.foo.com, DNS:bar.com\0.foo.com" }
+          it 'the der encoding contains www.isecpartners.com\0.foo.com' do
+            subject.to_der.should match /www\.isecpartners\.com\0\.foo\.com/
+          end
+          it "the der encoding contains bar.com\0.foo.com" do
+            subject.to_der.should match /bar\.com\0\.foo\.com/
           end
         end
 

@@ -75,19 +75,22 @@ module TLSPretense
       # something in OpenSSL itself uses a C string at some point, dropping the
       # null byte).
       def create_san_ext(desc)
-        hasnullre = /DNS:\s*([^\s]*\0[^\s]*)\s*,/
-        matched = hasnullre.match(desc)
-        if matched
-          nulldomain = matched[1]
-          desc = desc.gsub(hasnullre,'DNS:placeholder,')
+        # Remove any DNSName entries with null bytes.
+        nulldomains = {}
+        # $1 is the domain
+        # $2 is the comma after
+        desc = desc.gsub(/DNS:\s*([^\s,]*\0[^\s,]*)\s*(,?)/) do |match|
+          nulldomains[$1.hash] = $1
+
+          "DNS:placeholder#{$1.hash.to_s}#{$2}"
         end
         ext = @ef.create_ext_from_string(desc)
 
-        if matched
-          replace_in_san(ext,'placeholder',nulldomain)
-        else
-          ext
+        # Find the placeholder entries for the removed entries and doctor them.
+        nulldomains.each_pair do |domainhash,domainwithnull|
+          ext = replace_in_san(ext,"placeholder#{domainhash.to_s}",domainwithnull)
         end
+        ext
       end
 
       def replace_in_san(ext, olddns, newdns)
