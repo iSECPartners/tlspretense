@@ -4,6 +4,10 @@ require 'yaml'
 
 require 'tlspretense/ext_core/hash_indifferent_fetch'
 
+# Provide a limited version of OpenSSL::PKey.read for older Ruby versions.
+require 'tlspretense/ext_compat/openssl_pkey_read'
+TLSPretense::ExtCompat::OpenSSLPKeyRead.check_and_apply_patch
+
 module TLSPretense
   module CertMaker
 
