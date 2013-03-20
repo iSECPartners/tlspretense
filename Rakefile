@@ -38,7 +38,3 @@ Rake::RDocTask.new do |rdoc|
   end
 end
 
-require 'certmaker/tasks'
-
-desc "Runs certs:clean"
-task :clean => ['certs:clean']
