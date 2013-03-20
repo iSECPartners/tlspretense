@@ -5,3 +5,4 @@ rdoc
 .bundle
 pkg
 tags
+Gemfile.lock
