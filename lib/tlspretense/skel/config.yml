@@ -351,6 +351,9 @@ tests:
   - baseline
   - goodca
   expected_result: connected
+  description: |
+    A "good" certificate and chain that should always pass. If this test fails,
+    then your client probably does not trust the goodca CA certificate.
 
 # cname tests
 - alias: wrongcname
@@ -359,6 +362,9 @@ tests:
   - wrongcname
   - goodca
   expected_result: rejected
+  description: |
+    If the supplied CNAME does not match the expected hostname (and there is no
+    subjectAltName), then the certificate is for the wrong host.
 
 # cname tests
 - alias: parentcname
@@ -367,6 +373,9 @@ tests:
   - parentcname
   - goodca
   expected_result: rejected
+  description: |
+    Sanity check for extremely lenient hostname verification. A common name on
+    a certificate should match all of a hostname, not just the parent domain.
 
 - alias: nullincname
   name: Null character in CNAME
@@ -374,21 +383,33 @@ tests:
   - nullincname
   - goodca
   expected_result: rejected
+  description: |
+    If the common name contains a null character (often represented
+    in printable form as "\0" or "\x00" for single-byte text encodings), then
+    an attacker might be able to bypass hostname validation that uses C
+    strings. For example, a common name of "example.com\x00.evil.com", when
+    interpreted as a C string, would match "example.com".
 
 # subjectAltName tests
 - alias: happysubjectaltname
-  name: Hostname is a dnsName in subjectAltName and in subject
+  name: Hostname is a dNSName in subjectAltName and in subject
   certchain:
   - baselinesubjectaltname
   - goodca
   expected_result: connected
+  description: |
+  Test to ensure that the client does not behave badly if the hostname is in
+  both the common name and in a dNSName subjectAltNAme entry.
 
 - alias: happysubjectaltnameonly
-  name: hostname only a dnsName subjectAltName
+  name: hostname only a dNSName subjectAltName
   certchain:
   - subjectaltnameonly
   - goodca
   expected_result: connected
+  description: |
+    Test to ensure that the client supports a matching dNSName entry in the
+    subjectAltName when the hostname is not represented in the common name.
 
 - alias: wrongsubjectaltnamewrongsubject
   name: hostname in neither subjectAltName nor subject
@@ -396,6 +417,11 @@ tests:
   - wrongsubjectaltnamewrongsubject
   - goodca
   expected_result: rejected
+  description: |
+    If the hostname is not in either a subjectAltName or the common name, then
+    the certificate does not match the hostname. Failure to reject means an
+    attacker may be able to use a certificate for a different hostname to spoof
+    users.
 
 - alias: wrongsubjectaltnamerightsubject
   name: hostname in subject but not in subjectAltName
@@ -403,6 +429,11 @@ tests:
   - wrongsubjectaltnamerightsubject
   - goodca
   expected_result: rejected
+  description: |
+    If a certificate has a subjectAltName extension, then the client should not
+    check the common name. The common name does not have to be a hostname, and
+    there might be circumstance where a CA allows an arbitrary common name that
+    happens to match someone elses hostname.
 
 - alias: nullinsubjectaltname
   name: "null byte in subjectAltName"
@@ -410,6 +441,14 @@ tests:
   - nullinsubjectaltname
   - goodca
   expected_result: rejected
+  description: |
+    dNSName entries in the subjectAltName extension are susceptible to null
+    characters, just like the common name. If a dNSName entry contains a null
+    character (often represented in printable form as "\0" or "\x00" for
+    single-byte text encodings), then an attacker might be able to bypass
+    hostname validation that uses C strings. For example, a dNSName of
+    "example.com\x00.evil.com", when interpreted as a C string, would match
+    "example.com".
 
 - alias: parentinsubjectaltname
   name: "parent domain in subjectAltName"
@@ -417,6 +456,8 @@ tests:
   - parentinsubjectaltname
   - goodca
   expected_result: rejected
+  description: |
+    A dNSName entry should match all of a hostname, not just the parent domain.
 
 # key usage
 - alias: wrongextendedkeyusage
@@ -425,6 +466,17 @@ tests:
   - wrongextendedkeyusage
   - goodca
   expected_result: rejected
+  description: |
+    If a certificate has an extendedKeyUsage extension, then a client should
+    ensure that the certificate has the right usage flags set. TLSPretense
+    assumes the client is connecting to a server (as opposed to validating the
+    signature on an SMIME-signed email message, code signature, or some other
+    operation), so a certificate that has an extendedKeyUsage that lacks the
+    serverAuth bit should be rejected.
+    
+    To exploit, an attacker would need to have a valid certificate for the
+    targeted domain, except that its extendedKeyUsage states it is for some
+    other purpose, such as code signing, non-repudiation, or OCSP signing.
 
 - alias: rightextendedkeyusagecrit
   name: extendedKeyUsage lacks serverAuth
@@ -432,6 +484,9 @@ tests:
   - rightextendedkeyusagecrit
   - goodca
   expected_result: connected
+  description: |
+    Happy test that essentially duplicates the baseline test, but for
+    comparison to the other extendedKeyUsage tests.
 
 #####################
 # This one fails against Java/Android's standard SSL client code.
@@ -441,6 +496,12 @@ tests:
   - wrongextendedkeyusagecrit
   - goodca
   expected_result: rejected
+  description: |
+    If the extendedKeyUsage extension is marked critical, and it has the wrong
+    flags set, then the client should reject this certificate. This particular
+    test is here to help determine whether a client that failed the
+    wrongextendedkeyusage test also properly honors the critical flag.
+
 #####################
 
 # cert chain issues
@@ -449,6 +510,10 @@ tests:
   certchain:
   - selfsigned
   expected_result: rejected
+  description: |
+    Anyone can create an arbitrary self-signed certificate. Without some
+    non-PKI mechanism for verifying whether the certificate is valid or not,
+    self-signed certificates cannot be trusted at all.
 
 - alias: unknownca
   name: Signed by an untrusted CA
@@ -456,6 +521,9 @@ tests:
   - unknowncacert
   - unknownca
   expected_result: rejected
+  description: |
+    A certificate signed by a CA that the client is unaware of is as dangerous
+    as a self-signed certificate -- anyone can craft such a certificate chain.
 
 - alias: differentkeyca
   name: Signed by an untrusted CA (provided in the chain) with the same name but a different key
@@ -463,6 +531,12 @@ tests:
   - signedbydifferentkey
   - cawithdifferentkey
   expected_result: rejected
+  description: |
+    When validating the certificate chain, it is critical for a client to
+    ensure that the CA is valid. An attacker could craft a CA that is identical
+    in every way to a CA that the client trusts but that uses a different
+    key-pair. This would easily allow an attacker to spoof a legitimate
+    certificate.
 
 - alias: badsignature
   name: Bad signature
@@ -470,6 +544,9 @@ tests:
   - badsignature
   - goodca
   expected_result: rejected
+  description: |
+    If the signature on the leaf certificate does not match the public key of
+    the CA that signed it, then an attacker could easily spoof the site.
 
 - alias: cafalseintermediate
   name: "Intermediate certificate where BasicConstraints sets CA:FALSE"
@@ -478,6 +555,13 @@ tests:
   - cafalseintermediate
   - goodca
   expected_result: rejected
+  description: |
+    While verifying the certificate chain, the client should ensure that all
+    certificates that attest to the identity of the leaf certificate are
+    actually CAs themselves (including all intermediate certificates).
+    Otherwise, an attacker could take a legitimate leaf node and use it to sign
+    a fake certificate. The verificate of the certificate chain passes because
+    the client fails to check the BasicConstraints.
 
 - alias: nobcintermediate
   name: Intermediate certificate lacks BasicConstraints
@@ -486,6 +570,10 @@ tests:
   - nobcintermediate
   - goodca
   expected_result: rejected
+  description: |
+    An intermediate certificate that lacks the BasicConstraints extension
+    should be treated as if its constriants stated that it was not a CA
+    (CA:FALSE).
 
 - alias: badsigonintermediate
   name: Intermediate certificate has bad signature from CA
@@ -494,6 +582,10 @@ tests:
   - badsigintermediate
   - goodca
   expected_result: rejected
+  description: |
+    If the signature on an intermediate certificate does not match the public
+    key of the CA that signed it, then an attacker could easily spoof the leaf
+    certificate.
 
 - alias: signedwithmd5
   name: Certificate signed with MD5
@@ -501,6 +593,12 @@ tests:
   - signedwithmd5
   - goodca
   expected_result: rejected
+  description: |
+    MD5 is a hash signing algorithm with known weaknesses. Researchers have
+    been able to create signature collisions, which means an attacker might be
+    able to create a certificate whose MD5 hash matches that of a certificate
+    with a valid signature. However, many existing certificates are signed with
+    MD5, although new leaf certificates should not be signed this way.
 
 - alias: signedwithmd4
   name: Certificate signed with MD4
@@ -508,6 +606,8 @@ tests:
   - signedwithmd4
   - goodca
   expected_result: rejected
+  description: |
+    MD5 is a deprecated hash signing algorithm. It should never be used.
 
 ## Need OpenSSL built with MD2 support
 #- alias: signedwithmd2
@@ -516,6 +616,8 @@ tests:
 #  - signedwithmd2
 #  - goodca
 #  expected_result: rejected
+#  description: |
+#    MD2 is an even older hash signing algorithm.
 
 - alias: expiredcert
   name: Certificate that has expired
@@ -523,6 +625,12 @@ tests:
   - expiredcert
   - goodca
   expected_result: rejected
+  description: |
+    An expired certificate should not be trusted by a client. CAs mandate
+    expiration dates in order to limit how long a certificate is valid for.
+    This allows them to charge money to re-issue a certificate, but it also
+    allows them change certificate requirements over time and eventually phase
+    out old certificates.
 
 - alias: notyetvalidcert
   name: Certificate that is valid in the future
@@ -530,6 +638,9 @@ tests:
   - notyetvalidcert
   - goodca
   expected_result: rejected
+  description: |
+    A certificate that is not yet valid is suspicious. Either the client's
+    clock is running slow, or something else odd is going on.'
 
 - alias: expiredintermediate
   name: Certificate signed by an intermediate that has expired
@@ -538,6 +649,12 @@ tests:
   - expiredintermediate
   - goodca
   expected_result: rejected
+  description: |
+    An expired certificate, including expired intermediate certificates, should
+    not be trusted by a client. CAs mandate expiration dates in order to limit
+    how long a certificate is valid for. This allows them to charge money to
+    re-issue a certificate, but it also allows them change certificate
+    requirements over time and eventually phase out old certificates.
 
 # This requires installing the expired CA that is also installed into the
 # client's trusted root store.
@@ -547,13 +664,25 @@ tests:
 #  - signedbyexpiredca
 #  - expiredca
 #  expected_result: rejected
-#
+#  description: |
+#    An expired CA should not be trusted. If the CA has been compromised since
+#    its expiration (eg, the company who created it went out of business and its
+#    assets were sold, including drives that contained the CA's private key),
+#    then an attacker could use it to create arbitrary certificates that would
+#    work against clients that still trust the CA.'
+
 - alias: unknownnoncriticalextension
   name: Certificate contains a non-critical extension that the client does not understand
   certchain:
   - unknownnoncriticalextension
   - goodca
   expected_result: connected
+  description: |
+    In general, a well behaved client should ignore non-critical extensions
+    that it does not know how to validate. This test exepcts clients to ignore
+    such an extension, although rejecting an arbitrary non-critical extension
+    does not create a security issue (although the client may not be very
+    usable in practice).
 
 - alias: unknowncriticalextension
   name: Certificate contains a critical extension that the client does not understand
@@ -561,3 +690,11 @@ tests:
   - unknowncriticalextension
   - goodca
   expected_result: rejected
+  description: |
+    A well behaved client must reject the certificate if the certificate has an
+    extension marked critical that it does not know how to validate. Many
+    extensions on legitimately signed certificates are marked as critical to
+    force clients to verify them. Being unable to verify a particular critical
+    extension could mean that someone could use some other nearly identical
+    certificate (aside from the details of the unhandled critical extension) in
+    place of the correct one.
