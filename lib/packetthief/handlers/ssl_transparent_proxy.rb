@@ -11,8 +11,15 @@ module PacketThief
         # connections that make up the proxy.
         attr_accessor :closed
 
+        def closed?
+          closed
+        end
+
         # Boolean that represents whether the connection has connected yet.
         attr_accessor :connected
+
+        # The initial connection that initiated this connection
+        attr_reader :client
 
         # Sets up references to the client proxy connection handler that created
         # this handler.
@@ -47,7 +54,7 @@ module PacketThief
           @client.dest_closed
           self.closed = true
           @client.dest = nil
-          @client.close_connection_after_writing if @client and not @client.closed
+          @client.close_connection_after_writing if @client and not @client.closed?
         end
 
       end
@@ -73,6 +80,10 @@ module PacketThief
       # close/unbind. Used to ensure there is no unbind-loop between the two
       # connections that make up the proxy.
       attr_accessor :closed
+
+      def closed?
+        closed
+      end
 
       # If a client specifies a TLS hostname extension (SNI) as the hostname,
       # then we can forward that fact on to the real server. We can also use it
@@ -122,8 +133,7 @@ module PacketThief
         client_closed
         @@activeconns.delete "#{client_host}:#{client_port}"
         self.closed = true
-#        @dest.client = nil if @dest
-        @dest.close_connection_after_writing if @dest and not @dest.closed
+        @dest.tls.close_connection_after_writing if @dest and @dest.tls and not @dest.tls.closed?
       end
 
       # Initiate the connection to @dest_host:@dest_port.
@@ -137,7 +147,7 @@ module PacketThief
 
       def _send_buffer
         @buffer.each do |pkt|
-          @dest.send_data pkt
+          @dest.tls.send_data pkt
         end
         @buffer = []
       end
@@ -147,7 +157,7 @@ module PacketThief
       # connection to the remote host exists.
       def send_to_dest(data)
         @buffer << data
-        _send_buffer if @dest
+        _send_buffer if @dest and @dest.tls and @dest.tls.connected?
       end
 
       # Sends data back to the client
@@ -158,7 +168,7 @@ module PacketThief
       # Returns the certificate chain for the destination, or nil if the
       # destination connection does not exist yet.
       def dest_cert_chain
-        return @dest.sslsocket.peer_cert_chain if @dest
+        return @dest.tls.sslsocket.peer_cert_chain if @dest.tls
         nil
       end
 

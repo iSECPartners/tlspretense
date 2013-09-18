@@ -57,6 +57,16 @@ module PacketThief
         @state = :initialized
       end
 
+      # Returns true when we are done with all of our initialization and handshaking.
+      def connected?
+        case @state
+        when :new, :initialized
+          false
+        when :ready_to_read, :write_needs_to_read
+          true
+        end
+      end
+
       # Calls accept_nonblock/connect_nonblock, read_nonblock, or
       # write_nonblock based on the current state of the connection.
       def notify_readable

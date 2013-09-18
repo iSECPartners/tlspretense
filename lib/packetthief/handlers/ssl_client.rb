@@ -53,16 +53,39 @@ module PacketThief
     # completed.
     class SSLClient < AbstractSSLHandler
 
+      # Returns the InitialConnection instead of the final SSLClient (or
+      # subclass). The SSLClient instance will be available with
+      # InitialConnection#tls once the InitialConnection completes its TCP
+      # handshake.
       def self.connect(host, port, *args, &block)
         ssl_class = self
 
-        sock = TCPSocket.new host, port
+        EM::connect(host, port, InitialConnection, ssl_class, args, block)
+      end
 
-        ::EM.watch sock, ssl_class, sock, *args do |h|
-          h.notify_readable = true
-#          h.notify_writable = true
-          block.call(h) if block
-          h.tls_begin
+      # Represents the initial connection for an SSLClient or subclass, which
+      # is returned immediately by SSLClient.connect. Once the initial TCP
+      # connection completes, it sets +tls+ to the actual SSLClient instance.
+      module InitialConnection
+        include Logging
+
+        attr_reader :tls
+
+        def initialize(ssl_class, args, block)
+          @ssl_class = ssl_class
+          @args = args
+          @block = block
+          @realclient = nil
+        end
+
+        def connection_completed
+          logdebug "connection_completed"
+          sock = TCPSocket.for_fd(self.detach)
+          @tls = EM.watch sock, @ssl_class, sock, *@args do |h|
+            h.notify_readable = true
+            @block.call(h) if @block
+            h.tls_begin
+          end
         end
       end
 
