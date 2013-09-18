@@ -11,6 +11,13 @@ require 'rubygems'
 require 'eventmachine'
 require 'packetthief' # needs root
 
+Signal.trap('ABRT') do
+  puts 'catching abort'
+end
+
+log = Logger.new(STDOUT)
+log.level = Logger::DEBUG
+PacketThief.logger = log
 
 EM.run do
 

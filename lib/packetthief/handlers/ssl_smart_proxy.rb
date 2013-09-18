@@ -15,8 +15,8 @@ module PacketThief
       # seconds.
       attr_accessor :preflight_timeout
 
-      def initialize(tcpsocket, ca_chain, key, logger=nil)
-        super(tcpsocket, logger)
+      def initialize(tcpsocket, ca_chain, key)
+        super(tcpsocket)
 
         @preflight_timeout = 5
         if ca_chain.kind_of? Array

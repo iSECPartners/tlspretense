@@ -26,8 +26,7 @@ module PacketThief
       # is applied to the SSLSocket during #tls_begin.
       attr_accessor :sni_hostname
 
-      def initialize(tcpsocket, logger=nil)
-        @logger = logger
+      def initialize(tcpsocket)
         logdebug "initialize"
         # Set up initial values
         @tcpsocket = tcpsocket

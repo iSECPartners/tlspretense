@@ -12,11 +12,10 @@ module TestHarness
     attr_accessor :goodcacert
     attr_accessor :goodcakey
 
-    def initialize(context, testlist, report, logger=nil)
+    def initialize(context, testlist, report)
       @appctx = context
       @testlist = testlist
       @report = report
-      @logger = logger
       @remaining_tests = @testlist.dup
 
       @goodcacert = @appctx.cert_manager.get_cert("goodca")

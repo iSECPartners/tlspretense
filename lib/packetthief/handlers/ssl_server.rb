@@ -103,11 +103,10 @@ module PacketThief
           logdebug "(#{@ssl_class}): Received a new connection, spawning a #{@ssl_class}"
           sock = @servsocket.accept_nonblock
 
-          ::EM.watch sock, @ssl_class, sock, *@args, @logger do |h|
+          ::EM.watch sock, @ssl_class, sock, *@args do |h|
             logdebug "after initialize"
             h.server_handler = self
             h.notify_readable = true
-            h.logger = @logger
             # Now call the caller's block.
             @block.call(h) if @block
             # And finally finish initialization by applying the context to an
@@ -145,8 +144,8 @@ module PacketThief
       ####
 
       public
-      def initialize(tcpsocket,logger=nil)
-        super(tcpsocket, logger)
+      def initialize(tcpsocket)
+        super(tcpsocket)
         @ctx.servername_cb = proc {|sslsocket, hostname| self.servername_cb(sslsocket, hostname) }
       end
 

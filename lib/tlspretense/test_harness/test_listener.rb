@@ -25,7 +25,7 @@ module TestHarness
     #   present when the client attempts to connect to hostname.
     # * _keytotest_   [OpenSSL::PKey::PKey] The key corresponding to the leaf
     #   node in _chaintotest_.
-    def initialize(tcpsocket, test_manager, logger=nil)
+    def initialize(tcpsocket, test_manager)
       @test_manager = test_manager
 
       if @test_manager.paused?
@@ -40,7 +40,7 @@ module TestHarness
         @extrachain = chain
       end
       # Use the goodca for hosts we don't care to test against.
-      super(tcpsocket, @test_manager.goodcacert, @test_manager.goodcakey, logger)
+      super(tcpsocket, @test_manager.goodcacert, @test_manager.goodcakey)
 
       @test_status = :running
       @testing_host = false

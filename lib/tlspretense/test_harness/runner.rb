@@ -20,6 +20,7 @@ module TestHarness
       @logger.formatter = proc do |severity, datetime, progname, msg|
           "#{datetime}:#{severity}: #{msg}\n"
       end
+      PacketThief.logger = @logger
       @app_context = AppContext.new(@config, cert_manager, @logger)
 
       @report = SSLTestReport.new
@@ -52,12 +53,11 @@ module TestHarness
     end
 
     def run_tests(testlist)
-      test_manager = TestManager.new(@app_context, testlist, @report, @logger)
+      test_manager = TestManager.new(@app_context, testlist, @report)
       EM.run do
         # @listener handles the initial server socket, not the accepted connections.
         # h in the code block is for each accepted connection.
         @listener = TestListener.start('', @config.listener_port, test_manager)
-        @listener.logger = @logger
         @keyboard = EM.open_keyboard InputHandler do |h|
           h.on(' ') { test_manager.test_completed(test_manager.current_test, :skipped) }
           h.on('q') { test_manager.stop_testing }
@@ -72,7 +72,6 @@ module TestHarness
     # preconfigured destination, and external for when PT does not manage the
     # firewall rules but still needs to know how to discover the destination.
     def init_packetthief
-      PacketThief.logger = @logger
       if @config.packetthief.has_key? 'implementation'
         impl = @config.packetthief['implementation']
         case impl

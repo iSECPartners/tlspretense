@@ -68,8 +68,7 @@ module PacketThief
       # When the proxy should connect to a destination.
       attr_accessor :when_to_connect_to_dest
 
-      def initialize(log=nil)
-        @logger = log
+      def initialize
       end
 
       def post_init
