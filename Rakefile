@@ -18,6 +18,7 @@ task :default => :spec
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
+  $: << 'lib'
   require 'tlspretense/version'
   version = TLSPretense::VERSION
 
