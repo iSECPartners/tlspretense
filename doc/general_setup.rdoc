@@ -49,9 +49,27 @@ This setup has the following network topography:
 
 == Installing TLSPretense
 
-Install with rubygems:
+=== General Case
+
+The following assumes that the +gem+ command refers to the Ruby 1.9.3 version
+of gem. If the Ruby 1.9.3 version on your system has a suffix, use that version
+of +gem+ instead. Install with rubygems:
 
     umask 0022 ; sudo gem install tlspretense
+
+=== Ubuntu 12.04 and Later
+
+If you are using Ubuntu, The ruby1.9.1 package on Ubuntu 12.04 is actually Ruby
+1.9.3 (1.9.1 in this case is the ABI version, not the software version).
+Assuming you haven't already installed Ruby 1.9.3:
+
+    sudo apt-get install ruby1.9.1-full
+
+then install with rubygems:
+
+    umask 0022 ; sudo gem1.9.1 install tlspretense
+
+=== Create a TLSPretense Project
 
 Create a new project:
 
@@ -257,6 +275,9 @@ the firewall rule that redirects network traffic itself.
 
 For a sample Linux-specific configuration, see: {Linux
 Setup}[rdoc-ref:linux_setup].
+
+For information on configuring TLSPretense on a Mac OS X system, see: {Mac OS X
+Setup}[rdoc-ref:macosx_setup]
 
 
 == Running the tests

@@ -1,0 +1,86 @@
+= Setting Up Mac OS X for Use With TLSPretense
+
+To run TLSPretense on Mac OS X, you need a Mac running Mac OS X 10.6 or later,
+and you need to have at least two network interfaces. If you are using a Mac
+laptop that only has wifi, you will need to use one or more ethernet adapters.
+
+The following sections cover how to setup both Mac OS X 10.6 and 10.7.
+
+== Configuring Internet Sharing
+
+This example assumes that you want to test software running on a device
+that uses wifi, such as an iOS or Android app. The sytem hosting TLSPretense
+will be a Mac running Mac OS X 10.6, 10.7, or 10.8. We
+will turn our wifi adapter into a wireless access point and then share our
+Internet connection from a physical ethernet adapter with it.
+
+First, open System Preferences and ensure that the ethernet connection has
+Internet access. You may need to authenticate as an admin in order to make
+changes.
+
+Then, if your wifi adapter is currently connected to a network, tell it to
+disconnect.
+
+Next, go to the Sharing preference pane, and click on "Internet Sharing" to
+configure it. Set "Share your connection from:" to your Ethernet connection
+(usually en0), and share it to your airport connection (usually en1). Click on
+"AirPort Options..." to configure the wireless access point it will create.
+Finally, click the checkbox next to "Internet Sharing" enable it.
+
+Internet Sharing will enable +natd+ in Mac OX X 10.6 (uses ipfw), ??? in
+Mac OS X 10.7 and +natpmpd+ in 10.8 (10.7 and later use Apple's version of PF,
+which is a much older version of PF than used by FreeBSD and OpenBSD). Both
+versions of the NAT
+will forward IPv4 traffic originating from devices connected to the Mac's
+Airport card, and forward it on to the designated outgoing network device
+(TODO: Does it handle IPv6 routing?).
+Internet Sharing will also enable a DHCP server to automatically configure any
+clients that connect to the internal side of the network.
+
+TLSPretense uses its PacketThief library to capture the traffic it is
+configured to intercept, and it will initiate new outgoing connections, usually
+bypassing the NAT daemon for such traffic. We still want the NAT service because it will
+forward traffic not intercepted by TLSPretense.
+
+Once you have Internet Sharing enabled, you should test to make sure it works
+with your test device.
+
+== Configure the Test Device
+
+Next, the system that will run the client code needs to be configured to use
+the TLSPretense host as its gateway. This usually involves connecting the
+client system to the new wireless access point or to the ethernet port that
+represents the internal network. DHCP should automatically configure the
+address, gateway, subnet mask, and DNS information for the client system, but
+you may need to manually modify these values if something does not work
+(wireshark on the system running TLSPretense can help you debug this).
+
+== Configuring the PF Firewall
+
+You need to add the following line to the bottom of your system's +/etc/pf.conf+:
+
+    rdr-anchor "packetthief"
+
+It should be inserted after any NAT rules, but before any other redirect rules
+(such as Apple's +rdr-anchor+ rule). Once you have added it, you should reload
+the core ruleset:
+
+    sudo pfctl -f /etc/pf.conf
+
+
+== Configure TLSPretense
+
+Mac laptops use en0, en1, etc. for their Unix network interface names. Mac
+laptops that have both ethernet and wifi built in usually have ethernet on en0
+and their wifi interface on en1. However, on newer Mac laptops that only have
+built-in wifi, the wifi is usually +en0+ and devices like Thunderbolt ethernet
+adaptors will be assigned a higher-numbered interface name.
+
+On Mac OS X 10.8, with Internet Sharing enabled, the internal LAN's gateway is
++bridge0+ rather than the +en*+ interface.
+
+You should set +in_interface+ in the +packetthief+ section of your config.yml
+to the network interface name of the correct internal network.
+
+Aside from that, configure TLSPretense normally, as discussed in the {General
+Setup}[rdoc-ref:general_setup].

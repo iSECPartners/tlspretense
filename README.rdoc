@@ -126,11 +126,12 @@ Or just certain tests (in the order specified):
   though.
 
 * It currently uses the goodca to re-sign certificates from hostnames that do
-  not match the configured test hostname.
+  not match the configured test hostname, instead of silently forwarding the
+  connection.
 
-* The existing PFDivert rule implementation does not work on Mac OS X 10.7 (and
-  probably not on 10.8 either). OpenBSD 5.0(?) and FreeBSD 9 can make use of
-  this functionality though.
+* The existing PFDivert rule implementation does not work on Mac OS X 10.7 or
+  10.8 (use PFRdr instead). OpenBSD newer than 4.3 and FreeBSD 9 can make use
+  of the newer PF syntax and functionality though.
 
 == TODO
 
@@ -140,16 +141,33 @@ Or just certain tests (in the order specified):
   until the pre-flight finishes. (the SSLClient within SSLTransparentProxy
   probably also should do this until the client connects)
 
-* Add wildcard tests
+* Add wildcard tests (need a hostname that has
+  domain.domain.domain.publicsuffix for all tests)
   * cert hostname: \*.%PARENTHOSTNAME%
-  * bad hostname: \*.other.com
+  * bad hostname: \*.other.com (reject)
   * tld hostname: \*.%TLDHOSTNAME% (reject)
   * do we want to test more complicated wildcards?
+  * http://www.ietf.org/rfc/rfc2818.txt requires wildcards to only match a
+    single subdomain component, not all subdomain components. Eg, *.a.com matches
+    foo.a.com but not bar.foo.a.com
 
 * Decide how to deal with a wildcard cert at the original destination. If we
   are testing foo.somehost.com, and the client connects to other hostnames like
   bar.somehost.com, and they all use a *.somehost.com certificate, then
   TLSPretense gets confused.
+  * If I allow *.somehost.com from the original server to match a test hostname
+    of foo.somehost.com, and the client then requests bar.somehost.com,
+    TLSPretense would present foo.somehost.com, making a well behaved client
+    reject the hostname mismatch.
+  * If I don't allow *.somehost.com from the original server match a test
+    hostname of foo.somehost.com, then TLSPretense will never successfully run
+    its tests.
+  * If I set the test hostname to *.somehost.com, then tests for wildcards and
+    subdomains wouldn't be valid, but the rest of the tests would work.
+  * Perhaps a better option would be to present a warning if the original
+    host has a wildcard in it, unless the target hostname also has a wildcard
+    in it. (which should present a warning about the sort of tests that won't
+    produce meaningful results)
 
 * Advanced: Add name constraints tests.
   * success: dnsName of leaf matches exactly the dnsName permitted constraint
@@ -217,6 +235,6 @@ Or just certain tests (in the order specified):
 
 == Copyright
 
-Copyright (c) 2012 iSEC Partners
+Copyright (c) 2012-2013 iSEC Partners
 
 See LICENSE.txt for further details.
