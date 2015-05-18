@@ -53,7 +53,7 @@ module PacketThief
 
       # Requests a certificate from the original destination.
       def preflight_for_cert(hostname=nil)
-        logdebug "prefilight for: #{hostname}"
+        logdebug "preflight for: #{hostname}"
         begin
           pfctx = OpenSSL::SSL::SSLContext.new
           pfctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
