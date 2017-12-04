@@ -47,6 +47,13 @@ module TestHarness
         stop_packetthief
 
         @report.print_results(@stdout)
+
+        if @report.fail?
+          @stdout.puts 'FAIL'
+        else
+          @stdout.puts 'PASS'
+        end
+        !@report.fail?
       else
         raise "Unknown action: #{opts[:action]}"
       end

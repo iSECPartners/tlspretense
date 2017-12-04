@@ -30,7 +30,9 @@ QUOTE
         when 'init'
           InitRunner.new(@action_args, @stdin, @stdout).run
         when 'run'
-          TestHarness::Runner.new(@action_args, @stdin, @stdout).run
+          unless TestHarness::Runner.new(@action_args, @stdin, @stdout).run
+            return 1
+          end
         when 'list', 'ls'
           TestHarness::Runner.new(['--list'] + @action_args, @stdin, @stdout).run
         when 'ca'
@@ -45,8 +47,9 @@ QUOTE
       rescue CleanExitError => e
         @stdout.puts ""
         @stdout.puts "#{e.class}: #{e}"
-        exit 1
+        return 1
       end
+      0
     end
   end
 end

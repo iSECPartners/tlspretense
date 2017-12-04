@@ -21,6 +21,9 @@ module TestHarness
 
     end
 
+    def fail?
+      @results.any? {|r| !r.passed?}
+    end
   end
 end
 end
