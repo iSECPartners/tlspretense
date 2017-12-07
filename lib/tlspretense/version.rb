@@ -1,3 +1,3 @@
 module TLSPretense
-  VERSION = '0.7.0pre'
+  VERSION = '0.7.0'
 end
