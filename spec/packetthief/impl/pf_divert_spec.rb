@@ -61,7 +61,8 @@ module Impl
       context "when passed an object that implements Socket's #getsockname" do
         it "returns the destination socket's details" do
           @socket = double("socket")
-          @socket.stub(:getsockname).and_return("\020\002?2\ne`a\000\000\000\000\000\000\000\000")
+          # @socket.stub(:getsockname).and_return("\020\002?2\ne`a\000\000\000\000\000\000\000\000")
+          @socket.stub(:getsockname).and_return(Socket.pack_sockaddr_in(16178, "10.101.96.97"))
 
           subject.original_dest(@socket).should == [16178, "10.101.96.97"]
         end
@@ -70,7 +71,8 @@ module Impl
       context "when passed an object that implements EM::Connection's #getsockname" do
         it "returns the destination connection's details" do
           @socket = double("EM::Connection")
-          @socket.stub(:get_sockname).and_return("\020\002?2\ne`a\000\000\000\000\000\000\000\000")
+          # @socket.stub(:get_sockname).and_return("\020\002?2\ne`a\000\000\000\000\000\000\000\000")
+          @socket.stub(:get_sockname).and_return(Socket.pack_sockaddr_in(16178, "10.101.96.97"))
 
           subject.original_dest(@socket).should == [16178, "10.101.96.97"]
         end
