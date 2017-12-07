@@ -49,7 +49,7 @@ module TestHarness
       )
     end
     let(:cert_manager) { double("certificate manager") }
-    let(:report) { double('report', :print_results => nil, :add_result => nil) }
+    let(:report) { double('report', :print_results => nil, :add_result => nil, :fail? => false) }
     let(:testcaseresult) { double('test case result') }
     let(:testcase) { double('test case', :run => testcaseresult) }
     let(:appcontext) { double('context',

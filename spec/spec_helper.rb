@@ -17,15 +17,14 @@ require 'tlspretense'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
-  config.backtrace_clean_patterns = [
-    /\/lib\d*\/ruby\//,
-    /bin\//,
-#    /gems/,
-    /spec\/spec_helper\.rb/,
-    /lib\/rspec\/(core|expectations|matchers|mocks)/
-  ]
-
+  config.expect_with :rspec do |expectations|
+    expectations.syntax = [:should, :expect]
+  end
+  config.mock_with :rspec do |mocks|
+    mocks.syntax = :should
+  end
 end
+RSpec::Expectations.configuration.on_potential_false_positives = :nothing
 
 def with_constants(constants, &block)
   saved_constants = {}

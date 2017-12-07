@@ -26,8 +26,8 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency("eventmachine", [">= 1.0.0"])
   s.add_runtime_dependency("ruby-termios", [">= 0.9.6"])
-  s.add_development_dependency("rake", [">= 0.8.7"])
-  s.add_development_dependency("rspec", ["~> 2.8.0"])
+  s.add_development_dependency("rake", ["~> 12.3"])
+  s.add_development_dependency("rspec", ["~> 3.7"])
   s.add_development_dependency("rdoc", ["~> 3.12"])
   s.add_development_dependency("bundler", ["~> 1.0"])
   s.add_development_dependency("simplecov", ["~> 0.7"])
